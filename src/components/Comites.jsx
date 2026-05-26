@@ -6,13 +6,34 @@ import { Landmark, Scale, Users, Gavel, Globe2, ArrowUpRight, Camera } from 'luc
 const CommitteeLogo = ({ name }) => {
   const [imgError, setImgError] = useState(false);
 
+  // Directly load local assets if available
+  if (name === 'ICFJ' && !imgError) {
+    return (
+      <img 
+        src="/icfj.png"
+        alt="ICFJ Logo"
+        className="w-full h-full object-contain filter drop-shadow-md rounded-lg p-0.5"
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
+  if (name === 'Investigación (1925)' && !imgError) {
+    return (
+      <img 
+        src="/voynich.avif"
+        alt="Voynich Manuscript Logo"
+        className="w-full h-full object-cover filter drop-shadow-md rounded-lg"
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
   const domainMap = {
     'OIT': 'ilo.org',
     'AU': 'au.int',
     'BRICS': 'infobrics.org',
-    'ICFJ': 'press.org', // Press & journalism club logo on logo.dev
-    'ICA (1935)': 'oas.org', // American flags continental seal on logo.dev
-    'Investigación (1925)': 'archive.org', // Ancient manuscript archive library on logo.dev
+    'ICA (1935)': 'si.edu', // Smithsonian Institution sunburst logo representing American history/anthropology
     'NASA': 'nasa.gov',
     'CORTE (2021)': 'uscourts.gov', // US Federal Courts system
     'CRISIS': 'interpol.int' // Interpol, investigating the Kraken dark web market
