@@ -10,9 +10,9 @@ const CommitteeLogo = ({ name }) => {
     'OIT': 'ilo.org',
     'AU': 'au.int',
     'BRICS': 'infobrics.org',
-    'ICFJ': 'icfj.org',
-    'ICA (1935)': 'congresoica.org',
-    'Investigación (1925)': 'yale.edu', // Yale library hosts the Voynich manuscript
+    'ICFJ': 'press.org', // Press & journalism club logo on logo.dev
+    'ICA (1935)': 'oas.org', // American flags continental seal on logo.dev
+    'Investigación (1925)': 'archive.org', // Ancient manuscript archive library on logo.dev
     'NASA': 'nasa.gov',
     'CORTE (2021)': 'uscourts.gov', // US Federal Courts system
     'CRISIS': 'interpol.int' // Interpol, investigating the Kraken dark web market
@@ -321,6 +321,18 @@ export default function Comites() {
           </div>
         </div>
 
+      </div>
+
+      {/* Multi-layered Small Wave SVG Divider blending into TopFotos (cosmic indigo) */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20 text-[#0b0b2b]" style={{ transform: 'translateY(1px)' }}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" className="relative block w-full h-16 md:h-24 lg:h-32">
+          {/* Layer 1: Semi-transparent wave */}
+          <path d="M0,30 C150,60 350,0 600,30 C850,60 1050,0 1200,30 L1200,120 L0,120 Z" className="fill-current opacity-30"></path>
+          {/* Layer 2: Semi-transparent wave with different phase */}
+          <path d="M0,50 C200,20 400,80 700,40 C1000,0 1100,60 1200,30 L1200,120 L0,120 Z" className="fill-current opacity-55"></path>
+          {/* Layer 3: Solid wave */}
+          <path d="M0,60 C300,20 600,100 900,40 C1050,10 1150,50 1200,60 L1200,120 L0,120 Z" className="fill-current"></path>
+        </svg>
       </div>
     </section>
   );

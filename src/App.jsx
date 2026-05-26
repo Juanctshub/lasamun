@@ -7,6 +7,7 @@ import Tematica from './components/Tematica';
 import SaveTheDate from './components/SaveTheDate';
 import Comites from './components/Comites';
 import Staff from './components/Staff';
+import StaffLoader from './components/StaffLoader';
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
 import Footer from './components/Footer';
@@ -14,6 +15,8 @@ import audioSystem from './utils/audioSystem';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(window.location.hash === '#staff' ? 'staff' : 'landing');
+  const [staffLoading, setStaffLoading] = useState(false);
 
   // Handle entering the landing page and starting audio
   const handleEnterExperience = () => {
@@ -22,11 +25,51 @@ function App() {
     
     // De-activate loader screen
     setLoading(false);
+
+    // If starting directly on the staff hash, trigger its loader immediately
+    if (window.location.hash === '#staff') {
+      setStaffLoading(true);
+    }
   };
+
+  // Hash-based router listener
+  useEffect(() => {
+    const handleHashChange = () => {
+      const isStaff = window.location.hash === '#staff';
+      if (isStaff) {
+        setCurrentPage('staff');
+        setStaffLoading(true);
+      } else {
+        setCurrentPage('landing');
+      }
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Smooth scroll transitions when switching pages
+  useEffect(() => {
+    if (loading) return;
+
+    if (currentPage === 'landing') {
+      const hash = window.location.hash;
+      if (hash) {
+        setTimeout(() => {
+          const id = hash.substring(1);
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 150);
+      }
+    } else if (currentPage === 'staff') {
+      window.scrollTo({ top: 0 });
+    }
+  }, [currentPage, loading]);
 
   // Scroll tracking to crossfade tracks when entering or exiting Starvibe
   useEffect(() => {
-    if (loading) return;
+    if (loading || currentPage !== 'landing') return;
 
     const observerOptions = {
       root: null,
@@ -58,7 +101,7 @@ function App() {
       }
       observer.disconnect();
     };
-  }, [loading]);
+  }, [loading, currentPage]);
 
   return (
     <div className="app-container" style={{ position: 'relative' }}>
@@ -69,14 +112,45 @@ function App() {
       {!loading && (
         <>
           <Navigation />
-          <Hero />
-          <Tematica />
-          <SaveTheDate />
-          <Comites />
-          <Staff />
-          <TopFotos />
-          <Starvibe />
-          <Footer />
+          
+          <AnimatePresence mode="wait">
+            {currentPage === 'staff' ? (
+              <React.Fragment key="staff-view">
+                <AnimatePresence mode="wait">
+                  {staffLoading ? (
+                    <StaffLoader key="staff-loader" onComplete={() => setStaffLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="staff-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Staff />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : (
+              <motion.div 
+                key="landing-view"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <Hero />
+                <Tematica />
+                <SaveTheDate />
+                <Comites />
+                <TopFotos />
+                <Starvibe />
+                <Footer />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </>
       )}
     </div>
