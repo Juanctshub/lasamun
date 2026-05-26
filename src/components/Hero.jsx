@@ -2,61 +2,62 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export default function Hero() {
-  // Generar posiciones estáticas para las estrellas
-  const stars = Array.from({ length: 40 }).map((_, i) => ({
-    id: i,
-    top: `${Math.random() * 100}%`,
-    left: `${Math.random() * 100}%`,
-    size: Math.random() * 3 + 1, // 1px a 4px
-    delay: Math.random() * 5,
-    duration: Math.random() * 3 + 3,
-  }));
-
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 pb-48 overflow-hidden z-10 bg-[#050505]">
+    <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 pb-48 overflow-hidden z-10 bg-[#050505]" style={{ transform: 'translateZ(0)' }}>
       
-      {/* Estrellas pequeñitas difuminadas (Pocas y sutiles) */}
-      <div className="absolute inset-0 z-0">
-        {stars.map((star) => (
-          <motion.div
-            key={star.id}
-            className="absolute bg-white rounded-full"
-            style={{
-              top: star.top,
-              left: star.left,
-              width: star.size,
-              height: star.size,
-              filter: `blur(${star.size > 2 ? 1 : 0.5}px)`,
-            }}
-            animate={{ opacity: [0.1, 0.8, 0.1] }}
-            transition={{
-              duration: star.duration,
-              repeat: Infinity,
-              delay: star.delay,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
+      {/* Optimized Twinkling Stars (Pure GPU accelerated CSS) */}
+      <style>{`
+        @keyframes twinkle-hero {
+          0%, 100% { opacity: 0.8; }
+          50% { opacity: 0.25; }
+        }
+        .hero-stars {
+          position: absolute;
+          width: 1.5px;
+          height: 1.5px;
+          background: white;
+          box-shadow: 
+            5vw 10vh 1px white, 15vw 12vh 2px white, 25vw 5vh 1px white,
+            35vw 18vh 2.5px white, 45vw 2vh 1px white, 55vw 15vh 2px white,
+            65vw 8vh 1px white, 75vw 12vh 2.5px white, 85vw 4vh 1px white,
+            95vw 16vh 2px white, 8vw 45vh 1.5px white, 18vw 60vh 1px white,
+            28vw 52vh 2px white, 38vw 40vh 1px white, 48vw 65vh 2px white,
+            58vw 50vh 1.5px white, 68vw 58vh 1px white, 78vw 48vh 2.5px white,
+            88vw 62vh 1px white, 98vw 42vh 2px white, 12vw 80vh 2px white,
+            22vw 75vh 1px white, 32vw 88vh 2px white, 42vw 82vh 1.5px white,
+            52vw 90vh 1px white, 62vw 85vh 2px white, 72vw 78vh 2px white,
+            82vw 92vh 1px white, 92vw 85vh 1.5px white;
+          animation: twinkle-hero 6s infinite linear;
+          pointer-events: none;
+          will-change: opacity;
+        }
+      `}</style>
+
+      {/* GPU Accelerated Starfield */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="hero-stars absolute inset-0"></div>
       </div>
 
       {/* Deep Background Typography Parallax */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-        <h1 className="font-maison font-bold text-[20vw] leading-none text-transparent opacity-5 whitespace-nowrap" style={{ WebkitTextStroke: '2px white' }}>
+        <h1 className="font-maison font-bold text-[20vw] leading-none text-transparent opacity-5 whitespace-nowrap select-none" style={{ WebkitTextStroke: '2px white' }}>
           LASAMUN
         </h1>
       </div>
 
-      {/* Intense Glowing Orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+      {/* Intense Glowing Orbs (Hardware composited) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" style={{ transform: 'translateZ(0)' }}>
         <motion.div 
-          animate={{ rotate: 360, scale: [1, 1.1, 1] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] bg-primary-blue/20 rounded-full blur-[150px] mix-blend-screen"
+          animate={{ rotate: 360, scale: [1, 1.05, 1] }}
+          transition={{ duration: 35, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] bg-primary-blue/15 rounded-full blur-[150px] mix-blend-screen"
+          style={{ willChange: 'transform', transform: 'translateZ(0)' }}
         />
         <motion.div 
-          animate={{ rotate: -360, scale: [1, 1.2, 1] }}
-          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] bg-primary-yellow/15 rounded-full blur-[150px] mix-blend-screen"
+          animate={{ rotate: -360, scale: [1, 1.08, 1] }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[20%] -right-[10%] w-[60vw] h-[60vw] bg-primary-yellow/12 rounded-full blur-[150px] mix-blend-screen"
+          style={{ willChange: 'transform', transform: 'translateZ(0)' }}
         />
       </div>
       

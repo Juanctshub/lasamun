@@ -17,12 +17,12 @@ export default function Navigation() {
   };
 
   const menuItems = [
-    { name: 'Inicio', href: '#home' },
-    { name: 'Temática', href: '#tematica' },
-    { name: 'Save The Date', href: '#savethedate' },
-    { name: 'Comités', href: '#comites' },
-    { name: 'Top Fotos', href: '#galeria' },
-    { name: 'Starvibe', href: '#starvibe' },
+    { name: 'Inicio', href: '#home', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
+    { name: 'Temática', href: '#tematica', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
+    { name: 'Save The Date', href: '#savethedate', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
+    { name: 'Comités', href: '#comites', hoverClass: 'hover:text-white hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)]' },
+    { name: 'Top Fotos', href: '#galeria', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
+    { name: 'Starvibe', href: '#starvibe', hoverClass: 'hover:text-[#ff007f] hover:drop-shadow-[0_0_20px_rgba(255,0,127,0.7)]' },
   ];
 
   return (
@@ -104,7 +104,7 @@ export default function Navigation() {
                   <a
                     href={item.href}
                     onClick={toggleMenu}
-                    className="font-maison text-5xl md:text-7xl font-bold uppercase block w-full text-center transition-all duration-300 text-white/40 hover:text-primary-yellow hover:scale-110 drop-shadow-none hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]"
+                    className={`font-maison text-5xl md:text-7xl font-bold uppercase block w-full text-center transition-all duration-300 text-white/40 hover:scale-110 drop-shadow-none ${item.hoverClass}`}
                   >
                     {item.name}
                   </a>
