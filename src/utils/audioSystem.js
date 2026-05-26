@@ -71,10 +71,11 @@ class AudioSystem {
       await this.ctx.resume();
     }
 
-    // Start playback for both so they buffer, keep LMFAO volume zero
+    // Start playback for both so they pre-buffer.
+    // NOTE: Do NOT set lmfao.volume = 0 here, because it mutes the element before the Web Audio gain node!
+    // The Web Audio Gain node handles the muting safely.
     this.frutiger.play().catch(e => console.log("Playback error Frutiger", e));
     this.lmfao.play().catch(e => console.log("Playback error LMFAO", e));
-    this.lmfao.volume = 0; // safety
 
     this.activeTrack = 'frutiger';
 
@@ -98,8 +99,12 @@ class AudioSystem {
 
     const now = this.ctx.currentTime;
 
+    // Ensure LMFAO is playing
+    this.lmfao.play().catch(e => console.log("Play error LMFAO on switch", e));
+
     // Skip the slow intro speech of LMFAO to jump straight to the energetic beat drop!
-    if (this.lmfao && this.lmfao.currentTime < 15) {
+    // Only perform seek if metadata has loaded to prevent InvalidStateError.
+    if (this.lmfao && this.lmfao.readyState >= 1 && this.lmfao.currentTime < 15) {
       this.lmfao.currentTime = 15.5; // Jump exactly to the drop
     }
 
@@ -127,6 +132,9 @@ class AudioSystem {
     this.activeTrack = 'frutiger';
 
     const now = this.ctx.currentTime;
+
+    // Ensure Frutiger is playing
+    this.frutiger.play().catch(e => console.log("Play error Frutiger on switch", e));
 
     // --- Muffle & Fade Down LMFAO ---
     this.lmfaoGain.gain.cancelScheduledValues(now);
