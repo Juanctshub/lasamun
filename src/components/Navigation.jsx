@@ -37,34 +37,34 @@ export default function Navigation() {
 
   return (
     <>
-      {/* Innovative Floating Glassmorphic Split Navigation */}
+      {/* Floating Split Navigation - White Theme Controls */}
       <div className="fixed top-0 left-0 w-full z-[1000] pointer-events-none">
         <div className="container mx-auto px-6 pt-6 flex justify-between items-start">
           
-          {/* Logos Capsule (Top Left) - Premium Dark Glassmorphism */}
+          {/* Logos Capsule (Top Left) - Always Pure White */}
           <motion.div 
             initial={{ y: -50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className={`pointer-events-auto flex items-center gap-4 px-5 py-2 rounded-2xl bg-black/40 border border-white/10 backdrop-blur-xl transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:border-white/20 ${
-              scrolled ? 'translate-y-[-10px] scale-95 shadow-[0_12px_40px_rgba(0,0,0,0.5)] border-white/20' : ''
+            className={`pointer-events-auto flex items-center gap-4 px-5 py-2.5 rounded-2xl bg-white border border-gray-200 transition-all duration-500 shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:border-gray-300 hover:shadow-[0_12px_40px_rgba(0,0,0,0.12)] ${
+              scrolled ? 'translate-y-[-10px] scale-95 shadow-[0_12px_40px_rgba(0,0,0,0.15)] border-gray-300' : ''
             }`}
           >
             <img 
               src="/lasalle.png" 
               alt="La Salle" 
-              className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-md" 
+              className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-sm" 
               onClick={() => {
                 if (menuOpen) toggleMenu();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
                 window.history.pushState(null, '', '#home');
               }}
             />
-            <div className="w-[1px] h-8 bg-gradient-to-b from-white/20 via-white/10 to-transparent rounded-full"></div>
+            <div className="w-[1px] h-8 bg-gray-200 rounded-full"></div>
             <img 
               src="/lasamun.png" 
               alt="Lasamun" 
-              className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-md" 
+              className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-sm" 
               onClick={() => {
                 if (menuOpen) toggleMenu();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -73,19 +73,19 @@ export default function Navigation() {
             />
           </motion.div>
 
-          {/* Magnetic Menu Button (Top Right) - Premium Dark Glassmorphism */}
+          {/* Magnetic Menu Button (Top Right) - Always Pure White */}
           <motion.button 
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.3 }}
             onClick={toggleMenu} 
-            className={`pointer-events-auto relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex flex-col justify-center items-center gap-[6px] bg-black/40 border border-white/10 backdrop-blur-xl transition-all duration-500 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] hover:border-white/20 hover:scale-115 group ${
-              scrolled ? 'translate-y-[-10px] scale-95 shadow-[0_12px_40px_rgba(0,0,0,0.5)] border-white/20' : ''
+            className={`pointer-events-auto relative w-14 h-14 sm:w-16 sm:h-16 rounded-full flex flex-col justify-center items-center gap-[6px] bg-white border border-gray-200 transition-all duration-500 shadow-[0_8px_32px_rgba(0,0,0,0.06)] hover:border-gray-300 hover:scale-110 group ${
+              scrolled ? 'translate-y-[-10px] scale-95 shadow-[0_12px_40px_rgba(0,0,0,0.15)] border-gray-300' : ''
             }`}
           >
-            <span className={`w-7 sm:w-8 h-[2.5px] rounded-full transition-all duration-400 ease-in-out ${menuOpen ? 'translate-y-[8.5px] rotate-45 bg-primary-yellow' : 'bg-white group-hover:bg-primary-yellow'}`}></span>
-            <span className={`w-7 sm:w-8 h-[2.5px] rounded-full transition-all duration-400 ease-in-out ${menuOpen ? 'opacity-0' : 'bg-white group-hover:w-5'}`}></span>
-            <span className={`w-7 sm:w-8 h-[2.5px] rounded-full transition-all duration-400 ease-in-out ${menuOpen ? '-translate-y-[8.5px] -rotate-45 bg-primary-yellow' : 'bg-white group-hover:bg-primary-yellow'}`}></span>
+            <span className={`w-7 sm:w-8 h-[2.5px] rounded-full transition-all duration-400 ease-in-out ${menuOpen ? 'translate-y-[8.5px] rotate-45 bg-primary-yellow' : 'bg-[#0033A0] group-hover:bg-primary-yellow'}`}></span>
+            <span className={`w-7 sm:w-8 h-[2.5px] rounded-full transition-all duration-400 ease-in-out ${menuOpen ? 'opacity-0' : 'bg-[#0033A0] group-hover:w-5'}`}></span>
+            <span className={`w-7 sm:w-8 h-[2.5px] rounded-full transition-all duration-400 ease-in-out ${menuOpen ? '-translate-y-[8.5px] -rotate-45 bg-primary-yellow' : 'bg-[#0033A0] group-hover:bg-primary-yellow'}`}></span>
           </motion.button>
           
         </div>
@@ -125,9 +125,9 @@ export default function Navigation() {
               style={{ backgroundColor: getGlowColor() }}
             />
             
-            <div className="container mx-auto px-6 relative z-10 w-full max-w-6xl h-full flex flex-col md:flex-row items-center justify-between gap-12 pt-28 pb-12 overflow-y-auto md:overflow-hidden">
+            <div className="container mx-auto px-6 relative z-10 w-full max-w-5xl h-full flex flex-col md:flex-row items-center justify-center md:justify-between gap-12 pt-28 pb-12 overflow-y-auto md:overflow-hidden">
               
-              {/* Left Pane (Artistic Editorial Block) */}
+              {/* Left Pane (Artistic Editorial Block - Hidden on mobile for cleaner spacing) */}
               <div className="hidden md:flex flex-col items-start justify-center w-5/12 text-left relative h-full border-r border-white/10 pr-12">
                 
                 {/* Spinning constellation/universe wheel */}
@@ -177,28 +177,28 @@ export default function Navigation() {
                 </div>
               </div>
               
-              {/* Right Pane (Main Menu Links) */}
-              <div className="w-full md:w-7/12 flex flex-col justify-center h-full">
-                <ul className="flex flex-col gap-3 sm:gap-4 md:gap-5 text-center md:text-left w-full pl-0 md:pl-12">
+              {/* Right Pane (Main Menu Links - Centers on Mobile for perfect breathing room) */}
+              <div className="w-full md:w-7/12 flex flex-col justify-center items-center md:items-start h-full">
+                <ul className="flex flex-col gap-6 sm:gap-8 md:gap-5 justify-center items-center md:items-start w-full pl-0 md:pl-12">
                   {menuItems.map((item, index) => (
                     <motion.li
                       key={index}
-                      initial={{ x: 50, opacity: 0 }}
+                      initial={{ x: 30, opacity: 0 }}
                       animate={{ x: 0, opacity: 1 }}
                       transition={{ delay: 0.15 + index * 0.07, duration: 0.5 }}
                       onMouseEnter={() => setHoveredIndex(index)}
                       onMouseLeave={() => setHoveredIndex(null)}
-                      className="group flex flex-col md:flex-row items-center md:items-baseline gap-2 md:gap-4 w-full"
+                      className="group flex items-center md:items-baseline justify-center md:justify-start gap-4 w-full py-1.5 md:py-2"
                     >
-                      {/* Monospace Gold Serial Counter */}
-                      <span className="hidden md:inline font-mono text-xs text-primary-yellow/40 group-hover:text-primary-yellow transition-all duration-300 select-none tracking-widest shrink-0 w-12 text-right">
+                      {/* Monospace Gold Serial Counter - Hidden on mobile to prevent squished layouts */}
+                      <span className="hidden md:inline-block font-mono text-xs text-primary-yellow/40 group-hover:text-primary-yellow transition-all duration-300 select-none tracking-widest shrink-0 w-12 text-right">
                         [ 0{index + 1} ]
                       </span>
                       
                       <a
                         href={item.href}
                         onClick={toggleMenu}
-                        className={`font-maison text-[2.5rem] sm:text-[3.2rem] md:text-[4rem] lg:text-[5rem] leading-[1.1] font-bold uppercase block w-full transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
+                        className={`font-maison text-[2.5rem] sm:text-[3.5rem] md:text-[4rem] lg:text-[5rem] leading-[1.2] font-bold uppercase block w-full text-center md:text-left transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
                       >
                         {item.name}
                       </a>
