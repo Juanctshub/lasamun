@@ -2,146 +2,178 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Landmark, Scale, Users, Gavel, Globe2, ArrowUpRight, Camera } from 'lucide-react';
 
-// Custom designed vector SVG logos to load instantly and look premium
+// Custom designed vector SVG logos as high-fidelity fallbacks
 const CommitteeLogo = ({ name }) => {
-  switch (name) {
-    case 'OIT':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-blue-400">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="4 2" />
-          <path d="M50 25 a25 25 0 1 0 0.001 0" fill="none" stroke="currentColor" strokeWidth="3" />
-          {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, idx) => (
-            <g key={idx} transform={`rotate(${angle} 50 50)`}>
-              <rect x="47.5" y="20" width="5" height="7" rx="1.5" fill="currentColor" />
-            </g>
-          ))}
-          <circle cx="50" cy="50" r="12" fill="none" stroke="currentColor" strokeWidth="2" />
-          <path d="M22 62 Q20 50 26 38" fill="none" stroke="#FFD100" strokeWidth="2" strokeLinecap="round" />
-          <path d="M78 62 Q80 50 74 38" fill="none" stroke="#FFD100" strokeWidth="2" strokeLinecap="round" />
-          {[42, 48, 54, 60].map((y, i) => (
-            <g key={i}>
-              <ellipse cx="23" cy={y} rx="2" ry="3" fill="#FFD100" transform={`rotate(-10 23 ${y})`} />
-              <ellipse cx="77" cy={y} rx="2" ry="3" fill="#FFD100" transform={`rotate(10 77 ${y})`} />
-            </g>
-          ))}
-        </svg>
-      );
-    case 'AU':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-emerald-400">
-          <circle cx="50" cy="50" r="45" fill="none" stroke="#FFD100" strokeWidth="1.5" />
-          <circle cx="50" cy="50" r="41" fill="none" stroke="currentColor" strokeWidth="1" />
-          <path d="M44 32 C48 30, 52 31, 55 33 C58 35, 60 40, 58 43 C56 46, 59 48, 62 49 C65 50, 68 53, 67 56 C66 59, 61 63, 60 66 C59 69, 56 73, 54 74 C52 75, 49 71, 48 68 C47 65, 44 63, 43 60 C42 57, 39 56, 38 52 C37 48, 35 45, 36 42 C37 39, 40 34, 44 32 Z" fill="currentColor" opacity="0.85" />
-          <path d="M18 50 A32 32 0 0 0 50 82 A32 32 0 0 0 82 50" fill="none" stroke="#FFD100" strokeWidth="2.5" strokeLinecap="round" />
-        </svg>
-      );
-    case 'BRICS':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full">
-          <defs>
-            <linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#10B981" /><stop offset="100%" stopColor="#3B82F6" /></linearGradient>
-            <linearGradient id="b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#EF4444" /><stop offset="100%" stopColor="#F59E0B" /></linearGradient>
-            <linearGradient id="b3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#3B82F6" /><stop offset="100%" stopColor="#8B5CF6" /></linearGradient>
-            <linearGradient id="b4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#F59E0B" /><stop offset="100%" stopColor="#10B981" /></linearGradient>
-            <linearGradient id="b5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#EC4899" /><stop offset="100%" stopColor="#EF4444" /></linearGradient>
-          </defs>
-          {[0, 72, 144, 216, 288].map((angle, i) => {
-            const grads = ['url(#b1)', 'url(#b2)', 'url(#b3)', 'url(#b4)', 'url(#b5)'];
-            return (
-              <g key={i} transform={`rotate(${angle} 50 50)`}>
-                <path d="M50 50 C40 33, 45 13, 50 10 C55 13, 60 33, 50 50 Z" fill={grads[i]} opacity="0.85" />
+  const [imgError, setImgError] = useState(false);
+
+  const domainMap = {
+    'OIT': 'ilo.org',
+    'AU': 'au.int',
+    'BRICS': 'infobrics.org',
+    'ICFJ': 'icfj.org',
+    'ICA (1935)': 'congresoica.org',
+    'Investigación (1925)': 'yale.edu', // Yale library hosts the Voynich manuscript
+    'NASA': 'nasa.gov',
+    'CORTE (2021)': 'uscourts.gov', // US Federal Courts system
+    'CRISIS': 'interpol.int' // Interpol, investigating the Kraken dark web market
+  };
+
+  const domain = domainMap[name];
+  const token = 'pk_a2EPYS03QO6UAR0NQDWBvA';
+
+  const renderSvgFallback = () => {
+    switch (name) {
+      case 'OIT':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-blue-400">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="4 2" />
+            <path d="M50 25 a25 25 0 1 0 0.001 0" fill="none" stroke="currentColor" strokeWidth="3" />
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, idx) => (
+              <g key={idx} transform={`rotate(${angle} 50 50)`}>
+                <rect x="47.5" y="20" width="5" height="7" rx="1.5" fill="currentColor" />
               </g>
-            );
-          })}
-          <circle cx="50" cy="50" r="7" fill="white" opacity="0.9" />
-          <circle cx="50" cy="50" r="3.5" fill="#0b0b2b" />
-        </svg>
-      );
-    case 'ICFJ':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-cyan-400">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 2" />
-          <path d="M15 50 H85" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-          <path d="M50 15 V85" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-          <path d="M22 30 C35 38, 65 38, 78 30" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-          <path d="M22 70 C35 62, 65 62, 78 70" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-          <path d="M35 65 L60 40 L65 45 L40 70 Z" fill="currentColor" />
-          <path d="M60 40 L68 32 L72 36 L65 45 Z" fill="#FFD100" />
-          <line x1="28" y1="72" x2="35" y2="65" stroke="#FFD100" strokeWidth="3.5" strokeLinecap="round" />
-        </svg>
-      );
-    case 'ICA (1935)':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-amber-600">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" strokeWidth="2" />
-          <circle cx="50" cy="50" r="38" fill="none" stroke="#FFD100" strokeWidth="1" />
-          <circle cx="50" cy="50" r="26" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 3" />
-          <path d="M50 12 L53 22 L47 22 Z M50 88 L53 78 L47 78 Z M12 50 L22 53 L22 47 Z M88 50 L78 53 L78 47 Z" fill="#FFD100" />
-          <path d="M24 24 L32 32 M76 24 L68 32 M24 76 L32 68 M76 76 L68 68" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-          <rect x="42.5" y="42.5" width="15" height="15" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
-          <circle cx="50" cy="50" r="3" fill="#FFD100" />
-        </svg>
-      );
-    case 'Investigación (1925)':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-emerald-500">
-          <rect x="22" y="16" width="56" height="68" rx="4" fill="none" stroke="currentColor" strokeWidth="2" />
-          <line x1="30" y1="28" x2="70" y2="28" stroke="currentColor" strokeWidth="1.5" opacity="0.8" />
-          <line x1="30" y1="36" x2="60" y2="36" stroke="currentColor" strokeWidth="1.5" opacity="0.8" />
-          <path d="M50 72 C40 60, 42 48, 50 42 C58 48, 60 60, 50 72 Z" fill="#FFD100" opacity="0.25" />
-          <path d="M50 72 Q45 55 50 42 Q55 55 50 72" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="50" cy="42" r="3.5" fill="#10B981" />
-          <circle cx="34" cy="52" r="2" fill="#FFD100" />
-          <circle cx="66" cy="48" r="2.5" fill="#FFD100" />
-          <path d="M34 52 L38 56 M66 48 L61 50" stroke="#FFD100" strokeWidth="0.8" />
-        </svg>
-      );
-    case 'NASA':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-blue-600">
-          <circle cx="50" cy="50" r="42" fill="#0033A0" stroke="currentColor" strokeWidth="2" />
-          <circle cx="30" cy="35" r="1.2" fill="white" opacity="0.9" />
-          <circle cx="70" cy="65" r="1.5" fill="white" opacity="0.9" />
-          <circle cx="68" cy="30" r="1" fill="white" opacity="0.9" />
-          <circle cx="32" cy="68" r="1.2" fill="white" opacity="0.9" />
-          <path d="M15 62 C35 25, 75 25, 88 52 C70 70, 30 75, 15 62 Z" fill="none" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
-          <ellipse cx="50" cy="50" rx="36" ry="11" fill="none" stroke="white" strokeWidth="1.5" transform="rotate(-25 50 50)" />
-          <polygon points="77,31 83,29 79,35" fill="white" />
-        </svg>
-      );
-    case 'CORTE (2021)':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-slate-400">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="2" />
-          <path d="M28 66 H72 V69 H28 Z M32 38 H68 V42 H32 Z M35 34 H65 V38 H35 Z" fill="currentColor" />
-          <rect x="35.5" y="42" width="4" height="24" fill="currentColor" />
-          <rect x="44.5" y="42" width="4" height="24" fill="currentColor" />
-          <rect x="52.5" y="42" width="4" height="24" fill="currentColor" />
-          <rect x="60.5" y="42" width="4" height="24" fill="currentColor" />
-          <path d="M50 20 V38" stroke="#FFD100" strokeWidth="2.5" />
-          <path d="M38 25 H62" stroke="#FFD100" strokeWidth="2" />
-          <path d="M38 25 Q38 35 41 35 Q44 35 44 25 M56 25 Q56 35 59 35 Q62 35 62 25" fill="none" stroke="#FFD100" strokeWidth="1.2" />
-        </svg>
-      );
-    case 'CRISIS':
-      return (
-        <svg viewBox="0 0 100 100" className="w-full h-full text-pink-500">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="1.5" />
-          <circle cx="50" cy="50" r="38" fill="none" stroke="#7928CA" strokeWidth="1" strokeDasharray="3 3" />
-          <path d="M42 42 C42 32, 58 32, 58 42 C58 46, 55 49, 50 52 C45 49, 42 46, 42 42 Z" fill="currentColor" />
-          <circle cx="46.5" cy="42" r="1.5" fill="black" />
-          <circle cx="53.5" cy="42" r="1.5" fill="black" />
-          <circle cx="46.5" cy="42" r="0.5" fill="#ff007f" />
-          <circle cx="53.5" cy="42" r="0.5" fill="#ff007f" />
-          <path d="M46 50 Q40 58 32 64 M54 50 Q60 58 68 64 M48 51 Q44 64 42 74 M52 51 Q56 64 58 74 M50 52 Q50 68 50 78" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-          <circle cx="32" cy="64" r="2.5" fill="#ff007f" />
-          <circle cx="68" cy="64" r="2.5" fill="#ff007f" />
-        </svg>
-      );
-    default:
-      return null;
+            ))}
+            <circle cx="50" cy="50" r="12" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M22 62 Q20 50 26 38" fill="none" stroke="#FFD100" strokeWidth="2" strokeLinecap="round" />
+            <path d="M78 62 Q80 50 74 38" fill="none" stroke="#FFD100" strokeWidth="2" strokeLinecap="round" />
+            {[42, 48, 54, 60].map((y, i) => (
+              <g key={i}>
+                <ellipse cx="23" cy={y} rx="2" ry="3" fill="#FFD100" transform={`rotate(-10 23 ${y})`} />
+                <ellipse cx="77" cy={y} rx="2" ry="3" fill="#FFD100" transform={`rotate(10 77 ${y})`} />
+              </g>
+            ))}
+          </svg>
+        );
+      case 'AU':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-emerald-400">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#FFD100" strokeWidth="1.5" />
+            <circle cx="50" cy="50" r="41" fill="none" stroke="currentColor" strokeWidth="1" />
+            <path d="M44 32 C48 30, 52 31, 55 33 C58 35, 60 40, 58 43 C56 46, 59 48, 62 49 C65 50, 68 53, 67 56 C66 59, 61 63, 60 66 C59 69, 56 73, 54 74 C52 75, 49 71, 48 68 C47 65, 44 63, 43 60 C42 57, 39 56, 38 52 C37 48, 35 45, 36 42 C37 39, 40 34, 44 32 Z" fill="currentColor" opacity="0.85" />
+            <path d="M18 50 A32 32 0 0 0 50 82 A32 32 0 0 0 82 50" fill="none" stroke="#FFD100" strokeWidth="2.5" strokeLinecap="round" />
+          </svg>
+        );
+      case 'BRICS':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full">
+            <defs>
+              <linearGradient id="b1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#10B981" /><stop offset="100%" stopColor="#3B82F6" /></linearGradient>
+              <linearGradient id="b2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#EF4444" /><stop offset="100%" stopColor="#F59E0B" /></linearGradient>
+              <linearGradient id="b3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#3B82F6" /><stop offset="100%" stopColor="#8B5CF6" /></linearGradient>
+              <linearGradient id="b4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#F59E0B" /><stop offset="100%" stopColor="#10B981" /></linearGradient>
+              <linearGradient id="b5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#EC4899" /><stop offset="100%" stopColor="#EF4444" /></linearGradient>
+            </defs>
+            {[0, 72, 144, 216, 288].map((angle, i) => {
+              const grads = ['url(#b1)', 'url(#b2)', 'url(#b3)', 'url(#b4)', 'url(#b5)'];
+              return (
+                <g key={i} transform={`rotate(${angle} 50 50)`}>
+                  <path d="M50 50 C40 33, 45 13, 50 10 C55 13, 60 33, 50 50 Z" fill={grads[i]} opacity="0.85" />
+                </g>
+              );
+            })}
+            <circle cx="50" cy="50" r="7" fill="white" opacity="0.9" />
+            <circle cx="50" cy="50" r="3.5" fill="#0b0b2b" />
+          </svg>
+        );
+      case 'ICFJ':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-cyan-400">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 2" />
+            <path d="M15 50 H85" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+            <path d="M50 15 V85" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+            <path d="M22 30 C35 38, 65 38, 78 30" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+            <path d="M22 70 C35 62, 65 62, 78 70" fill="none" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+            <path d="M35 65 L60 40 L65 45 L40 70 Z" fill="currentColor" />
+            <path d="M60 40 L68 32 L72 36 L65 45 Z" fill="#FFD100" />
+            <line x1="28" y1="72" x2="35" y2="65" stroke="#FFD100" strokeWidth="3.5" strokeLinecap="round" />
+          </svg>
+        );
+      case 'ICA (1935)':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-amber-600">
+            <circle cx="50" cy="50" r="44" fill="none" stroke="currentColor" strokeWidth="2" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#FFD100" strokeWidth="1" />
+            <circle cx="50" cy="50" r="26" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 3" />
+            <path d="M50 12 L53 22 L47 22 Z M50 88 L53 78 L47 78 Z M12 50 L22 53 L22 47 Z M88 50 L78 53 L78 47 Z" fill="#FFD100" />
+            <path d="M24 24 L32 32 M76 24 L68 32 M24 76 L32 68 M76 76 L68 68" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            <rect x="42.5" y="42.5" width="15" height="15" rx="2" fill="none" stroke="currentColor" strokeWidth="2" />
+            <circle cx="50" cy="50" r="3" fill="#FFD100" />
+          </svg>
+        );
+      case 'Investigación (1925)':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-emerald-500">
+            <rect x="22" y="16" width="56" height="68" rx="4" fill="none" stroke="currentColor" strokeWidth="2" />
+            <line x1="30" y1="28" x2="70" y2="28" stroke="currentColor" strokeWidth="1.5" opacity="0.8" />
+            <line x1="30" y1="36" x2="60" y2="36" stroke="currentColor" strokeWidth="1.5" opacity="0.8" />
+            <path d="M50 72 C40 60, 42 48, 50 42 C58 48, 60 60, 50 72 Z" fill="#FFD100" opacity="0.25" />
+            <path d="M50 72 Q45 55 50 42 Q55 55 50 72" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="50" cy="42" r="3.5" fill="#10B981" />
+            <circle cx="34" cy="52" r="2" fill="#FFD100" />
+            <circle cx="66" cy="48" r="2.5" fill="#FFD100" />
+            <path d="M34 52 L38 56 M66 48 L61 50" stroke="#FFD100" strokeWidth="0.8" />
+          </svg>
+        );
+      case 'NASA':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-blue-600">
+            <circle cx="50" cy="50" r="42" fill="#0033A0" stroke="currentColor" strokeWidth="2" />
+            <circle cx="30" cy="35" r="1.2" fill="white" opacity="0.9" />
+            <circle cx="70" cy="65" r="1.5" fill="white" opacity="0.9" />
+            <circle cx="68" cy="30" r="1" fill="white" opacity="0.9" />
+            <circle cx="32" cy="68" r="1.2" fill="white" opacity="0.9" />
+            <path d="M15 62 C35 25, 75 25, 88 52 C70 70, 30 75, 15 62 Z" fill="none" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round" />
+            <ellipse cx="50" cy="50" rx="36" ry="11" fill="none" stroke="white" strokeWidth="1.5" transform="rotate(-25 50 50)" />
+            <polygon points="77,31 83,29 79,35" fill="white" />
+          </svg>
+        );
+      case 'CORTE (2021)':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-slate-400">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="2" />
+            <path d="M28 66 H72 V69 H28 Z M32 38 H68 V42 H32 Z M35 34 H65 V38 H35 Z" fill="currentColor" />
+            <rect x="35.5" y="42" width="4" height="24" fill="currentColor" />
+            <rect x="44.5" y="42" width="4" height="24" fill="currentColor" />
+            <rect x="52.5" y="42" width="4" height="24" fill="currentColor" />
+            <rect x="60.5" y="42" width="4" height="24" fill="currentColor" />
+            <path d="M50 20 V38" stroke="#FFD100" strokeWidth="2.5" />
+            <path d="M38 25 H62" stroke="#FFD100" strokeWidth="2" />
+            <path d="M38 25 Q38 35 41 35 Q44 35 44 25 M56 25 Q56 35 59 35 Q62 35 62 25" fill="none" stroke="#FFD100" strokeWidth="1.2" />
+          </svg>
+        );
+      case 'CRISIS':
+        return (
+          <svg viewBox="0 0 100 100" className="w-full h-full text-pink-500">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="1.5" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#7928CA" strokeWidth="1" strokeDasharray="3 3" />
+            <path d="M42 42 C42 32, 58 32, 58 42 C58 46, 55 49, 50 52 C45 49, 42 46, 42 42 Z" fill="currentColor" />
+            <circle cx="46.5" cy="42" r="1.5" fill="black" />
+            <circle cx="53.5" cy="42" r="1.5" fill="black" />
+            <circle cx="46.5" cy="42" r="0.5" fill="#ff007f" />
+            <circle cx="53.5" cy="42" r="0.5" fill="#ff007f" />
+            <path d="M46 50 Q40 58 32 64 M54 50 Q60 58 68 64 M48 51 Q44 64 42 74 M52 51 Q56 64 58 74 M50 52 Q50 68 50 78" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            <circle cx="32" cy="64" r="2.5" fill="#ff007f" />
+            <circle cx="68" cy="64" r="2.5" fill="#ff007f" />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+
+  if (domain && !imgError) {
+    return (
+      <img 
+        src={`https://img.logo.dev/${domain}?token=${token}`}
+        alt={`${name} Logo`}
+        className="w-full h-full object-contain filter drop-shadow-md transition-all duration-300 rounded-lg p-0.5"
+        onError={() => setImgError(true)}
+      />
+    );
   }
+
+  return renderSvgFallback();
 };
 
 export default function Comites() {
