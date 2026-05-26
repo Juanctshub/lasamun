@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-blue: #0033A0;
+  --primary-yellow: #FFD100;
+  --secondary-white: #FFFFFF;
+  --secondary-black: #0a0a0a;
+  --dark-blue: #001B5E;
+  --starvibe-neon: #ff007f;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  background-color: var(--secondary-white);
+  color: var(--secondary-black);
+  scroll-behavior: smooth;
+}
+
+/* Tipografías Principales */
+.font-maison {
+  font-family: 'Maison Neue Condensed', 'Maison Condensed', sans-serif;
+  font-weight: 700; /* Negrita */
+}
+
+.font-codec {
+  font-family: 'Codec Pro', sans-serif;
+  font-weight: 400; /* Normal */
+  letter-spacing: -0.05em; /* Se reduce el interletraje para que esté más pegado */
+}
+
+/* Títulos con Maison Condensed Negrita */
+h1, h2, h3, h4, h5, h6, .title-bold {
+  font-family: 'Maison Neue Condensed', 'Maison Condensed', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Cuerpo de texto con Codec Pro Normal y tracking ajustado */
+p, span, div, a, li, .text-normal {
+  font-family: 'Codec Pro', sans-serif;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+/* Clases útiles personalizadas */
+.text-yellow { color: var(--primary-yellow); }
+.text-blue { color: var(--primary-blue); }
+.text-white { color: var(--secondary-white); }
+.bg-dark { background-color: var(--secondary-black); }
+.bg-blue { background-color: var(--dark-blue); }
+
+.gradient-text {
+  background: linear-gradient(90deg, var(--primary-yellow), #FFF);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Ocultar barra de desplazamiento para secciones horizontales */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
