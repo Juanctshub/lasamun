@@ -155,7 +155,7 @@ export default function Navigation() {
                   <div className="border-t border-b border-white/10 py-6 my-6 w-full flex flex-col gap-3 font-codec text-xs text-white/50 tracking-wider min-w-[280px]">
                     <div className="flex justify-between">
                       <span className="text-white/20 uppercase tracking-widest">Ubicación:</span>
-                      <span className="font-light">Caracas, Venezuela</span>
+                      <span className="font-light">Barquisimeto, Venezuela</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-white/20 uppercase tracking-widest">Coordenadas:</span>
@@ -163,7 +163,7 @@ export default function Navigation() {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-white/20 uppercase tracking-widest">Edición:</span>
-                      <span className="font-light">X Aniversario</span>
+                      <span className="font-light">II Aniversario</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-white/20 uppercase tracking-widest">Lema Vibe:</span>
