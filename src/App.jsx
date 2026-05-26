@@ -6,6 +6,7 @@ import Hero from './components/Hero';
 import Tematica from './components/Tematica';
 import SaveTheDate from './components/SaveTheDate';
 import Comites from './components/Comites';
+import Staff from './components/Staff';
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
 import Footer from './components/Footer';
@@ -72,6 +73,7 @@ function App() {
           <Tematica />
           <SaveTheDate />
           <Comites />
+          <Staff />
           <TopFotos />
           <Starvibe />
           <Footer />
