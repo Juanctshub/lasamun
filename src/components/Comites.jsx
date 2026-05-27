@@ -36,7 +36,7 @@ const CommitteeLogo = ({ name }) => {
     'ICA (1935)': 'si.edu', // Smithsonian Institution sunburst logo representing American history/anthropology
     'NASA': 'nasa.gov',
     'CORTE (2021)': 'uscourts.gov', // US Federal Courts system
-    'CRISIS': 'interpol.int' // Interpol, investigating the Kraken dark web market
+    'CRISIS': 'torproject.org' // Tor Project (Deep/Dark Web onion logo)
   };
 
   const domain = domainMap[name];
