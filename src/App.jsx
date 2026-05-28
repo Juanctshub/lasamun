@@ -118,7 +118,7 @@ function App() {
   }, [loading, currentPage]);
 
   return (
-    <div className="app-container" style={{ position: 'relative' }}>
+    <div className={`app-container min-h-screen transition-colors duration-500 ${currentPage !== 'landing' ? 'bg-[#050508]' : 'bg-white'}`} style={{ position: 'relative' }}>
       <AnimatePresence>
         {loading && <Loader onEnter={handleEnterExperience} />}
       </AnimatePresence>
