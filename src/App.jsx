@@ -8,6 +8,8 @@ import SaveTheDate from './components/SaveTheDate';
 import Comites from './components/Comites';
 import Staff from './components/Staff';
 import StaffLoader from './components/StaffLoader';
+import Crisis from './components/Crisis';
+import CrisisLoader from './components/CrisisLoader';
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
 import Footer from './components/Footer';
@@ -15,8 +17,14 @@ import audioSystem from './utils/audioSystem';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(window.location.hash === '#staff' ? 'staff' : 'landing');
+  const getInitialPage = () => {
+    if (window.location.hash === '#staff') return 'staff';
+    if (window.location.hash === '#crisis') return 'crisis';
+    return 'landing';
+  };
+  const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [staffLoading, setStaffLoading] = useState(false);
+  const [crisisLoading, setCrisisLoading] = useState(false);
 
   // Handle entering the landing page and starting audio
   const handleEnterExperience = () => {
@@ -26,9 +34,11 @@ function App() {
     // De-activate loader screen
     setLoading(false);
 
-    // If starting directly on the staff hash, trigger its loader immediately
+    // If starting directly on the staff or crisis hash, trigger its loader immediately
     if (window.location.hash === '#staff') {
       setStaffLoading(true);
+    } else if (window.location.hash === '#crisis') {
+      setCrisisLoading(true);
     }
   };
 
@@ -36,9 +46,13 @@ function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const isStaff = window.location.hash === '#staff';
+      const isCrisis = window.location.hash === '#crisis';
       if (isStaff) {
         setCurrentPage('staff');
         setStaffLoading(true);
+      } else if (isCrisis) {
+        setCurrentPage('crisis');
+        setCrisisLoading(true);
       } else {
         setCurrentPage('landing');
       }
@@ -62,7 +76,7 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis') {
       window.scrollTo({ top: 0 });
     }
   }, [currentPage, loading]);
@@ -128,6 +142,25 @@ function App() {
                       transition={{ duration: 0.5 }}
                     >
                       <Staff />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : currentPage === 'crisis' ? (
+              <React.Fragment key="crisis-view">
+                <AnimatePresence mode="wait">
+                  {crisisLoading ? (
+                    <CrisisLoader key="crisis-loader" onComplete={() => setCrisisLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="crisis-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Crisis />
                       <Footer />
                     </motion.div>
                   )}

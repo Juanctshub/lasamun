@@ -295,6 +295,11 @@ export default function Comites() {
                 transition={{ delay: index * 0.05 }}
                 onMouseEnter={() => setHoveredComite(index)}
                 onMouseLeave={() => setHoveredComite(null)}
+                onClick={() => {
+                  if (comite.name === 'CRISIS') {
+                    window.location.hash = '#crisis';
+                  }
+                }}
                 className="group border-b border-white/10 py-6 px-4 md:px-6 flex flex-col md:flex-row items-start md:items-center justify-between cursor-pointer relative overflow-hidden transition-all duration-500 hover:pl-10"
               >
                 {/* Hover Background Accent Line */}
