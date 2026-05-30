@@ -196,12 +196,12 @@ export default function Crisis() {
                 </div>
               </button>
 
-              <button onClick={() => setActiveModal('reglamento')} className="group flex flex-col items-start justify-between w-full bg-black/50 border border-white/10 hover:border-[#7928CA] p-8 rounded-2xl transition-all duration-300 relative overflow-hidden min-h-[160px]">
+              <button onClick={() => window.open('https://drive.google.com/file/d/1s-wQDVaB28la1m1Sjc6BNwtKvpIo897a/view?usp=sharing', '_blank')} className="group flex flex-col items-start justify-between w-full bg-black/50 border border-white/10 hover:border-[#7928CA] p-8 rounded-2xl transition-all duration-300 relative overflow-hidden min-h-[160px]">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#7928CA]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <FileText className="w-8 h-8 text-[#7928CA] mb-4 group-hover:scale-110 transition-transform" />
                 <div className="text-left relative z-10">
                   <span className="block font-maison text-2xl uppercase font-bold text-white group-hover:text-[#7928CA] transition-colors">Reglamento</span>
-                  <span className="block font-mono text-[10px] text-white/40 uppercase tracking-widest mt-1">Reglas de Crisis</span>
+                  <span className="block font-mono text-[10px] text-white/40 uppercase tracking-widest mt-1">Reglas de Crisis (Drive)</span>
                 </div>
               </button>
 
@@ -219,6 +219,58 @@ export default function Crisis() {
               </button>
             </div>
 
+          </div>
+        </div>
+
+        {/* PLATAFORMA KRAKEN LINKS */}
+        <div className="mt-24 mb-16">
+          <div className="flex items-center gap-4 mb-10">
+            <h2 className="font-maison text-3xl md:text-5xl uppercase font-bold tracking-tight">Plataforma Kraken</h2>
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-[#ff007f]/50 to-transparent" />
+          </div>
+          <p className="font-codec text-lg text-white/60 mb-12 max-w-4xl leading-relaxed font-light">
+            Acceso al portal clasificado para la gestión logística de distribución e ideología del sindicato. Los siguientes documentos proporcionan las normativas, los flujos comerciales y los procedimientos necesarios para operar dentro de la red profunda de Kraken sin dejar rastros en la superficie.
+          </p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <a 
+              href="https://drive.google.com/file/d/1XtGZbWHhhmXP6nr7eec4LjBipLkF5bUL/view?usp=sharing" 
+              target="_blank" rel="noreferrer"
+              className="group bg-[#050508]/80 backdrop-blur-md border border-white/10 hover:border-[#ff007f]/50 p-8 rounded-2xl transition-all duration-500 relative overflow-hidden shadow-[0_0_30px_rgba(255,0,127,0.05)]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-[#ff007f]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="p-3 bg-[#ff007f]/10 rounded-lg w-min mb-6 group-hover:bg-[#ff007f]/20 transition-colors">
+                <FileText className="w-6 h-6 text-[#ff007f]" />
+              </div>
+              <h4 className="font-maison text-xl font-bold uppercase mb-2 group-hover:text-[#ff007f] transition-colors">Reglamento de Plataforma KRAKEN</h4>
+              <span className="font-mono text-[9px] text-white/40 uppercase tracking-[0.2em]">Acceder a la directiva</span>
+            </a>
+
+            <a 
+              href="https://drive.google.com/file/d/1nVMP02VBF8trqK-mXifhvElupogpdt5l/view?usp=drive_link" 
+              target="_blank" rel="noreferrer"
+              className="group bg-[#050508]/80 backdrop-blur-md border border-white/10 hover:border-[#7928CA]/50 p-8 rounded-2xl transition-all duration-500 relative overflow-hidden shadow-[0_0_30px_rgba(121,40,202,0.05)]"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-[#7928CA]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="p-3 bg-[#7928CA]/10 rounded-lg w-min mb-6 group-hover:bg-[#7928CA]/20 transition-colors">
+                <Activity className="w-6 h-6 text-[#7928CA]" />
+              </div>
+              <h4 className="font-maison text-xl font-bold uppercase mb-2 group-hover:text-[#7928CA] transition-colors">Proceso de Pedidos</h4>
+              <span className="font-mono text-[9px] text-white/40 uppercase tracking-[0.2em]">Acceder a la directiva</span>
+            </a>
+
+            <a 
+              href="https://drive.google.com/file/d/102xrKYiB4X5NRhLVAEJCWu7UeYCyWc7n/view?usp=drive_link" 
+              target="_blank" rel="noreferrer"
+              className="group bg-[#050508]/80 backdrop-blur-md border border-white/10 hover:border-white/50 p-8 rounded-2xl transition-all duration-500 relative overflow-hidden shadow-xl"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="p-3 bg-white/5 rounded-lg w-min mb-6 group-hover:bg-white/10 transition-colors">
+                <Database className="w-6 h-6 text-white" />
+              </div>
+              <h4 className="font-maison text-xl font-bold uppercase mb-2 group-hover:text-white transition-colors">Memorandum Ideológico</h4>
+              <span className="font-mono text-[9px] text-white/40 uppercase tracking-[0.2em]">Acceder a la directiva</span>
+            </a>
           </div>
         </div>
       </div>
@@ -252,40 +304,7 @@ export default function Crisis() {
           </motion.div>
         )}
 
-        {activeModal === 'reglamento' && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[3000] bg-black/95 backdrop-blur-3xl flex items-center justify-center p-4 md:p-6"
-          >
-            <motion.div 
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="max-w-2xl w-full max-h-[85vh] bg-[#050508] border border-[#7928CA]/40 rounded-2xl flex flex-col overflow-hidden relative shadow-[0_20px_150px_rgba(121,40,202,0.3)]"
-            >
-              <div className="p-8 border-b border-white/5 flex justify-between items-center bg-black/40 relative">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#7928CA] to-transparent" />
-                <div className="flex items-center gap-4">
-                  <FileText className="w-8 h-8 text-[#7928CA]" />
-                  <h3 className="font-maison text-2xl uppercase font-bold tracking-widest">Reglamento</h3>
-                </div>
-                <button onClick={() => setActiveModal(null)} className="p-2 hover:bg-white/10 rounded-md transition-colors text-white/50 hover:text-[#7928CA]">
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-              <div className="p-10 overflow-y-auto font-codec text-base text-white/60 leading-relaxed font-light custom-scrollbar">
-                <p className="mb-6">El Comité de Crisis operará bajo reglas de procedimiento especializadas, diseñadas para simular el entorno acelerado y de alta tensión del mercado ilícito y el contraespionaje internacional.</p>
-                <ul className="list-disc pl-5 flex flex-col gap-4 text-white/70">
-                  <li><strong>Acciones de Crisis (Directivas):</strong> Los delegados podrán emitir directivas públicas, privadas y encubiertas.</li>
-                  <li><strong>Portafolios Individuales:</strong> Cada delegado cuenta con recursos específicos dentro de la Federación Rusa.</li>
-                  <li><strong>Sesiones No Moderadas Constantes:</strong> El flujo del comité requerirá negociaciones subterráneas continuas.</li>
-                </ul>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
+
 
         {activeModal === 'mesa' && (
           <motion.div
