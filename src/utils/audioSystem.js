@@ -167,6 +167,11 @@ class AudioSystem {
     this.activeTrack = 'gaga';
 
     const now = this.ctx.currentTime;
+    
+    if (this.gaga && this.gaga.readyState >= 1 && this.gaga.currentTime < 10) {
+      this.gaga.currentTime = 32.5; 
+    }
+    
     this.gaga.play().catch(e => console.log("Play error Gaga on switch", e));
 
     this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
