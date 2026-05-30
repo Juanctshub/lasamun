@@ -56,15 +56,20 @@ export default function Starvibe() {
             </span>
           </motion.h2>
           
-          <motion.p 
+          <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="font-codec text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-md"
+            className="font-codec text-lg md:text-xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed drop-shadow-md space-y-6"
           >
-            La energía que nos une más allá del protocolo. Experiencias exclusivas, networking vibrante y cobertura total en un ambiente inigualable.
-          </motion.p>
+            <p>
+              El sentido de la palabra "interconexión" no es solo para dar un sentido a la ramificación de problemáticas, representa una fuente de solidaridad y fortaleza. En esta II Edición de LASAMUN deseamos recordar el valor de la esperanza, forjamos una comunidad de creación, pensamiento crítico, unida por el amor y el sueño de valernos por la justicia y la sostenibilidad.
+            </p>
+            <p>
+              Es por ello que, siguiendo con esta idea, se han diseñado espacios idóneos para desenvolverte como delegado y como humano, buscando que en este Modelo de Naciones Unidas reine la fraternidad mediante actividades recreativas.
+            </p>
+          </motion.div>
         </div>
 
         {/* Asymmetrical Neon Glass Cards */}

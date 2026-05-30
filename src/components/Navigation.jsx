@@ -182,7 +182,7 @@ export default function Navigation() {
               
               {/* Right Pane (Main Menu Links - Centers on Mobile for perfect breathing room) */}
               <div className="w-full md:w-7/12 flex flex-col justify-center items-center md:items-start h-full">
-                <ul className="flex flex-col gap-4 sm:gap-5 md:gap-4 justify-center items-center md:items-start w-full pl-0 md:pl-12">
+                <ul className="flex flex-col gap-5 sm:gap-6 md:gap-5 lg:gap-6 xl:gap-8 justify-center items-center md:items-start w-full pl-0 md:pl-12">
                   {menuItems.map((item, index) => (
                     <motion.li
                       key={index}
@@ -206,7 +206,7 @@ export default function Navigation() {
                           window.location.hash = item.href;
                           window.dispatchEvent(new HashChangeEvent('hashchange'));
                         }}
-                        className={`font-maison text-3xl sm:text-4xl md:text-4xl lg:text-5xl leading-[1.1] font-bold uppercase block w-full text-center md:text-left transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
+                        className={`font-maison text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-[2.75rem] leading-[1.1] font-bold uppercase block w-full text-center md:text-left transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
                       >
                         {item.name}
                       </a>

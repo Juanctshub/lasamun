@@ -10,6 +10,8 @@ import Staff from './components/Staff';
 import StaffLoader from './components/StaffLoader';
 import Crisis from './components/Crisis';
 import CrisisLoader from './components/CrisisLoader';
+import Reglamentos from './components/Reglamentos';
+import ReglamentosLoader from './components/ReglamentosLoader';
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
 import Footer from './components/Footer';
@@ -20,11 +22,13 @@ function App() {
   const getInitialPage = () => {
     if (window.location.hash === '#staff') return 'staff';
     if (window.location.hash === '#crisis') return 'crisis';
+    if (window.location.hash === '#reglamentos') return 'reglamentos';
     return 'landing';
   };
   const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [staffLoading, setStaffLoading] = useState(false);
   const [crisisLoading, setCrisisLoading] = useState(false);
+  const [reglamentosLoading, setReglamentosLoading] = useState(false);
 
   // Handle entering the landing page and starting audio
   const handleEnterExperience = () => {
@@ -40,6 +44,8 @@ function App() {
     } else if (window.location.hash === '#crisis') {
       setCrisisLoading(true);
       setTimeout(() => audioSystem.switchToCrisis(), 500);
+    } else if (window.location.hash === '#reglamentos') {
+      setReglamentosLoading(true);
     }
   };
 
@@ -48,6 +54,7 @@ function App() {
     const handleHashChange = () => {
       const isStaff = window.location.hash === '#staff';
       const isCrisis = window.location.hash === '#crisis';
+      const isReglamentos = window.location.hash === '#reglamentos';
       if (isStaff) {
         setCurrentPage('staff');
         setStaffLoading(true);
@@ -56,6 +63,10 @@ function App() {
         setCurrentPage('crisis');
         setCrisisLoading(true);
         audioSystem.switchToCrisis();
+      } else if (isReglamentos) {
+        setCurrentPage('reglamentos');
+        setReglamentosLoading(true);
+        audioSystem.switchToMain();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
@@ -80,7 +91,7 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff' || currentPage === 'crisis') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos') {
       window.scrollTo({ top: 0 });
     }
   }, [currentPage, loading]);
@@ -165,6 +176,25 @@ function App() {
                       transition={{ duration: 0.5 }}
                     >
                       <Crisis />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : currentPage === 'reglamentos' ? (
+              <React.Fragment key="reglamentos-view">
+                <AnimatePresence mode="wait">
+                  {reglamentosLoading ? (
+                    <ReglamentosLoader key="reglamentos-loader" onComplete={() => setReglamentosLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="reglamentos-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Reglamentos />
                       <Footer />
                     </motion.div>
                   )}
