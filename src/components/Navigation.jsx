@@ -57,8 +57,9 @@ export default function Navigation() {
               className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-sm" 
               onClick={() => {
                 if (menuOpen) toggleMenu();
+                window.location.hash = '#home';
+                window.dispatchEvent(new HashChangeEvent('hashchange'));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                window.history.pushState(null, '', '#home');
               }}
             />
             <div className="w-[1px] h-8 bg-gray-200 rounded-full"></div>
@@ -68,8 +69,9 @@ export default function Navigation() {
               className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-sm" 
               onClick={() => {
                 if (menuOpen) toggleMenu();
+                window.location.hash = '#home';
+                window.dispatchEvent(new HashChangeEvent('hashchange'));
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                window.history.pushState(null, '', '#home');
               }}
             />
           </motion.div>
@@ -198,7 +200,12 @@ export default function Navigation() {
                       
                       <a
                         href={item.href}
-                        onClick={toggleMenu}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          if (menuOpen) toggleMenu();
+                          window.location.hash = item.href;
+                          window.dispatchEvent(new HashChangeEvent('hashchange'));
+                        }}
                         className={`font-maison text-3xl sm:text-4xl md:text-4xl lg:text-5xl leading-[1.1] font-bold uppercase block w-full text-center md:text-left transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
                       >
                         {item.name}
