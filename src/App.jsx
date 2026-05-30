@@ -39,6 +39,7 @@ function App() {
       setStaffLoading(true);
     } else if (window.location.hash === '#crisis') {
       setCrisisLoading(true);
+      setTimeout(() => audioSystem.switchToCrisis(), 500);
     }
   };
 
@@ -50,11 +51,14 @@ function App() {
       if (isStaff) {
         setCurrentPage('staff');
         setStaffLoading(true);
+        audioSystem.switchToMain();
       } else if (isCrisis) {
         setCurrentPage('crisis');
         setCrisisLoading(true);
+        audioSystem.switchToCrisis();
       } else {
         setCurrentPage('landing');
+        audioSystem.switchToMain();
       }
     };
     window.addEventListener('hashchange', handleHashChange);

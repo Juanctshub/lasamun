@@ -3,13 +3,17 @@ class AudioSystem {
     this.ctx = null;
     this.frutiger = null;
     this.lmfao = null;
+    this.gaga = null;
     this.frutigerNode = null;
     this.lmfaoNode = null;
+    this.gagaNode = null;
     this.frutigerFilter = null;
     this.lmfaoFilter = null;
+    this.gagaFilter = null;
     this.frutigerGain = null;
     this.lmfaoGain = null;
-    this.activeTrack = null; // 'frutiger' or 'lmfao'
+    this.gagaGain = null;
+    this.activeTrack = null; // 'frutiger', 'lmfao', or 'gaga'
     this.initialized = false;
   }
 
@@ -29,9 +33,14 @@ class AudioSystem {
     this.lmfao.loop = true;
     this.lmfao.crossOrigin = 'anonymous';
 
+    this.gaga = new Audio('/gaga.mp3');
+    this.gaga.loop = true;
+    this.gaga.crossOrigin = 'anonymous';
+
     // Route elements through Web Audio API
     this.frutigerNode = this.ctx.createMediaElementSource(this.frutiger);
     this.lmfaoNode = this.ctx.createMediaElementSource(this.lmfao);
+    this.gagaNode = this.ctx.createMediaElementSource(this.gaga);
 
     // Create lowpass filters for the "desenfoque" muffling effect
     this.frutigerFilter = this.ctx.createBiquadFilter();
@@ -44,12 +53,20 @@ class AudioSystem {
     this.lmfaoFilter.Q.value = 1.0;
     this.lmfaoFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
 
+    this.gagaFilter = this.ctx.createBiquadFilter();
+    this.gagaFilter.type = 'lowpass';
+    this.gagaFilter.Q.value = 1.0;
+    this.gagaFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
+
     // Create gain nodes for volume crossfades
     this.frutigerGain = this.ctx.createGain();
     this.frutigerGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
 
     this.lmfaoGain = this.ctx.createGain();
     this.lmfaoGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
+
+    this.gagaGain = this.ctx.createGain();
+    this.gagaGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
 
     // Connect node chains: Source -> Filter -> Gain -> Destination
     this.frutigerNode.connect(this.frutigerFilter);
@@ -59,6 +76,10 @@ class AudioSystem {
     this.lmfaoNode.connect(this.lmfaoFilter);
     this.lmfaoFilter.connect(this.lmfaoGain);
     this.lmfaoGain.connect(this.ctx.destination);
+
+    this.gagaNode.connect(this.gagaFilter);
+    this.gagaFilter.connect(this.gagaGain);
+    this.gagaGain.connect(this.ctx.destination);
 
     this.initialized = true;
   }
@@ -71,11 +92,10 @@ class AudioSystem {
       await this.ctx.resume();
     }
 
-    // Start playback for both so they pre-buffer.
-    // NOTE: Do NOT set lmfao.volume = 0 here, because it mutes the element before the Web Audio gain node!
-    // The Web Audio Gain node handles the muting safely.
+    // Start playback for all so they pre-buffer.
     this.frutiger.play().catch(e => console.log("Playback error Frutiger", e));
     this.lmfao.play().catch(e => console.log("Playback error LMFAO", e));
+    this.gaga.play().catch(e => console.log("Playback error Gaga", e));
 
     this.activeTrack = 'frutiger';
 
@@ -93,38 +113,41 @@ class AudioSystem {
     this.frutigerFilter.frequency.exponentialRampToValueAtTime(20000, now + 2.5);
   }
 
+  _muffleAndFadeDown(gainNode, filterNode, now) {
+    gainNode.gain.cancelScheduledValues(now);
+    gainNode.gain.setValueAtTime(gainNode.gain.value || 0, now);
+    gainNode.gain.linearRampToValueAtTime(0.0, now + 1.5);
+
+    filterNode.frequency.cancelScheduledValues(now);
+    filterNode.frequency.setValueAtTime(filterNode.frequency.value || 20000, now);
+    filterNode.frequency.exponentialRampToValueAtTime(300, now + 1.5);
+  }
+
+  _openAndFadeUp(gainNode, filterNode, now) {
+    gainNode.gain.cancelScheduledValues(now);
+    gainNode.gain.setValueAtTime(gainNode.gain.value || 0, now);
+    gainNode.gain.linearRampToValueAtTime(1.0, now + 1.5);
+
+    filterNode.frequency.cancelScheduledValues(now);
+    filterNode.frequency.setValueAtTime(filterNode.frequency.value || 300, now);
+    filterNode.frequency.exponentialRampToValueAtTime(20000, now + 1.5);
+  }
+
   switchToStarvibe() {
     if (!this.initialized || this.activeTrack === 'lmfao') return;
     this.activeTrack = 'lmfao';
 
     const now = this.ctx.currentTime;
-
-    // Ensure LMFAO is playing
     this.lmfao.play().catch(e => console.log("Play error LMFAO on switch", e));
 
-    // Skip the slow intro speech of LMFAO to jump straight to the energetic beat drop!
-    // Only perform seek if metadata has loaded to prevent InvalidStateError.
+    // Jump exactly to the drop if near beginning
     if (this.lmfao && this.lmfao.readyState >= 1 && this.lmfao.currentTime < 15) {
-      this.lmfao.currentTime = 15.5; // Jump exactly to the drop
+      this.lmfao.currentTime = 15.5; 
     }
 
-    // --- Muffle & Fade Down Frutiger ---
-    this.frutigerGain.gain.cancelScheduledValues(now);
-    this.frutigerGain.gain.setValueAtTime(this.frutigerGain.gain.value || 0, now);
-    this.frutigerGain.gain.linearRampToValueAtTime(0.0, now + 1.5);
-
-    this.frutigerFilter.frequency.cancelScheduledValues(now);
-    this.frutigerFilter.frequency.setValueAtTime(this.frutigerFilter.frequency.value || 20000, now);
-    this.frutigerFilter.frequency.exponentialRampToValueAtTime(300, now + 1.5);
-
-    // --- Open & Fade Up LMFAO ---
-    this.lmfaoGain.gain.cancelScheduledValues(now);
-    this.lmfaoGain.gain.setValueAtTime(this.lmfaoGain.gain.value || 0, now);
-    this.lmfaoGain.gain.linearRampToValueAtTime(1.0, now + 1.5);
-
-    this.lmfaoFilter.frequency.cancelScheduledValues(now);
-    this.lmfaoFilter.frequency.setValueAtTime(this.lmfaoFilter.frequency.value || 300, now);
-    this.lmfaoFilter.frequency.exponentialRampToValueAtTime(20000, now + 1.5);
+    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
+    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
+    this._openAndFadeUp(this.lmfaoGain, this.lmfaoFilter, now);
   }
 
   switchToMain() {
@@ -132,27 +155,25 @@ class AudioSystem {
     this.activeTrack = 'frutiger';
 
     const now = this.ctx.currentTime;
-
-    // Ensure Frutiger is playing
     this.frutiger.play().catch(e => console.log("Play error Frutiger on switch", e));
 
-    // --- Muffle & Fade Down LMFAO ---
-    this.lmfaoGain.gain.cancelScheduledValues(now);
-    this.lmfaoGain.gain.setValueAtTime(this.lmfaoGain.gain.value || 0, now);
-    this.lmfaoGain.gain.linearRampToValueAtTime(0.0, now + 1.5);
+    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
+    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
+    this._openAndFadeUp(this.frutigerGain, this.frutigerFilter, now);
+  }
 
-    this.lmfaoFilter.frequency.cancelScheduledValues(now);
-    this.lmfaoFilter.frequency.setValueAtTime(this.lmfaoFilter.frequency.value || 20000, now);
-    this.lmfaoFilter.frequency.exponentialRampToValueAtTime(300, now + 1.5);
+  switchToCrisis() {
+    if (!this.initialized || this.activeTrack === 'gaga') return;
+    this.activeTrack = 'gaga';
 
-    // --- Open & Fade Up Frutiger ---
-    this.frutigerGain.gain.cancelScheduledValues(now);
-    this.frutigerGain.gain.setValueAtTime(this.frutigerGain.gain.value || 0, now);
-    this.frutigerGain.gain.linearRampToValueAtTime(1.0, now + 1.5);
+    const now = this.ctx.currentTime;
+    this.gaga.play().catch(e => console.log("Play error Gaga on switch", e));
 
-    this.frutigerFilter.frequency.cancelScheduledValues(now);
-    this.frutigerFilter.frequency.setValueAtTime(this.frutigerFilter.frequency.value || 300, now);
-    this.frutigerFilter.frequency.exponentialRampToValueAtTime(20000, now + 1.5);
+    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
+    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
+    
+    // Smoothly fade up Gaga
+    this._openAndFadeUp(this.gagaGain, this.gagaFilter, now);
   }
 }
 

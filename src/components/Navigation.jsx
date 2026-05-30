@@ -22,6 +22,7 @@ export default function Navigation() {
     { name: 'Temática', href: '#tematica', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
     { name: 'Save The Date', href: '#savethedate', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
     { name: 'Comités', href: '#comites', hoverClass: 'hover:text-white hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)]' },
+    { name: 'Reglamentos Generales', href: '#reglamentos', hoverClass: 'hover:text-white hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)]' },
     { name: 'Staff', href: '#staff', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
     { name: 'Top Fotos', href: '#galeria', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
     { name: 'Starvibe', href: '#starvibe', hoverClass: 'hover:text-[#ff007f] hover:drop-shadow-[0_0_20px_rgba(255,0,127,0.7)]' },
