@@ -32,7 +32,7 @@ export default function CrisisLoader({ onComplete }) {
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ opacity: 0, scale: 1.05, filter: "blur(20px)", transition: { duration: 1, ease: "easeInOut" } }}
-      className="fixed inset-0 bg-[#f0f0f5] z-[2000] flex flex-col items-center justify-center p-4 md:p-10 font-sans"
+      className="fixed inset-0 bg-gradient-to-br from-[#050508] via-[#1a0b2e] to-[#050508] z-[2000] flex flex-col items-center justify-center p-4 md:p-10 font-sans"
     >
       {/* Fake Browser Window */}
       <motion.div 
