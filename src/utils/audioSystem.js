@@ -13,7 +13,12 @@ class AudioSystem {
     this.frutigerGain = null;
     this.lmfaoGain = null;
     this.gagaGain = null;
-    this.activeTrack = null; // 'frutiger', 'lmfao', or 'gaga'
+    this.gagaGain = null;
+    this.mii = null;
+    this.miiNode = null;
+    this.miiFilter = null;
+    this.miiGain = null;
+    this.activeTrack = null; // 'frutiger', 'lmfao', 'gaga', or 'mii'
     this.initialized = false;
   }
 
@@ -37,10 +42,15 @@ class AudioSystem {
     this.gaga.loop = true;
     this.gaga.crossOrigin = 'anonymous';
 
+    this.mii = new Audio('/mii.mp3');
+    this.mii.loop = true;
+    this.mii.crossOrigin = 'anonymous';
+
     // Route elements through Web Audio API
     this.frutigerNode = this.ctx.createMediaElementSource(this.frutiger);
     this.lmfaoNode = this.ctx.createMediaElementSource(this.lmfao);
     this.gagaNode = this.ctx.createMediaElementSource(this.gaga);
+    this.miiNode = this.ctx.createMediaElementSource(this.mii);
 
     // Create lowpass filters for the "desenfoque" muffling effect
     this.frutigerFilter = this.ctx.createBiquadFilter();
@@ -58,6 +68,11 @@ class AudioSystem {
     this.gagaFilter.Q.value = 1.0;
     this.gagaFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
 
+    this.miiFilter = this.ctx.createBiquadFilter();
+    this.miiFilter.type = 'lowpass';
+    this.miiFilter.Q.value = 1.0;
+    this.miiFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
+
     // Create gain nodes for volume crossfades
     this.frutigerGain = this.ctx.createGain();
     this.frutigerGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
@@ -67,6 +82,9 @@ class AudioSystem {
 
     this.gagaGain = this.ctx.createGain();
     this.gagaGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
+
+    this.miiGain = this.ctx.createGain();
+    this.miiGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
 
     // Connect node chains: Source -> Filter -> Gain -> Destination
     this.frutigerNode.connect(this.frutigerFilter);
@@ -80,6 +98,10 @@ class AudioSystem {
     this.gagaNode.connect(this.gagaFilter);
     this.gagaFilter.connect(this.gagaGain);
     this.gagaGain.connect(this.ctx.destination);
+
+    this.miiNode.connect(this.miiFilter);
+    this.miiFilter.connect(this.miiGain);
+    this.miiGain.connect(this.ctx.destination);
 
     this.initialized = true;
   }
@@ -96,6 +118,7 @@ class AudioSystem {
     this.frutiger.play().catch(e => console.log("Playback error Frutiger", e));
     this.lmfao.play().catch(e => console.log("Playback error LMFAO", e));
     this.gaga.play().catch(e => console.log("Playback error Gaga", e));
+    this.mii.play().catch(e => console.log("Playback error Mii", e));
 
     this.activeTrack = 'frutiger';
 
@@ -147,6 +170,7 @@ class AudioSystem {
 
     this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
     this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
+    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
     this._openAndFadeUp(this.lmfaoGain, this.lmfaoFilter, now);
   }
 
@@ -159,6 +183,7 @@ class AudioSystem {
 
     this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
     this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
+    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
     this._openAndFadeUp(this.frutigerGain, this.frutigerFilter, now);
   }
 
@@ -176,9 +201,26 @@ class AudioSystem {
 
     this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
     this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
+    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
     
     // Smoothly fade up Gaga
     this._openAndFadeUp(this.gagaGain, this.gagaFilter, now);
+  }
+
+  switchToReglamentos() {
+    if (!this.initialized || this.activeTrack === 'mii') return;
+    this.activeTrack = 'mii';
+
+    const now = this.ctx.currentTime;
+    
+    this.mii.play().catch(e => console.log("Play error Mii on switch", e));
+
+    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
+    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
+    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
+    
+    // Smoothly fade up Mii
+    this._openAndFadeUp(this.miiGain, this.miiFilter, now);
   }
 }
 

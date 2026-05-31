@@ -182,7 +182,7 @@ export default function Navigation() {
               
               {/* Right Pane (Main Menu Links - Centers on Mobile for perfect breathing room) */}
               <div className="w-full md:w-7/12 flex flex-col justify-center items-center md:items-start h-full">
-                <ul className="flex flex-col gap-5 sm:gap-6 md:gap-5 lg:gap-6 xl:gap-8 justify-center items-center md:items-start w-full pl-0 md:pl-12">
+                <ul className="flex flex-col gap-2 sm:gap-3 md:gap-2 lg:gap-3 xl:gap-4 justify-center items-center md:items-start w-full pl-0 md:pl-12">
                   {menuItems.map((item, index) => (
                     <motion.li
                       key={index}

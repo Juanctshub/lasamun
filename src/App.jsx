@@ -46,6 +46,7 @@ function App() {
       setTimeout(() => audioSystem.switchToCrisis(), 500);
     } else if (window.location.hash === '#reglamentos') {
       setReglamentosLoading(true);
+      setTimeout(() => audioSystem.switchToReglamentos(), 500);
     }
   };
 
@@ -66,7 +67,7 @@ function App() {
       } else if (isReglamentos) {
         setCurrentPage('reglamentos');
         setReglamentosLoading(true);
-        audioSystem.switchToMain();
+        audioSystem.switchToReglamentos();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();

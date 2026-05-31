@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Clock, Shirt, FileText, ChevronRight, Download } from 'lucide-react';
+import { BookOpen, Clock, Shirt, FileText, ChevronRight, Download, Briefcase, FileSignature } from 'lucide-react';
 
 const sections = [
   {
@@ -10,19 +10,46 @@ const sections = [
     content: (
       <div className="space-y-6">
         <h3 className="font-maison text-3xl font-bold text-[#0033A0] mb-6">Reglamento General del Modelo</h3>
-        <p className="font-codec text-gray-600 leading-relaxed">
-          El Reglamento General establece las bases y procedimientos formales bajo los cuales operarán todos los comités (a excepción de los Comités de Crisis, que cuentan con normativas especializadas).
+        <p className="font-codec text-gray-600 leading-relaxed mb-8">
+          El Reglamento General establece las bases y procedimientos formales bajo los cuales operarán todos los comités regulares. Consúltalo a detalle.
         </p>
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <ul className="list-disc pl-5 space-y-4 text-gray-700 font-codec text-sm">
-            <li><strong>Decoro:</strong> El decoro es el pilar de toda sesión. El uso de lenguaje inapropiado, falta de respeto o interrupciones indebidas están estrictamente prohibidas y podrán ser sancionadas.</li>
-            <li><strong>Uso de la Primera Persona:</strong> Se prohíbe el uso de la primera persona ("yo", "mi") al momento de dirigirse al comité. Debe usarse la tercera persona (ej. "La delegación de... considera").</li>
-            <li><strong>Tiempos de Oratoria:</strong> Los tiempos establecidos por la mesa son inviolables. Al terminar el tiempo, la delegación debe ceder la palabra a la Mesa inmediatamente.</li>
-          </ul>
-        </div>
-        <button className="flex items-center justify-center gap-3 w-full sm:w-auto bg-[#0033A0] text-white px-8 py-4 rounded-xl font-codec font-bold tracking-widest text-xs uppercase hover:bg-[#002277] transition-colors mt-8 shadow-lg shadow-[#0033A0]/20">
-          Descargar PDF <Download className="w-4 h-4" />
-        </button>
+        <a href="https://drive.google.com/file/d/1sBzDw4sb9jjzndyA2RJCBTNYKzCHaGlc/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-white border border-[#0033A0]/20 rounded-2xl hover:border-[#0033A0] hover:shadow-lg transition-all group">
+          <div className="flex items-center gap-4">
+            <div className="p-4 bg-[#0033A0]/5 rounded-xl group-hover:bg-[#0033A0] transition-colors">
+              <BookOpen className="w-6 h-6 text-[#0033A0] group-hover:text-white transition-colors" />
+            </div>
+            <div>
+              <h4 className="font-maison text-xl font-bold text-[#0033A0]">Reglamento General</h4>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 block mt-1">Archivo PDF (Drive)</span>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-[#0033A0] transform group-hover:translate-x-1 transition-all" />
+        </a>
+      </div>
+    )
+  },
+  {
+    id: 'baremos',
+    title: 'Directrices y Baremos',
+    icon: Briefcase,
+    content: (
+      <div className="space-y-6">
+        <h3 className="font-maison text-3xl font-bold text-[#0033A0] mb-6">Baremos de Evaluación</h3>
+        <p className="font-codec text-gray-600 leading-relaxed mb-8">
+          Conoce los criterios exactos bajo los cuales las Mesas Directivas evaluarán el desempeño, la oratoria y la diplomacia de las delegaciones para el proceso de premiación.
+        </p>
+        <a href="https://drive.google.com/file/d/1GrZWZbHPZjBafoljdWNLVfdnKH31Np8U/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-white border border-primary-yellow/50 rounded-2xl hover:border-primary-yellow hover:shadow-lg transition-all group">
+          <div className="flex items-center gap-4">
+            <div className="p-4 bg-primary-yellow/10 rounded-xl group-hover:bg-primary-yellow transition-colors">
+              <Briefcase className="w-6 h-6 text-yellow-600 group-hover:text-white transition-colors" />
+            </div>
+            <div>
+              <h4 className="font-maison text-xl font-bold text-gray-800">Directrices y Baremos</h4>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 block mt-1">Archivo PDF (Drive)</span>
+            </div>
+          </div>
+          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary-yellow transform group-hover:translate-x-1 transition-all" />
+        </a>
       </div>
     )
   },
@@ -32,31 +59,40 @@ const sections = [
     icon: FileText,
     content: (
       <div className="space-y-6">
-        <h3 className="font-maison text-3xl font-bold text-[#0033A0] mb-6">Documentos Sustanciales</h3>
+        <h3 className="font-maison text-3xl font-bold text-[#0033A0] mb-6">Documentación Sustancial</h3>
         <p className="font-codec text-gray-600 leading-relaxed mb-8">
-          Guía integral para la redacción y presentación de Documentos de Postura Oficial (DPO) y Documentos de Papel de Posición (DPP). Todo delegado debe dominar la redacción de estos textos para garantizar el éxito de sus políticas.
+          Consulta la guía teórica para la elaboración de documentos (DPO y DPP), así como los distintos ejemplos prácticos redactados para que sirvan de orientación.
         </p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="border border-gray-200 rounded-2xl p-6 bg-white hover:shadow-xl transition-shadow duration-300">
-            <h4 className="font-maison text-xl font-bold text-[#0033A0] mb-3">Documento de Postura Oficial (DPO)</h4>
-            <p className="font-codec text-sm text-gray-500 mb-6 line-clamp-3">
-              Resume la posición histórica y actual del país sobre el tópico a tratar. Debe entregarse previo al inicio de las sesiones.
-            </p>
-            <button className="text-[#0033A0] font-codec text-xs font-bold uppercase tracking-widest hover:text-primary-yellow transition-colors flex items-center gap-1">
-              Ver Ejemplo <ChevronRight className="w-4 h-4" />
-            </button>
+        <a href="https://drive.google.com/file/d/1m9pHplbkw7PdIW4SoUOPzRnyRpPmWaFb/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-[#0033A0] text-white rounded-2xl hover:bg-[#002277] hover:shadow-xl transition-all group mb-8">
+          <div className="flex items-center gap-4">
+            <div className="p-4 bg-white/10 rounded-xl">
+              <FileText className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h4 className="font-maison text-xl font-bold">Guía de Documentos</h4>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-white/60 block mt-1">Manual de Redacción (Drive)</span>
+            </div>
           </div>
-          
-          <div className="border border-gray-200 rounded-2xl p-6 bg-white hover:shadow-xl transition-shadow duration-300">
-            <h4 className="font-maison text-xl font-bold text-[#0033A0] mb-3">Papel de Posición (DPP)</h4>
-            <p className="font-codec text-sm text-gray-500 mb-6 line-clamp-3">
-              Documentos de trabajo redactados durante las sesiones que proponen soluciones y cláusulas formales ante la problemática.
-            </p>
-            <button className="text-[#0033A0] font-codec text-xs font-bold uppercase tracking-widest hover:text-primary-yellow transition-colors flex items-center gap-1">
-              Ver Plantilla <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
+          <Download className="w-5 h-5 text-white/50 group-hover:text-white transition-colors" />
+        </a>
+
+        <h4 className="font-codec text-sm font-bold uppercase tracking-widest text-gray-400 mb-4 border-b border-gray-200 pb-2">Ejemplos Prácticos Oficiales</h4>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {[
+            { name: "Ejemplo DPO/DPP 1", link: "https://drive.google.com/file/d/14kBwwh9x9e12GFl9g5drdfLYey3dexvC/view?usp=sharing" },
+            { name: "Ejemplo DPO/DPP 2", link: "https://drive.google.com/file/d/1DYDqxYjE9gWZX3IcMw0p9gn9WQnr-QYN/view?usp=sharing" },
+            { name: "Ejemplo DPO/DPP 3", link: "https://drive.google.com/file/d/1Q_Nwcp6_PVgJw1XgBr-DTnnlCvUjSNrv/view?usp=sharing" },
+            { name: "Ejemplo DPO/DPP 4", link: "https://drive.google.com/file/d/1aO9noqZEA6IomxF4t5X52dvKqwsZpjEB/view?usp=sharing" },
+            { name: "Ejemplo DPO/DPP 5", link: "https://drive.google.com/file/d/1iy8b6xvHUeEvzkU5XzlCA7k-Z1H-j0T9/view?usp=sharing" },
+            { name: "Ejemplo DPO/DPP 6", link: "https://drive.google.com/file/d/1p2IEzBh1d_xZVYIz0QvRqUnxNZ5ZcHHp/view?usp=sharing" },
+          ].map((ej, idx) => (
+            <a key={idx} href={ej.link} target="_blank" rel="noreferrer" className="flex items-center gap-3 p-4 bg-gray-50 border border-gray-200 rounded-xl hover:border-[#0033A0]/30 hover:bg-[#0033A0]/5 transition-colors group">
+              <FileSignature className="w-4 h-4 text-gray-400 group-hover:text-[#0033A0]" />
+              <span className="font-codec text-sm font-medium text-gray-600 group-hover:text-[#0033A0]">{ej.name}</span>
+            </a>
+          ))}
         </div>
       </div>
     )
@@ -68,29 +104,21 @@ const sections = [
     content: (
       <div className="space-y-6">
         <h3 className="font-maison text-3xl font-bold text-[#0033A0] mb-6">Etiqueta y Protocolo</h3>
-        <p className="font-codec text-gray-600 leading-relaxed">
-          El código de vestimenta es "Formal Occidental". Se espera que todos los delegados mantengan una presentación pulcra que refleje la seriedad del evento.
+        <p className="font-codec text-gray-600 leading-relaxed mb-8">
+          El código de vestimenta es "Formal Occidental". Se espera que todos los delegados mantengan una presentación pulcra que refleje la seriedad de Lasamun. Revisa a detalle los parámetros permitidos.
         </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
-          <div className="bg-gray-50 rounded-xl p-6 border border-gray-100">
-            <h4 className="font-maison text-lg font-bold mb-4 text-[#0033A0]">Permitido</h4>
-            <ul className="list-disc pl-5 space-y-2 text-sm font-codec text-gray-600">
-              <li>Trajes sastre, corbatas, pajaritas.</li>
-              <li>Vestidos formales (largo adecuado).</li>
-              <li>Zapatos de vestir, tacones cerrados.</li>
-              <li>Blusas sobrias, faldas formales.</li>
-            </ul>
+        <a href="https://drive.google.com/file/d/1228J4wX-iJ7eFotIVVupjdSSKHZ4SbId/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-white border border-[#0033A0]/20 rounded-2xl hover:border-[#0033A0] hover:shadow-lg transition-all group">
+          <div className="flex items-center gap-4">
+            <div className="p-4 bg-[#0033A0]/5 rounded-xl group-hover:bg-[#0033A0] transition-colors">
+              <Shirt className="w-6 h-6 text-[#0033A0] group-hover:text-white transition-colors" />
+            </div>
+            <div>
+              <h4 className="font-maison text-xl font-bold text-[#0033A0]">Código de Vestimenta</h4>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 block mt-1">Archivo PDF (Drive)</span>
+            </div>
           </div>
-          <div className="bg-red-50 rounded-xl p-6 border border-red-100">
-            <h4 className="font-maison text-lg font-bold mb-4 text-red-700">No Permitido</h4>
-            <ul className="list-disc pl-5 space-y-2 text-sm font-codec text-red-900/70">
-              <li>Pantalones de mezclilla (jeans).</li>
-              <li>Zapatos deportivos (sneakers).</li>
-              <li>Ropa ajustada o escotes profundos.</li>
-              <li>Gorras, sombreros o gafas de sol oscuras en comité.</li>
-            </ul>
-          </div>
-        </div>
+          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-[#0033A0] transform group-hover:translate-x-1 transition-all" />
+        </a>
       </div>
     )
   },
@@ -101,32 +129,21 @@ const sections = [
     content: (
       <div className="space-y-6">
         <h3 className="font-maison text-3xl font-bold text-[#0033A0] mb-6">Cronograma Oficial</h3>
-        <p className="font-codec text-gray-600 leading-relaxed mb-6">
-          La puntualidad es estrictamente evaluada por las Mesas Directivas y afecta directamente al premio. El registro cierra exactamente 10 minutos antes del inicio de la primera sesión.
+        <p className="font-codec text-gray-600 leading-relaxed mb-8">
+          La puntualidad es estrictamente evaluada por las Mesas Directivas y afecta directamente al premio final. Consulta los horarios de cada bloque de debate.
         </p>
-        
-        <div className="space-y-4">
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white">
-            <span className="font-maison font-bold text-[#0033A0] text-lg">07:30 AM</span>
-            <span className="font-codec text-gray-600 text-sm">Registro General</span>
+        <a href="https://drive.google.com/file/d/1vH3ROL0IDAjidXUnP43f96j7TZU85YxW/view?usp=sharing" target="_blank" rel="noreferrer" className="flex items-center justify-between p-6 bg-white border border-[#0033A0]/20 rounded-2xl hover:border-[#0033A0] hover:shadow-lg transition-all group">
+          <div className="flex items-center gap-4">
+            <div className="p-4 bg-[#0033A0]/5 rounded-xl group-hover:bg-[#0033A0] transition-colors">
+              <Clock className="w-6 h-6 text-[#0033A0] group-hover:text-white transition-colors" />
+            </div>
+            <div>
+              <h4 className="font-maison text-xl font-bold text-[#0033A0]">Cronograma de Horarios</h4>
+              <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400 block mt-1">Archivo PDF (Drive)</span>
+            </div>
           </div>
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white">
-            <span className="font-maison font-bold text-[#0033A0] text-lg">08:00 AM</span>
-            <span className="font-codec text-gray-600 text-sm">Ceremonia de Apertura</span>
-          </div>
-          <div className="flex items-center justify-between p-4 border border-primary-yellow/50 rounded-lg bg-yellow-50">
-            <span className="font-maison font-bold text-[#0033A0] text-lg">09:30 AM</span>
-            <span className="font-codec text-gray-800 text-sm font-bold">Primera Sesión de Comité</span>
-          </div>
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white">
-            <span className="font-maison font-bold text-[#0033A0] text-lg">01:00 PM</span>
-            <span className="font-codec text-gray-600 text-sm">Almuerzo Delegados</span>
-          </div>
-          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg bg-white">
-            <span className="font-maison font-bold text-[#0033A0] text-lg">05:00 PM</span>
-            <span className="font-codec text-gray-600 text-sm">Clausura del Día</span>
-          </div>
-        </div>
+          <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-[#0033A0] transform group-hover:translate-x-1 transition-all" />
+        </a>
       </div>
     )
   }

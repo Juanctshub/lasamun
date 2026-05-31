@@ -316,27 +316,29 @@ export default function Crisis() {
             <div className="max-w-6xl w-full relative">
               <button 
                 onClick={() => setActiveModal(null)}
-                className="absolute -top-16 right-0 p-4 bg-[#ff007f]/10 hover:bg-[#ff007f]/30 border border-[#ff007f]/50 rounded-lg text-white hover:text-white transition-all z-20 shadow-[0_0_20px_rgba(255,0,127,0.3)]"
+                className="fixed top-6 right-6 p-3 bg-black/80 hover:bg-[#ff007f]/30 border border-[#ff007f]/50 rounded-full text-white hover:text-white transition-all z-50 shadow-[0_0_20px_rgba(255,0,127,0.3)] backdrop-blur-md"
               >
                 <X className="w-6 h-6" />
               </button>
               
-              <div className="text-center mb-16">
+              <div className="text-center mb-12 mt-8">
                 <span className="font-mono text-xs uppercase tracking-[0.5em] text-[#ff007f] font-bold">Classified Profiles</span>
-                <h3 className="font-maison text-4xl md:text-6xl uppercase font-extrabold mt-4 tracking-tighter drop-shadow-2xl">Directorio de Crisis</h3>
+                <h3 className="font-maison text-3xl md:text-5xl uppercase font-extrabold mt-4 tracking-tighter drop-shadow-2xl">Directorio de Crisis</h3>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[
-                  { name: "Andrés Rodríguez", role: "Director de Crisis", code: "LSM-KRAKEN-01", color: "#ff007f", sig: "M 15 50 Q 30 20 45 40 T 70 30 T 95 60 T 130 35 T 160 50" },
-                  { name: "Valeria Gómez", role: "Coordinadora Int.", code: "LSM-KRAKEN-02", color: "#7928CA", sig: "M 15 35 Q 40 65 60 25 T 90 40 T 120 20 T 150 55" }
+                  { name: "Juan Méndez", role: "Presidente", code: "KRAKEN-PRES", color: "#ff007f", sig: "M 15 50 Q 30 20 45 40 T 70 30 T 95 60 T 130 35 T 160 50" },
+                  { name: "Gabriel Rodríguez", role: "Vicepresidente", code: "KRAKEN-VP", color: "#7928CA", sig: "M 15 35 Q 40 65 60 25 T 90 40 T 120 20 T 150 55" },
+                  { name: "Luis Mariano", role: "Head Crisis Staff", code: "STAFF-HEAD", color: "#10B981", sig: "M 20 40 Q 50 10 70 50 T 110 30 T 150 45" },
+                  { name: "Raul Aveledo", role: "Co Crisis Staff", code: "STAFF-CO", color: "#F59E0B", sig: "M 10 60 Q 40 20 80 50 T 120 40 T 160 30" }
                 ].map((mesa, idx) => (
                   <motion.div 
                     key={idx}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: idx * 0.15, type: "spring", stiffness: 100 }}
-                    className="bg-black/60 border border-white/10 rounded-3xl p-10 relative overflow-hidden group hover:border-white/30 transition-all backdrop-blur-md shadow-2xl"
+                    transition={{ delay: idx * 0.1, type: "spring", stiffness: 100 }}
+                    className="bg-black/60 border border-white/10 rounded-2xl p-6 md:p-8 relative overflow-hidden group hover:border-white/30 transition-all backdrop-blur-md shadow-2xl"
                   >
                     <div className="absolute top-0 left-0 w-1 h-full shadow-[0_0_30px_currentColor]" style={{ backgroundColor: mesa.color, color: mesa.color }} />
                     <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none opacity-20" />
