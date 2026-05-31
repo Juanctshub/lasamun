@@ -119,7 +119,45 @@ export default function Voynich() {
         </div>
 
         {/* LABORATORY SCHOLAR DESK INTERFACE */}
-        <div className="flex flex-col lg:flex-row gap-8 items-start max-w-6xl mx-auto">
+        <div className="relative flex flex-col lg:flex-row gap-8 items-start max-w-7xl mx-auto">
+          
+          {/* Background Laboratory Decorations */}
+          <div className="absolute -top-20 -left-16 w-[300px] h-[300px] border-[1px] border-[#d4af37]/5 rounded-full flex items-center justify-center pointer-events-none z-0 hidden lg:flex">
+             <div className="w-[200px] h-[200px] border-[1px] border-[#d4af37]/10 rounded-full" />
+             <div className="absolute w-[400px] h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/10 to-transparent rotate-45" />
+             <div className="absolute w-[400px] h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/10 to-transparent -rotate-45" />
+          </div>
+
+          <div className="absolute top-1/2 -right-32 w-[400px] h-[400px] opacity-10 pointer-events-none z-0 hidden lg:block">
+             <svg viewBox="0 0 100 100" className="w-full h-full text-[#d4af37] animate-[spin_80s_linear_infinite]">
+                <polygon points="50,5 95,25 95,75 50,95 5,75 5,25" fill="none" stroke="currentColor" strokeWidth="0.25" />
+                <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="0.1" strokeDasharray="1 1" />
+                <circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" strokeWidth="0.1" />
+                <line x1="50" y1="10" x2="50" y2="90" stroke="currentColor" strokeWidth="0.1" />
+                <line x1="10" y1="50" x2="90" y2="50" stroke="currentColor" strokeWidth="0.1" />
+             </svg>
+          </div>
+
+          {/* Floating Ink / Blood Splatter */}
+          <div className="absolute top-1/4 -right-12 w-32 h-32 bg-[#3a0000] rounded-full blur-[40px] opacity-20 pointer-events-none z-0" />
+          <div className="absolute bottom-10 -left-20 w-48 h-48 bg-[#d4af37]/10 rounded-full blur-[60px] opacity-20 pointer-events-none z-0" />
+
+          {/* Target HUD corners around the book area */}
+          <div className="absolute -inset-8 border border-[#d4af37]/5 pointer-events-none z-0 hidden xl:block">
+            <div className="absolute top-0 left-0 w-12 h-12 border-t border-l border-[#d4af37]/40" />
+            <div className="absolute top-0 right-0 w-12 h-12 border-t border-r border-[#d4af37]/40" />
+            <div className="absolute bottom-0 left-0 w-12 h-12 border-b border-l border-[#d4af37]/40" />
+            <div className="absolute bottom-0 right-0 w-12 h-12 border-b border-r border-[#d4af37]/40" />
+            
+            <span className="absolute -top-3 right-6 font-mono text-[8px] text-[#d4af37]/40 uppercase tracking-widest bg-[#070503] px-2">Sector: Astrometría</span>
+            <span className="absolute -bottom-3 left-6 font-mono text-[8px] text-[#d4af37]/40 uppercase tracking-widest bg-[#070503] px-2">Mondragone Sensor Grid // Active</span>
+            
+            {/* Some decorative scattered elements on the desk */}
+            <div className="absolute top-20 -left-6 flex flex-col gap-1 opacity-20">
+              <span className="font-mono text-[7px] text-white">∆x: 0.0034</span>
+              <span className="font-mono text-[7px] text-white">∆y: 0.9912</span>
+            </div>
+          </div>
           
           {/* Left Sidebar: Parchment Folder Tabs Selector (Medieval Folders) */}
           <div className="w-full lg:w-1/4 flex lg:flex-col gap-4 justify-center lg:justify-start">
@@ -173,7 +211,7 @@ export default function Voynich() {
           </div>
 
           {/* Central Workspace: Open Codicology Folio Book Simulator */}
-          <div className="w-full lg:w-3/4">
+          <div className="w-full lg:w-3/4 relative z-10">
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeFolio}
@@ -184,10 +222,14 @@ export default function Voynich() {
                 className="relative rounded-[2.5rem] bg-[#ede1cb] border-[8px] border-[#3a2512] shadow-[0_25px_60px_rgba(0,0,0,0.8)] min-h-[520px] text-black font-serif overflow-hidden select-text"
               >
                 {/* Codex parchment fine lines background */}
-                <div className="absolute inset-0 opacity-[0.1] bg-[radial-gradient(#000_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+                <div className="absolute inset-0 opacity-[0.15] bg-[radial-gradient(#3a2512_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
                 
                 {/* Book vertical middle shadow crease */}
-                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-8 bg-gradient-to-r from-black/20 via-black/40 to-black/20 pointer-events-none z-10 hidden md:block" />
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-12 bg-gradient-to-r from-black/10 via-black/50 to-black/10 pointer-events-none z-20 hidden md:block" />
+                
+                {/* Book Edge / Page Stacking Effect */}
+                <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-black/20 to-transparent pointer-events-none z-20 rounded-r-[2.5rem] border-r border-white/40" />
+                <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/20 to-transparent pointer-events-none z-20 rounded-l-[2.5rem] border-l border-white/40" />
 
                 {/* TAB CONTENT 1: ORIGIN & MAGNIFIER VIEWPORT */}
                 {activeFolio === 1 && (

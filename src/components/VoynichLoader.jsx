@@ -54,8 +54,23 @@ export default function VoynichLoader({ onComplete }) {
       }}
       className="fixed inset-0 bg-[#060403] z-[2000] flex items-center justify-center text-[#d4af37] font-mono select-none overflow-hidden"
     >
+      {/* Background Video */}
+      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
+        <video 
+          src="/vou.mp4"
+          autoPlay 
+          loop 
+          muted 
+          playsInline
+          className="w-full h-full object-cover opacity-35"
+          style={{ filter: 'sepia(0.8) brightness(0.6) contrast(1.2)' }}
+        />
+        <div className="absolute inset-0 bg-black/60 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0)_0%,_#060403_100%)]" />
+      </div>
+
       {/* Drifting Golden Smoke / Dust */}
-      <div className="absolute inset-0 bg-[#3a2512]/10 mix-blend-color-dodge filter blur-3xl opacity-40 pointer-events-none animate-pulse-slow"></div>
+      <div className="absolute inset-0 bg-[#3a2512]/20 mix-blend-color-dodge filter blur-3xl opacity-50 pointer-events-none animate-pulse-slow"></div>
 
       {/* Medieval Scientific Parchment Overlay */}
       <div className="absolute inset-0 bg-[radial-gradient(rgba(212,175,55,0.05)_1px,transparent_1px)] bg-[size:24px_24px] opacity-60 pointer-events-none" />
@@ -64,7 +79,7 @@ export default function VoynichLoader({ onComplete }) {
       <div className="relative flex flex-col items-center justify-center scale-90 sm:scale-100 z-10">
         
         {/* Giant Mechanical Wheels */}
-        <div className="relative w-80 h-80 flex items-center justify-center rounded-full border border-[#d4af37]/10 bg-black/40 shadow-[0_0_60px_rgba(58,37,18,0.3)]">
+        <div className="relative w-80 h-80 flex items-center justify-center rounded-full border-2 border-[#d4af37]/20 bg-black/60 shadow-[0_0_80px_rgba(58,37,18,0.5),inset_0_0_50px_rgba(212,175,55,0.15)] backdrop-blur-sm">
           
           {/* Inner Glowing Core Medallion */}
           <div className="absolute w-20 h-20 rounded-full bg-black border border-[#d4af37]/40 flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.2)] z-30">
@@ -162,8 +177,8 @@ export default function VoynichLoader({ onComplete }) {
 
         {/* Percentage Locking Gauge */}
         <div className="flex flex-col items-center gap-2">
-          <div className="flex items-center gap-1.5 font-mono text-[10px] text-[#d4af37] tracking-[0.35em] font-bold">
-            <Sparkles className="w-4.5 h-4.5 animate-pulse text-[#f3e5ab]" /> {progress}% LOCKED
+          <div className="flex items-center gap-1.5 font-mono text-[11px] text-[#d4af37] tracking-[0.4em] font-bold drop-shadow-[0_0_8px_rgba(212,175,55,0.8)]">
+            {progress}% LOCKED
           </div>
           
           {/* Thin Progress bar wrapper */}

@@ -163,6 +163,8 @@ function App() {
 
       const handleIntersection = (entries) => {
         entries.forEach((entry) => {
+          if (window.location.hash !== '' && window.location.hash !== '#') return;
+          
           if (entry.isIntersecting) {
             // Muffle & fade down frutiger, open up LMFAO
             audioSystem.switchToStarvibe();

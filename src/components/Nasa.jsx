@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Download, ShieldAlert, Cpu, Terminal, Lock, Unlock, Database, RefreshCw, ChevronRight, HelpCircle, Users, Orbit, X } from 'lucide-react';
+import { FileText, Download, ShieldAlert, Cpu, Terminal, Lock, Unlock, Database, RefreshCw, ChevronRight, HelpCircle, Users, Globe, X } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Nasa() {
@@ -230,7 +230,7 @@ export default function Nasa() {
               className="bg-[#05050a]/90 backdrop-blur-xl border border-blue-500/20 rounded-3xl p-8 relative overflow-hidden shadow-2xl"
             >
               <div className="absolute top-0 right-0 p-4 opacity-5">
-                <Orbit className="w-36 h-36 text-blue-500" />
+                <Globe className="w-36 h-36 text-blue-500" />
               </div>
               
               <h3 className="font-mono text-xs tracking-widest uppercase text-blue-400 mb-2">Parámetros del Comité</h3>

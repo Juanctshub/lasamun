@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Orbit, Radio, Shield, Globe } from 'lucide-react';
+import { Globe, Radio, Shield } from 'lucide-react';
 
 export default function NasaLoader({ onComplete }) {
   const [progress, setProgress] = useState(0);
