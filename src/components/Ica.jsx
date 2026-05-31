@@ -1,431 +1,384 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Download, ShieldAlert, BookOpen, Compass, Key, Lock, Unlock, Users, ChevronRight, HelpCircle, X, Award } from 'lucide-react';
+import { FileText, Compass, Key, Lock, Unlock, Users, Landmark, MapPin, Layers, Image as ImageIcon, X } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Ica() {
-  const [activeFolio, setActiveFolio] = useState(1);
-  const [showPasscode, setShowPasscode] = useState(false);
-  const [passcode, setPasscode] = useState('');
-  const [decrypted, setDecrypted] = useState(false);
-  const [decryptError, setDecryptError] = useState('');
+  const [activeRoute, setActiveRoute] = useState('bering');
   const [activeStratum, setActiveStratum] = useState(1);
   const [showMesaModal, setShowMesaModal] = useState(false);
   
+  // Safe Box decryption states
+  const [safeCombination, setSafeCombination] = useState('');
+  const [safeUnlocked, setSafeUnlocked] = useState(false);
+  const [safeError, setSafeError] = useState('');
+
   useEffect(() => {
-    // Switch to ICA toby.mp3 track on component load
+    // Play toby.mp3 immediately for ICA
     audioSystem.switchToIca();
   }, []);
 
-  const handleDecrypt = (e) => {
+  const handleUnlockSafe = (e) => {
     e.preventDefault();
-    const normalized = passcode.toUpperCase().trim();
-    if (normalized === 'CLOVIS' || normalized === 'AMEGHINO' || normalized === 'GENESIS' || normalized === '1935') {
-      setDecrypted(true);
-      setDecryptError('');
+    const cleanCombo = safeCombination.toUpperCase().trim();
+    if (cleanCombo === 'CLOVIS' || cleanCombo === 'AMEGHINO' || cleanCombo === '1935' || cleanCombo === 'GENESIS') {
+      setSafeUnlocked(true);
+      setSafeError('');
     } else {
-      setDecryptError('Sello Antropológico Inválido. Intente con: AMEGHINO, CLOVIS, GENESIS o 1935');
-      setDecrypted(false);
+      setSafeError('Combinación errónea. Pistas: AMEGHINO, CLOVIS, 1935, GENESIS');
+      setSafeUnlocked(false);
     }
   };
 
-  // Strata data representing the stratigraphic slider
-  const stratigraphy = [
+  // Migration Routes detailed data (Topic B)
+  const migrationRoutes = {
+    bering: {
+      name: "Ruta de Beringia (Estrecho del Norte)",
+      proponent: "Ales Hrdlicka (Impuesta por la Academia Anglosajona)",
+      evidence: "Puntas de proyectil Clovis y similitud morfológica asiática.",
+      description: "Tesis oficialista clásica. Sostiene que grupos siberianos cruzaron el estrecho hace 12,000 años siguiendo la megafauna a través de un corredor libre de hielo. Cualquier hallazgo anterior es catalogado como 'intrusión geológica' o error científico.",
+      dissent: "La craneometría sudamericana muestra rasgos paleoamericanos antiguos no relacionados con los paleo-mongoloides del norte, sugiriendo poblamientos previos."
+    },
+    pacific: {
+      name: "Ruta Costera Pacífica",
+      proponent: "Paul Rivet (Teoría Polinésica/Oceanía)",
+      evidence: "Similitudes lingüísticas, herramientas polinesias y restos biológicos.",
+      description: "Propone que navegantes de Melanesia y Polinesia cruzaron el océano Pacífico en canoas monoxilas aprovechando las corrientes ecuatoriales, arribando directamente a las costas de Sudamérica. Esto explicaría fechados antiguos en el Cono Sur.",
+      dissent: "Considerada 'improbable' por científicos biologicistas europeos debido a la falta de tecnología naviera aceptada en sus esquemas evolutivos primarios."
+    },
+    autoctona: {
+      name: "Autoctonismo Pampeano",
+      proponent: "Florentino Ameghino (La Tesis Argentina en disputa)",
+      evidence: "Restos fósiles óseos en estratos de Miramar y Monte Hermoso.",
+      description: "Postula que el ser humano se originó biológicamente en las pampas argentinas durante la era terciaria, migrando luego hacia el resto del planeta. En 1935, este debate se reabre no solo como ciencia, sino como un símbolo de soberanía intelectual frente a la hegemonía europea.",
+      dissent: "Rotundamente rechazada por antropólogos de Europa Central empeñados en clasificaciones dolicocéfalas para justificar determinismos raciales."
+    }
+  };
+
+  // Strata data (Topic A)
+  const strataLayers = [
     {
-      depth: "0 - 1.5 metros",
-      age: "11,500 AP (Años al Presente)",
-      title: "Consenso Clovis",
-      artifacts: "Puntas Clovis (armas de piedra estilizadas)",
-      desc: "Representa el límite aceptado tradicionalmente por la teoría oficial anglosajona. El hombre llegó a través del Estrecho de Bering al final de la última glaciación. Se asume caza masiva de megafauna.",
-      status: "Consensuado / Oficial"
+      id: 1,
+      depth: "0.0 - 1.5 Metros",
+      layerName: "Estrato Superior (Humus y Limos)",
+      age: "Aprox. 11,000 AP",
+      findings: "Puntas de proyectil talladas simétricamente, carbón vegetal de fogatas recientes.",
+      theories: "Consenso Clovis. Poblamiento tardío dominante. Nivel superficial estable."
     },
     {
-      depth: "1.5 - 3 metros",
-      age: "14,500 AP",
-      title: "Monte Verde (Chile)",
-      artifacts: "Herramientas de madera pulida, huellas de pies infantiles",
-      desc: "Evidencia que rompe el consenso tradicional de Bering. Si el hombre ya estaba en el extremo sur hace 14.500 años, debió llegar mucho antes o por rutas marítimas pacíficas. Altamente polémico en 1935.",
-      status: "Anomalía Aceptada"
+      id: 2,
+      depth: "1.5 - 3.5 Metros",
+      layerName: "Estrato Pampeano Medio (Loess consolidado)",
+      age: "Aprox. 15,000 AP",
+      findings: "Muestras de herramientas de madera y restos vegetales masticados (Miramar).",
+      theories: "Rutas pre-Clovis costeras. Evidencia geológica que fractura el dogma oficialista del norte."
     },
     {
-      depth: "3 - 5 metros",
-      age: "35,000 AP",
-      title: "Pedra Furada (Brasil)",
-      artifacts: "Pinturas rupestres, fogones estructurados",
-      desc: "Hallazgos descubiertos en abrigos rocosos de Piauí que apuntan a una presencia extremadamente antigua de origen transoceánico o africano. Los antropólogos europeos lo califican como 'simples fracturas naturales de piedra'.",
-      status: "Bajo Ataque Académico"
+      id: 3,
+      depth: "3.5 - 5.5 Metros",
+      layerName: "Estrato Ensenadense (Arcillas rojas compactas)",
+      age: "Aprox. 30,000 AP",
+      findings: "Percutores líticos y fogones profundos no asociados a fauna europea.",
+      theories: "Presencia paleoamericana antigua transoceánica. Tildado de 'pseudocientífico' por agencias de Berlín."
     },
     {
-      depth: "5 - 8 metros",
-      age: "50,000+ AP",
-      title: "Antropogénesis Autoctonista",
-      artifacts: "Huesos tallados, cráneos dolicocéfalos",
-      desc: "Teoría de Florentino Ameghino que postula que el ser humano se originó de forma autóctona en las pampas americanas. La ciencia alemana la descalifica buscando imponer taxonomías biológicas y jerarquías raciales en Europa Central.",
-      status: "Clasificado / Prohibido"
+      id: 4,
+      depth: "5.5 - 8.0+ Metros",
+      layerName: "Estrato Primordial (Sedimento de Miramar)",
+      age: "Aprox. 50,000+ AP",
+      findings: "Restos fósiles en discusión, marcas de percusión antrópica en fémures de megafauna.",
+      theories: "Filogenia autoctona y prehistoria profunda. Zonas prohibidas bajo ataque de la craneometría determinista."
     }
   ];
 
   return (
-    <section id="ica-section" className="min-h-screen relative bg-transparent text-[#e5d4bc] overflow-x-hidden pt-24 pb-32 font-sans selection:bg-[#c2a67a] selection:text-black">
+    <section id="ica-section" className="min-h-screen relative bg-[#0e0a07] text-[#dfccb7] overflow-x-hidden pt-28 pb-32 font-mono selection:bg-[#c3a479] selection:text-[#0e0a07]">
       
-      {/* Sepia vintage background image layer */}
-      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#0e0c0a]">
+      {/* Immersive Sepia Background Map Overlay */}
+      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
         <img 
           src="/a1.jpg"
-          alt="Vintage Americanist Map"
-          className="absolute min-w-full min-h-full object-cover opacity-15 transition-opacity duration-1000"
-          style={{ filter: 'sepia(0.9) brightness(0.2) contrast(1.2)' }}
+          alt="Ancient American Map"
+          className="absolute min-w-full min-h-full object-cover opacity-[0.08]"
+          style={{ filter: 'sepia(1) brightness(0.2) contrast(1.3)' }}
         />
-        {/* Shadow overlays merging the borders */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e0c0a] via-[#0e0c0a]/70 to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0e0c0a] via-transparent to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0)_0%,_#0e0c0a_100%)] z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0e0a07] via-transparent to-[#0e0a07] z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_40%,_#0e0a07_100%)] z-10" />
       </div>
 
-      {/* Subtle compass coordinate overlays */}
-      <div className="absolute top-12 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-1 opacity-20 z-20 pointer-events-none text-xs tracking-widest font-mono">
-        ★ SECCIÓN DE ANTROPOLOGÍA FÍSICA Y ARQUEOLOGÍA AMERICANA ★
-      </div>
+      {/* Decorative measuring grid lines on desk */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(195,164,121,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(195,164,121,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
-      <div className="container mx-auto px-4 relative z-20 max-w-7xl">
+      <div className="container mx-auto px-6 relative z-20 max-w-7xl">
         
-        {/* Title Capsule */}
-        <div className="max-w-4xl mx-auto mb-16 pt-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center"
-          >
-            <span className="font-mono text-[9px] text-[#c2a67a] tracking-[0.45em] uppercase mb-2">XXVI Congreso Internacional</span>
-            <h1 className="font-maison text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f4ebd0] to-[#c2a67a] drop-shadow-md">
-              CONGRESO DE AMERICANISTAS
-            </h1>
-            <p className="font-mono text-gray-500 tracking-[0.3em] uppercase text-[9px] border-b border-[#30251c] pb-3 mb-6">
-              ICA (1935) • La Plata, Argentina
-            </p>
-          </motion.div>
-        </div>
+        {/* Telegram-style Letterhead Header */}
+        <div className="max-w-5xl mx-auto border-4 border-double border-[#c3a479]/30 p-6 md:p-8 bg-[#18130f]/90 backdrop-blur-md rounded-2xl mb-16 shadow-[0_15px_40px_rgba(0,0,0,0.6)] relative overflow-hidden">
+          {/* Subtle copper corner decorations */}
+          <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-[#c3a479]/60" />
+          <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-[#c3a479]/60" />
+          <div className="absolute bottom-0 left-0 w-6 h-6 border-b-2 border-l-2 border-[#c3a479]/60" />
+          <div className="absolute bottom-0 right-0 w-6 h-6 border-b-2 border-r-2 border-[#c3a479]/60" />
 
-        {/* Vintage Desk Workspace */}
-        <div className="relative flex flex-col lg:flex-row gap-8 items-start max-w-7xl mx-auto">
-          
-          {/* Compass / Skeleton decorative rings */}
-          <div className="absolute -top-20 -left-16 w-[300px] h-[300px] border border-[#c2a67a]/5 rounded-full flex items-center justify-center pointer-events-none z-0 hidden lg:flex">
-             <div className="w-[200px] h-[200px] border border-[#c2a67a]/10 rounded-full" />
-             <div className="absolute w-[400px] h-[1px] bg-gradient-to-r from-transparent via-[#c2a67a]/15 to-transparent rotate-45" />
-             <div className="absolute w-[400px] h-[1px] bg-gradient-to-r from-transparent via-[#c2a67a]/15 to-transparent -rotate-45" />
-          </div>
-
-          {/* Left Sidebar: Antique Ledger tabs */}
-          <div className="w-full lg:w-1/4 flex lg:flex-col gap-4 justify-center lg:justify-start">
-            {[
-              { id: 1, label: "Tomo I: Tópicos", icon: BookOpen, desc: "Bases Antropológicas" },
-              { id: 2, label: "Tomo II: Excavación", icon: Compass, desc: "Estratigrafía Interactiva" },
-              { id: 3, label: "Tomo III: Galería", icon: Award, desc: "Pruebas Arqueológicas" }
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveFolio(tab.id)}
-                className={`flex-1 lg:flex-initial text-left p-5 rounded-2xl border transition-all duration-500 backdrop-blur-md relative overflow-hidden group ${
-                  activeFolio === tab.id 
-                    ? 'bg-[#261d15]/80 border-[#c2a67a]/60 shadow-[0_0_25px_rgba(194,166,122,0.15)] text-[#f4ebd0]' 
-                    : 'bg-black/50 border-white/5 hover:border-[#c2a67a]/30 text-gray-400 hover:text-white'
-                }`}
-              >
-                {/* Vintage Wax Seal in corner of active tab */}
-                {activeFolio === tab.id && (
-                  <motion.div 
-                    layoutId="icaWaxSeal"
-                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#701c1c] border border-[#c2a67a]/30 flex items-center justify-center shadow-md shadow-black"
-                  >
-                    <div className="w-2.5 h-2.5 rounded-full bg-[#521313] border border-[#c2a67a]/20" />
-                  </motion.div>
-                )}
-
-                <div className="flex items-center gap-3 relative z-10">
-                  <tab.icon className={`w-5 h-5 shrink-0 ${activeFolio === tab.id ? 'text-[#c2a67a] animate-pulse' : 'text-gray-500'}`} />
-                  <div>
-                    <div className="font-maison font-bold text-xs sm:text-sm uppercase tracking-wide">{tab.label}</div>
-                    <div className="font-mono text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">{tab.desc}</div>
-                  </div>
-                </div>
-              </button>
-            ))}
-
-            {/* classified lock box widget */}
-            <div className="hidden lg:flex flex-col p-5 rounded-2xl border border-amber-950/20 bg-black/60 relative overflow-hidden group hover:border-[#c2a67a]/35 transition-colors">
-              <div className="flex justify-between items-center w-full mb-3">
-                <div>
-                  <span className="font-mono text-[8px] text-amber-600 tracking-wider uppercase font-bold">DIARIOS CLASIFICADOS</span>
-                  <span className="block font-mono text-[10px] text-gray-400 mt-1">Expedientes Antropométricos 1935</span>
-                </div>
-                <button 
-                  onClick={() => setShowPasscode(true)}
-                  className="p-2 border border-[#c2a67a]/30 hover:border-[#c2a67a] bg-white/5 hover:bg-[#c2a67a] text-[#c2a67a] hover:text-black rounded-lg transition-all"
-                >
-                  <Key className="w-3.5 h-3.5" />
-                </button>
-              </div>
-              {decrypted && (
-                <div className="text-[10px] text-emerald-500 font-mono tracking-wide animate-pulse">
-                  ✓ ACCESO PERMITIDO - DIARIOS ABIERTOS
-                </div>
-              )}
+          <div className="flex flex-col md:flex-row justify-between items-center border-b border-[#c3a479]/20 pb-4 mb-6 gap-4">
+            <div className="text-center md:text-left">
+              <span className="text-[10px] tracking-[0.3em] text-[#c3a479]/70 uppercase block mb-1">CONGRESO INTERNACIONAL DE AMERICANISTAS</span>
+              <h1 className="text-2xl md:text-4xl font-extrabold uppercase text-white tracking-wider">ICA (1935)</h1>
+            </div>
+            <div className="border border-[#c3a479]/30 rounded-lg px-4 py-2 text-center bg-[#110d0a]">
+              <span className="text-[8px] tracking-[0.2em] text-[#c3a479] block uppercase">SEDE OFICIAL</span>
+              <span className="text-xs font-bold text-white uppercase tracking-widest mt-0.5">LA PLATA, ARGENTINA</span>
             </div>
           </div>
 
-          {/* Central Workspace: Vintage Paper Document Simulator */}
-          <div className="w-full lg:w-3/4 relative z-10">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeFolio}
-                initial={{ opacity: 0, rotateY: -10, filter: "blur(5px)" }}
-                animate={{ opacity: 1, rotateY: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, rotateY: 10, filter: "blur(5px)" }}
-                transition={{ duration: 0.6, ease: "easeInOut" }}
-                className="relative rounded-[2.5rem] bg-[#ece2d0] border-[8px] border-[#382b21] shadow-[0_25px_60px_rgba(0,0,0,0.8)] min-h-[540px] text-black font-serif overflow-hidden select-text"
-              >
-                {/* Vintage paper grid and grain textures */}
-                <div className="absolute inset-0 opacity-[0.12] bg-[radial-gradient(#30251c_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(255,255,255,0.4)_0%,_transparent_100%)] pointer-events-none" />
-
-                {/* Left/Right folding shadow crease for book effect */}
-                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-12 bg-gradient-to-r from-black/5 via-black/35 to-black/5 pointer-events-none z-20 hidden md:block" />
-                <div className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-black/15 to-transparent pointer-events-none z-20 rounded-r-[2.5rem] border-r border-white/40" />
-                <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/15 to-transparent pointer-events-none z-20 rounded-l-[2.5rem] border-l border-white/40" />
-
-                {/* FOLIO 1: TOPIC DEBATES & MAIN BRIEF */}
-                {activeFolio === 1 && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 h-full min-h-[500px]">
-                    
-                    {/* Left Page */}
-                    <div className="p-8 sm:p-10 border-r border-[#30251c]/10 h-full flex flex-col justify-between">
-                      <div>
-                        <div className="font-mono text-[8px] tracking-[0.25em] text-[#701c1c] uppercase font-bold mb-4">★ INFORME PREPARATORIO • TOMO I ★</div>
-                        <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-6 border-b border-[#30251c]/25 pb-2">El Origen en Disputa</h3>
-                        <p className="text-sm leading-relaxed text-amber-950/85 mb-4 antialiased">
-                          Las corrientes del poblamiento humano en América han constituido uno de los diálogos más prolongados de la antropología. Bajo el marco interpretativo de 1935, se observa un auge en el surgimiento de diversas tesis, donde se impone la idea de que el 'hombre americano' existe desde apenas hace 12 mil años.
-                        </p>
-                        <p className="text-sm leading-relaxed text-amber-950/85 antialiased">
-                          No obstante, el surgimiento de técnicas más rigurosas de datación geológica y los hallazgos recientes están fragmentando este consenso antiguo, dando paso a cuestionamientos que sugieren una presencia aborigen mucho más profunda en el tiempo.
-                        </p>
-                      </div>
-                      
-                      <div className="mt-8 pt-4 border-t border-[#30251c]/10">
-                        <span className="font-mono text-[9px] text-gray-500 uppercase tracking-widest block mb-1">Estatus del Ciclo</span>
-                        <div className="flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full bg-[#701c1c] animate-pulse" />
-                          <span className="font-mono text-[10px] font-bold text-amber-950 tracking-wider">MODALIDAD MIXTA / INDIVIDUAL</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Right Page */}
-                    <div className="p-8 sm:p-10 h-full flex flex-col justify-between bg-[#f2e9d8]/40">
-                      <div>
-                        <div className="font-mono text-[8px] tracking-[0.25em] text-amber-800 uppercase font-bold mb-4">★ ANOTACIÓN CIENTÍFICA CRÍTICA ★</div>
-                        <h3 className="font-serif italic text-xl font-bold text-amber-950 mb-6 pb-2 border-b border-[#30251c]/10">Taxonomía y Control Político</h3>
-                        
-                        <p className="text-xs sm:text-sm leading-relaxed text-amber-950/80 mb-4 antialiased">
-                          Nuestra taxonomía humana, tradicionalmente anclada en la craneometría y la somatología, está siendo peligrosamente influenciada por agendas políticas en Europa Central. 
-                        </p>
-                        <p className="text-xs sm:text-sm leading-relaxed text-amber-950/80 mb-4 antialiased">
-                          La reciente reestructuración de las instituciones académicas y el colapso de las garantías democráticas han forzado una redefinición de los objetivos científicos, donde la esencia biológica y social del ser humano se debate hoy bajo la sombra del determinismo racial de la Alemania nacionalsocialista.
-                        </p>
-
-                        <div className="p-4 bg-amber-900/5 rounded-xl border border-amber-950/10 mb-4">
-                          <div className="flex gap-2.5 items-start">
-                            <ShieldAlert className="w-4 h-4 text-[#701c1c] shrink-0 mt-0.5" />
-                            <p className="text-[11px] font-serif italic text-[#5c1616] leading-snug">
-                              "¿Buscamos el origen de nuestra cultura americana de forma científica, o estamos, consciente o inconscientemente, validando las nuevas jerarquías que dictan el curso biológico del totalitarismo?"
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-2 pt-4 border-t border-[#30251c]/10">
-                        <span className="font-mono text-[8px] text-gray-500 tracking-wider uppercase font-bold">AGENDA GENERAL DE DEBATE</span>
-                        <div className="flex flex-col gap-1.5 font-mono text-[9px] text-[#30251c]/80 uppercase">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-[#701c1c] font-black">TÓPICO A:</span> ANTROPOGÉNESIS Y ORIGEN BIOLÓGICO
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-[#701c1c] font-black">TÓPICO B:</span> RUTAS Y TEORÍAS DE POBLAMIENTO
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                )}
-
-                {/* FOLIO 2: STRATIGRAPHIC EXCAVATION SLIDER */}
-                {activeFolio === 2 && (
-                  <div className="p-8 sm:p-10 h-full flex flex-col justify-between">
-                    <div>
-                      <div className="font-mono text-[8px] tracking-[0.25em] text-[#701c1c] uppercase font-bold mb-3">★ HERRAMIENTA ESTRATIGRÁFICA INTERACTIVA ★</div>
-                      <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-3">Estudio de Capas de Excavación</h3>
-                      <p className="text-sm leading-relaxed text-amber-950/80 mb-6 font-serif">
-                        Deslice o seleccione las distintas profundidades estratigráficas para examinar los hallazgos arqueológicos y entender cómo desafían la cronología aceptada por los comités científicos europeos en 1935.
-                      </p>
-
-                      {/* Stratigraphic Layer Visual Blocks */}
-                      <div className="grid grid-cols-4 gap-2.5 mb-6">
-                        {stratigraphy.map((layer, index) => (
-                          <button
-                            key={index}
-                            onClick={() => setActiveStratum(index + 1)}
-                            className={`p-3 rounded-xl border flex flex-col items-center justify-center transition-all duration-300 ${
-                              activeStratum === index + 1 
-                                ? 'bg-amber-950 text-[#ece2d0] border-amber-950 shadow-md scale-[1.03]' 
-                                : 'bg-[#e5d9c2] hover:bg-[#ded1b6] border-[#30251c]/15 text-black'
-                            }`}
-                          >
-                            <span className="font-mono text-[10px] font-bold tracking-widest">{layer.depth}</span>
-                            <span className="font-mono text-[8px] opacity-70 mt-1">{layer.title}</span>
-                          </button>
-                        ))}
-                      </div>
-
-                      {/* Active Layer Details Card */}
-                      <div className="p-5 rounded-2xl bg-[#f5eddb]/80 border border-[#30251c]/15 shadow-inner">
-                        <div className="flex justify-between items-baseline mb-3 border-b border-[#30251c]/10 pb-2">
-                          <h4 className="font-serif italic text-lg font-black text-amber-950">
-                            {stratigraphy[activeStratum - 1].title}
-                          </h4>
-                          <span className="font-mono text-[9px] bg-amber-950/10 text-[#701c1c] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                            {stratigraphy[activeStratum - 1].status}
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed font-serif">
-                          <div>
-                            <span className="font-mono text-[8px] text-gray-500 uppercase tracking-widest block mb-1">Datación Radiocarbónica / Geológica</span>
-                            <span className="font-bold text-amber-950 block mb-3 text-sm">{stratigraphy[activeStratum - 1].age}</span>
-
-                            <span className="font-mono text-[8px] text-gray-500 uppercase tracking-widest block mb-1">Restos / Artefactos Extraídos</span>
-                            <span className="font-bold text-amber-950 block text-xs italic">{stratigraphy[activeStratum - 1].artifacts}</span>
-                          </div>
-                          <div>
-                            <span className="font-mono text-[8px] text-gray-500 uppercase tracking-widest block mb-1">Análisis Arqueológico</span>
-                            <p className="text-amber-950/80 leading-relaxed font-light">{stratigraphy[activeStratum - 1].desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-8 pt-4 border-t border-[#30251c]/10 flex items-center justify-between text-[9px] font-mono text-gray-500">
-                      <span>METRIC RATIO: STRATIGRAPHY VERIFICATION</span>
-                      <span>1935 RECORDING SYSTEM CORP.</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* FOLIO 3: ANTIQUE PHOTO ARCHIVE */}
-                {activeFolio === 3 && (
-                  <div className="p-8 sm:p-10 h-full flex flex-col justify-between">
-                    <div>
-                      <div className="font-mono text-[8px] tracking-[0.25em] text-[#701c1c] uppercase font-bold mb-3">★ ARCHIVO FOTOGRÁFICO DE CAMPAÑA ★</div>
-                      <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-6">Fotografías Científicas ICA</h3>
-
-                      {/* Displaying a1, a2, a3 as stylized retro museum Polaroids */}
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                          { src: '/a1.jpg', caption: "Placa I: Cartografía y Excavación", desc: "Registro de rutas de poblamiento prehistóricas." },
-                          { src: '/a2.jpg', caption: "Placa II: Restos Óseos", desc: "Anotaciones de craneometría de dolicocéfalos pampeanos." },
-                          { src: '/a3.jpg', caption: "Placa III: Material Lítico", desc: "Herramientas líticas que prueban dataciones pre-Clovis." }
-                        ].map((pic, idx) => (
-                          <div 
-                            key={idx} 
-                            className="bg-white p-3 shadow-xl rounded-sm border border-black/10 transform rotate-[-2deg] hover:rotate-[2deg] hover:scale-105 transition-all duration-300"
-                          >
-                            <div className="w-full h-32 overflow-hidden bg-gray-200 border border-gray-300">
-                              <img src={pic.src} alt={pic.caption} className="w-full h-full object-cover filter sepia contrast-125" />
-                            </div>
-                            <div className="mt-3 text-center">
-                              <h5 className="font-serif italic text-[11px] font-bold text-amber-950 leading-tight">{pic.caption}</h5>
-                              <p className="font-mono text-[7.5px] text-gray-500 mt-1 leading-snug">{pic.desc}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-8 pt-4 border-t border-[#30251c]/10 text-center font-mono text-[8px] text-gray-500">
-                      ★ FOTOGRAFÍAS RECOPILADAS EN LA CUENCA DE LA PLATA E HISTORIA PAMPEANA - EXPEDIENTE EXCLUSIVO ★
-                    </div>
-                  </div>
-                )}
-
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-        </div>
-
-        {/* DECIPHER DIARY WIDGET MOBILE VERSION */}
-        <div className="flex lg:hidden flex-col mt-8 p-6 rounded-3xl border border-amber-950/20 bg-black/60 relative overflow-hidden">
-          <div className="flex justify-between items-center mb-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-left leading-relaxed">
             <div>
-              <span className="font-mono text-[8px] text-amber-600 tracking-wider uppercase font-bold">DIARIOS CLASIFICADOS</span>
-              <span className="block font-mono text-[10px] text-gray-400 mt-1">Expedientes Antropométricos 1935</span>
+              <div className="font-bold text-[#c3a479] mb-1 uppercase tracking-wider">💫 TÓPICO A:</div>
+              <p className="text-gray-400">Antropogénesis y origen del ser humano. Debates somatológicos frente al determinismo biológico europeo.</p>
             </div>
-            <button 
-              onClick={() => setShowPasscode(true)}
-              className="p-2 border border-[#c2a67a]/30 hover:border-[#c2a67a] bg-white/5 hover:bg-[#c2a67a] text-[#c2a67a] hover:text-black rounded-lg transition-all"
-            >
-              <Key className="w-3.5 h-3.5" />
-            </button>
+            <div>
+              <div className="font-bold text-[#c3a479] mb-1 uppercase tracking-wider">💫 TÓPICO B:</div>
+              <p className="text-gray-400">Rutas de poblamiento y teorías de la llegada del hombre a América. Desafíos a la hegemonía Beringia/Clovis.</p>
+            </div>
           </div>
-          {decrypted && (
-            <div className="text-[10px] text-emerald-500 font-mono tracking-wide animate-pulse">
-              ✓ ACCESO PERMITIDO - DIARIOS ABIERTOS
-            </div>
-          )}
         </div>
 
-        {/* Dynamic Decrypted Diaries Section (Hidden until correct password entered) */}
-        <AnimatePresence>
-          {decrypted && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="mt-12 max-w-5xl mx-auto rounded-[2rem] bg-[#16120e] border border-emerald-500/20 p-8 shadow-[0_20px_40px_rgba(0,0,0,0.7)] text-left"
-            >
-              <div className="flex items-center gap-3 mb-6 border-b border-emerald-500/20 pb-3">
-                <Unlock className="w-6 h-6 text-emerald-500 animate-bounce" />
-                <div>
-                  <h4 className="font-maison text-lg md:text-xl font-bold text-white uppercase tracking-wider">DIARIO CIENTÍFICO DESCIFRADO - CLASIFICADO EXP-1935</h4>
-                  <span className="font-mono text-[9px] text-emerald-500 tracking-widest uppercase">CORRESPONDENCIA SECRETA DE LA PLATA A MÚNICH</span>
-                </div>
-              </div>
-              <p className="font-serif italic text-sm text-gray-300 leading-relaxed mb-4">
-                "...Los informes enviados desde Berlín insisten en que descartemos de inmediato cualquier datación superior a los 10,000 años en suelo americano. Afirman que establecer una prehistoria profunda o un autoctonismo filogenético en las pampas debilita la tesis de la supremacía y poblamiento ordenado por linajes primordiales. Nuestra investigación ha sido severamente intervenida. Cataldo teme que no nos permitan publicar los cráneos excavados en los estratos inferiores de Miramar..."
-              </p>
-              <div className="flex justify-between items-center font-mono text-[8px] text-emerald-500/60 pt-4 border-t border-emerald-500/10">
-                <span>SELLO: ARCHIVO GENERAL AMERICANISTA</span>
-                <span>DESTINO: COMITÉ DE INVESTIGACIÓN POLÍTICA</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* -------------------- MAIN WORKSPACE PANEL -------------------- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16">
+          
+          {/* LEFT SECTION (7 cols): Route Navigation & Theory Board */}
+          <div className="lg:col-span-7 flex flex-col justify-between bg-[#130f0c] border border-[#c3a479]/25 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+              <Compass className="w-48 h-48 text-[#c3a479]" />
+            </div>
 
-        {/* Lower Official Navigation Board */}
-        <div className="max-w-5xl mx-auto mt-16 p-8 rounded-[2rem] bg-black/60 border border-white/5 backdrop-blur-xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl">
+            <div>
+              <div className="flex items-center gap-2 mb-6 border-b border-[#c3a479]/10 pb-3">
+                <MapPin className="w-5 h-5 text-[#c3a479]" />
+                <h3 className="text-base font-bold uppercase tracking-wider text-white">PLANIFICADOR DE RUTAS Y TEORÍAS (TÓPICO B)</h3>
+              </div>
+
+              {/* Route Map selector tab buttons */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {Object.keys(migrationRoutes).map((routeId) => (
+                  <button
+                    key={routeId}
+                    onClick={() => setActiveRoute(routeId)}
+                    className={`px-4 py-2.5 rounded-xl border text-[11px] font-bold uppercase tracking-widest transition-all duration-300 ${
+                      activeRoute === routeId
+                        ? 'bg-[#c3a479] text-[#0e0a07] border-[#c3a479] shadow-lg'
+                        : 'bg-[#1a1410] border-[#c3a479]/20 text-[#c3a479]/75 hover:border-[#c3a479]/50 hover:text-white'
+                    }`}
+                  >
+                    {routeId === 'bering' ? 'Beringia' : routeId === 'pacific' ? 'Ruta Pacífica' : 'Autoctonismo'}
+                  </button>
+                ))}
+              </div>
+
+              {/* Dynamic Typewriter Route Card */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeRoute}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.4 }}
+                  className="bg-[#1a1410] border border-[#c3a479]/10 rounded-2xl p-6 min-h-[220px] text-left"
+                >
+                  <h4 className="text-lg font-bold text-white mb-1 uppercase tracking-wide">
+                    {migrationRoutes[activeRoute].name}
+                  </h4>
+                  <span className="text-[9px] text-[#c3a479] font-bold tracking-widest block uppercase mb-4">
+                    PROPONENTE: {migrationRoutes[activeRoute].proponent}
+                  </span>
+
+                  <div className="space-y-4 text-xs leading-relaxed">
+                    <div>
+                      <span className="text-[9px] text-gray-500 uppercase tracking-widest block mb-1">Evidencia Científica Recopilada</span>
+                      <p className="text-gray-300 italic">"{migrationRoutes[activeRoute].evidence}"</p>
+                    </div>
+
+                    <div>
+                      <span className="text-[9px] text-gray-500 uppercase tracking-widest block mb-1">Descripción del Expediente</span>
+                      <p className="text-gray-400">{migrationRoutes[activeRoute].description}</p>
+                    </div>
+
+                    <div className="border-t border-[#c3a479]/10 pt-3 mt-3">
+                      <span className="text-[9px] text-red-400 font-bold uppercase tracking-widest block mb-1">Objeción del Debate (1935)</span>
+                      <p className="text-red-300/80 font-serif italic text-xs leading-snug">{migrationRoutes[activeRoute].dissent}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            <div className="mt-8 pt-4 border-t border-[#c3a479]/10 text-[9px] text-gray-500 flex justify-between">
+              <span>EXPLORADOR MIGRATORIO CORRELATIVO</span>
+              <span>ICA REG. N° 4591</span>
+            </div>
+          </div>
+
+          {/* RIGHT SECTION (5 cols): Vertical Stratigraphic Trench (Topic A) */}
+          <div className="lg:col-span-5 flex flex-col bg-[#130f0c] border border-[#c3a479]/25 rounded-3xl p-6 shadow-2xl relative overflow-hidden">
+            <div className="flex items-center gap-2 mb-6 border-b border-[#c3a479]/10 pb-3">
+              <Layers className="w-5 h-5 text-[#c3a479]" />
+              <h3 className="text-base font-bold uppercase tracking-wider text-white">TRINCHERA ESTRATIGRÁFICA (TÓPICO A)</h3>
+            </div>
+
+            <p className="text-[11px] leading-relaxed text-gray-400 mb-6 text-left">
+              Haga clic en las distintas capas del suelo pampeano para examinar la antigüedad de los restos óseos y líticos excavados:
+            </p>
+
+            {/* Vertical Stratigraphic Column Visualizer */}
+            <div className="flex flex-col gap-2 mb-6 flex-1 justify-between">
+              {strataLayers.map((stratum, i) => {
+                const colors = ['bg-[#5c493c]/80', 'bg-[#4a3a2f]/80', 'bg-[#3b2d24]/80', 'bg-[#2b1f17]/80'];
+                const selectedColors = ['bg-[#c3a479] text-[#0e0a07]', 'bg-[#b69263] text-[#0e0a07]', 'bg-[#aa8150] text-[#0e0a07]', 'bg-[#9d703e] text-white'];
+                const isActive = activeStratum === stratum.id;
+
+                return (
+                  <button
+                    key={stratum.id}
+                    onClick={() => setActiveStratum(stratum.id)}
+                    className={`w-full py-4 px-4 rounded-xl border transition-all duration-300 flex justify-between items-center text-left ${
+                      isActive
+                        ? `${selectedColors[i]} border-white/20 shadow-xl scale-[1.02]`
+                        : `${colors[i]} border-[#c3a479]/15 text-[#dfccb7]/80 hover:border-[#c3a479]/35 hover:text-white`
+                    }`}
+                  >
+                    <div>
+                      <span className="text-[10px] font-mono tracking-widest font-bold block">{stratum.depth}</span>
+                      <span className="text-xs font-serif italic font-bold">{stratum.layerName}</span>
+                    </div>
+                    <span className="text-[9px] font-mono tracking-widest uppercase font-bold bg-black/20 px-2 py-0.5 rounded">
+                      {stratum.age}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Deep Trench stratum description */}
+            <div className="bg-[#1a1410] border border-[#c3a479]/10 rounded-2xl p-4 text-left text-xs leading-relaxed">
+              <span className="text-[9px] text-[#c3a479] font-bold tracking-widest uppercase block mb-1">Restos extraídos en esta profundidad:</span>
+              <p className="text-gray-300 italic mb-2">"{strataLayers[activeStratum - 1].findings}"</p>
+              <span className="text-[9px] text-gray-500 uppercase tracking-widest block mb-1">Conflicto Teórico:</span>
+              <p className="text-gray-400">{strataLayers[activeStratum - 1].theories}</p>
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* -------------------- LOWER SECTION: EVIDENCE CORKBOARD & SAFE -------------------- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16">
+          
+          {/* Evidences Tray (Images a1, a2, a3) - 7 cols */}
+          <div className="lg:col-span-7 bg-[#130f0c] border border-[#c3a479]/20 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-6 border-b border-[#c3a479]/10 pb-3">
+                <ImageIcon className="w-5 h-5 text-[#c3a479]" />
+                <h3 className="text-base font-bold uppercase tracking-wider text-white">GABINETE DE FOTOGRAFÍA CIENTÍFICA</h3>
+              </div>
+
+              {/* Styled as antique polaroids or pinned plates */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {[
+                  { src: '/a1.jpg', title: "PLACA I: Miramar 1935", info: "Estratigrafía y percutores." },
+                  { src: '/a2.jpg', title: "PLACA II: Cráneo Pampeano", info: "Toma craneométrica dolicocéfala." },
+                  { src: '/a3.jpg', title: "PLACA III: Loess Lítico", info: "Marcas antrópicas en huesos." }
+                ].map((item, idx) => (
+                  <div 
+                    key={idx}
+                    className="bg-[#ece2d0] p-3 rounded-lg border border-[#c3a479]/30 shadow-2xl transform rotate-[-1deg] hover:rotate-[1deg] hover:scale-105 transition-all duration-300 text-black font-serif"
+                  >
+                    <div className="w-full h-28 overflow-hidden bg-gray-200 border border-gray-400 mb-2">
+                      <img src={item.src} alt={item.title} className="w-full h-full object-cover filter sepia-[0.4] contrast-110 brightness-95" />
+                    </div>
+                    <div className="text-center">
+                      <span className="text-[10px] font-bold text-amber-950 block leading-tight">{item.title}</span>
+                      <span className="font-mono text-[7px] text-gray-500 uppercase tracking-widest block mt-0.5">{item.info}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="mt-8 text-center text-[9px] text-gray-500">
+              ★ PLACAS FOTOGRÁFICAS REGISTRADAS EN CAMPAÑA CON DATOS SOMATOLÓGICOS COMPLEMENTARIOS ★
+            </div>
+          </div>
+
+          {/* Combination Safe Box (Easter Egg) - 5 cols */}
+          <div className="lg:col-span-5 bg-[#16120e] border border-[#c3a479]/20 rounded-3xl p-6 shadow-2xl flex flex-col justify-between relative overflow-hidden">
+            <div>
+              <div className="flex items-center gap-2 mb-4 border-b border-[#c3a479]/10 pb-3">
+                <Lock className="w-5 h-5 text-[#c3a479]" />
+                <h3 className="text-base font-bold uppercase tracking-wider text-white">CAJA FUERTE ANTIGUA: DIARIOS CLASIFICADOS</h3>
+              </div>
+
+              <p className="text-[11px] leading-relaxed text-gray-400 mb-6 text-left">
+                Introduzca la palabra clave en el disco de combinación para abrir los diarios confidenciales de Ameghino intervenidos por comités europeos:
+              </p>
+
+              <form onSubmit={handleUnlockSafe} className="space-y-4">
+                <input 
+                  type="text"
+                  placeholder="COMBINACIÓN (Clave)"
+                  value={safeCombination}
+                  onChange={(e) => setSafeCombination(e.target.value)}
+                  className="w-full bg-[#201712] border border-[#c3a479]/20 rounded-xl px-4 py-3 text-center text-white font-mono tracking-widest focus:outline-none focus:border-[#c3a479] transition-all uppercase placeholder-[#c3a479]/30"
+                />
+
+                {safeError && (
+                  <p className="text-[10px] text-red-500 font-mono tracking-wider text-center">{safeError}</p>
+                )}
+
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-[#701c1c] hover:bg-[#8f2828] text-white rounded-xl font-bold font-mono text-[10px] uppercase tracking-widest transition-all duration-300 shadow-md border border-red-500/10"
+                >
+                  GIRAR DISCO DE SEGURIDAD
+                </button>
+              </form>
+            </div>
+
+            {/* Render decrypted letter inside the safe */}
+            <AnimatePresence>
+              {safeUnlocked && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="mt-6 p-4 rounded-xl bg-[#ece2d0] border border-[#c3a479] text-black text-[11px] font-serif text-left shadow-inner relative"
+                >
+                  <Unlock className="absolute top-2 right-2 w-4 h-4 text-emerald-700 animate-pulse" />
+                  <span className="font-mono text-[8px] text-emerald-800 tracking-widest uppercase block mb-2 font-bold">✓ EXPEDIENTE DESENCRIPTADO:</span>
+                  <p className="italic leading-relaxed text-amber-950">
+                    "...Los comisionados de Alemania insisten en callar Miramar. Quieren fijar Beringia como ruta única para sostener que América es un continente vacío, sin prehistoria profunda, justificando biológicamente un ordenamiento colonial. Elymar teme que las muestras óseas sean incautadas al salir del congreso..."
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+          </div>
+
+        </div>
+
+        {/* -------------------- LOWER GENERAL NAVIGATION BOARD -------------------- */}
+        <div className="max-w-5xl mx-auto p-8 rounded-[2rem] bg-[#16120e] border border-[#c3a479]/20 backdrop-blur-xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl">
           <div className="text-center md:text-left">
-            <span className="font-mono text-[8px] text-[#c2a67a] tracking-[0.3em] uppercase block mb-1">MESA DIRECTIVA Y REGLAMENTACIÓN</span>
-            <h4 className="font-maison text-xl font-bold text-white uppercase">DOCUMENTOS OFICIALES ICA 1935</h4>
+            <span className="font-mono text-[8px] text-[#c3a479] tracking-[0.3em] uppercase block mb-1">DIRECCIÓN GENERAL Y PROTOCOLOS</span>
+            <h4 className="text-lg font-bold text-white uppercase tracking-wider">EXPEDIENTES CIENTÍFICOS OFICIALES ICA 1935</h4>
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
-            {/* Wax seal invitation for Conoce a tu mesa */}
+            {/* Wax seal invite for Conoce a tu mesa */}
             <button 
               onClick={() => setShowMesaModal(true)}
-              className="px-6 py-3 border border-[#c2a67a]/40 hover:border-[#c2a67a] text-[#c2a67a] hover:text-black hover:bg-[#c2a67a] rounded-xl font-mono text-xs uppercase tracking-widest transition-all duration-300 shadow-lg flex items-center gap-2 group"
+              className="px-6 py-3 border border-[#c3a479]/40 hover:border-[#c3a479] text-[#c3a479] hover:text-[#0e0a07] hover:bg-[#c3a479] rounded-xl font-mono text-xs uppercase tracking-widest transition-all duration-300 shadow-lg flex items-center gap-2 group"
             >
-              <Users className="w-4 h-4 group-hover:scale-110 transition-transform" />
-              Conoce a tu Mesa
+              <Users className="w-4 h-4 group-hover:scale-115 transition-transform" />
+              Diploma de la Mesa
             </button>
 
             {/* Academic Guide link */}
@@ -435,72 +388,15 @@ export default function Ica() {
               rel="noopener noreferrer"
               className="px-6 py-3 bg-[#701c1c] text-white hover:bg-[#8f2828] rounded-xl font-mono text-xs uppercase tracking-widest transition-all duration-300 shadow-lg flex items-center gap-2 group border border-red-500/20"
             >
-              <FileText className="w-4 h-4 group-hover:scale-110 transition-transform" />
-              Guía Académica
+              <FileText className="w-4 h-4 group-hover:scale-115 transition-transform" />
+              Guía de Documentación
             </a>
           </div>
         </div>
 
       </div>
 
-      {/* PASSCODE ENTRY MODAL */}
-      <AnimatePresence>
-        {showPasscode && (
-          <div className="fixed inset-0 z-[3000] flex items-center justify-center p-4">
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setShowPasscode(false)}
-              className="absolute inset-0 bg-black/95 backdrop-blur-md"
-            />
-            
-            <motion.div 
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              className="relative w-full max-w-md rounded-3xl bg-[#16120e] border border-[#c2a67a]/30 p-8 text-[#e5d4bc] z-10 shadow-2xl text-center"
-            >
-              <button 
-                onClick={() => setShowPasscode(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-white"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <Lock className="w-12 h-12 text-[#c2a67a] mx-auto mb-4 animate-pulse" />
-              
-              <h3 className="font-maison text-2xl font-black text-white uppercase mb-2">SELLO CIENTÍFICO ICA</h3>
-              <p className="font-mono text-xs text-gray-400 mb-6">
-                Ingrese contraseña para descifrar correspondencia privada (Ej: AMEGHINO, CLOVIS, GENESIS, 1935)
-              </p>
-
-              <form onSubmit={handleDecrypt} className="space-y-4">
-                <input 
-                  type="text" 
-                  placeholder="CONTRASEÑA CRONOLÓGICA" 
-                  value={passcode}
-                  onChange={(e) => setPasscode(e.target.value)}
-                  className="w-full bg-[#201a14] border border-[#c2a67a]/20 rounded-xl px-4 py-3 text-center text-[#ece2d0] font-mono tracking-widest focus:outline-none focus:border-[#c2a67a] transition-all uppercase"
-                />
-                
-                {decryptError && (
-                  <p className="text-[10px] text-red-500 font-mono tracking-wider">{decryptError}</p>
-                )}
-
-                <button 
-                  type="submit"
-                  className="w-full py-3 bg-[#701c1c] hover:bg-[#8f2828] text-white rounded-xl font-mono text-xs uppercase tracking-widest transition-all duration-300 shadow-md font-bold"
-                >
-                  DESBLOQUEAR EXPEDIENTE
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* CONOCE A TU MESA MODAL (Invites Style) */}
+      {/* DIPLOMA CONOCE A TU MESA MODAL */}
       <AnimatePresence>
         {showMesaModal && (
           <div className="fixed inset-0 z-[3000] flex items-center justify-center p-4">
@@ -518,7 +414,7 @@ export default function Ica() {
               exit={{ scale: 0.9, y: 20 }}
               className="relative w-full max-w-lg rounded-[2.5rem] bg-[#ece2d0] border-[8px] border-[#382b21] p-8 text-black z-10 shadow-2xl select-text text-center font-serif"
             >
-              {/* Paper fine dots */}
+              {/* Paper background grid */}
               <div className="absolute inset-0 opacity-[0.08] bg-[radial-gradient(#30251c_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none rounded-[2rem]" />
               
               <button 
@@ -530,23 +426,22 @@ export default function Ica() {
 
               <Landmark className="w-12 h-12 text-[#701c1c] mx-auto mb-4" />
               
-              <span className="font-mono text-[9px] text-[#701c1c] tracking-[0.3em] uppercase block mb-1">DOCUMENTO ACADÉMICO OFICIAL</span>
+              <span className="font-mono text-[9px] text-[#701c1c] tracking-[0.3em] uppercase block mb-1">DIPLOMA ACADÉMICO OFICIAL</span>
               <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-6 border-b border-[#30251c]/15 pb-2">Mesa Directiva del Congreso</h3>
 
-              {/* Invitation diploma styling */}
               <div className="space-y-6 text-center text-amber-950 font-serif leading-relaxed px-4">
                 <div>
-                  <span className="font-mono text-[9px] text-gray-500 uppercase tracking-widest block mb-1">PRESIDENTE DEL COMITÉ</span>
+                  <span className="font-mono text-[8px] text-gray-500 uppercase tracking-widest block mb-1">PRESIDENTE DE LA ASOCIACIÓN</span>
                   <h4 className="text-2xl font-black italic tracking-wide text-amber-950">Cataldo Querecia</h4>
-                  <p className="text-[11px] font-mono text-gray-600 mt-1 uppercase tracking-widest">Delegado y Académico en Antropogenia</p>
+                  <p className="text-[10px] font-mono text-gray-600 mt-1 uppercase tracking-widest">Delegado y Académico en Antropogenia Física</p>
                 </div>
 
                 <div className="w-24 h-[1px] bg-[#30251c]/15 mx-auto" />
 
                 <div>
-                  <span className="font-mono text-[9px] text-gray-500 uppercase tracking-widest block mb-1">VICEPRESIDENTE DEL COMITÉ</span>
+                  <span className="font-mono text-[8px] text-gray-500 uppercase tracking-widest block mb-1">VICEPRESIDENTE DEL CONGRESO</span>
                   <h4 className="text-2xl font-black italic tracking-wide text-amber-950">Elymar Ledezma</h4>
-                  <p className="text-[11px] font-mono text-gray-600 mt-1 uppercase tracking-widest">Delegada de Asuntos Americanistas y Logística</p>
+                  <p className="text-[10px] font-mono text-gray-600 mt-1 uppercase tracking-widest">Coodinadora de Asuntos Americanistas y Logística</p>
                 </div>
               </div>
 

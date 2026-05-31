@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, Book, Landmark } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Compass, FileText, Globe } from 'lucide-react';
 
 export default function IcaLoader({ onComplete }) {
   const [progress, setProgress] = useState(0);
   const [activeStep, setActiveStep] = useState(0);
-  const [statusText, setStatusText] = useState('CONGRESO DE AMERICANISTAS: OPENING DELEGATE ROSTER...');
+  const [typewriterText, setTypewriterText] = useState('');
 
   const steps = [
-    'COLLECTING CRANEOMETRY ARCHIVES (GERMANY)... [DONE]',
-    'RESOLVING TRANS-PACIFIC MIGRATION CHANNELS... [DATING]',
-    'VERIFYING CLOVIS FIRST CONSENSUS BREAKDOWN... [WARNING]',
-    'CALIBRATING STRATIGRAPHIC DATATION SCALES... [COMPLETED]',
-    'ICA 1935 DEBATES PREPARED... [AUTHENTICATED]',
+    'TELEGRAMA ICA: ESTABLECIENDO CONEXIÓN CON LA PLATA...',
+    'CARGANDO PLACAS GEOLÓGICAS Y MUESTRAS DE CRÁNEOS...',
+    'DESENCRIPTANDO ARCHIVOS CONFIDENCIALES DE EUROPA CENTRAL...',
+    'INICIALIZANDO RUTA DE MIGRACIÓN TRANSPACÍFICA...',
+    'CONGRESO AUTORIZADO - BIENVENIDO DELEGADO.',
   ];
-
-  // Latin and ancient coordinate values
-  const coordinates = "51.5074° N, 0.1278° W | 19.4326° N, 99.1332° W | 12.0464° S, 77.0428° W";
-  const ancientRings = "★ ANTROPOGENESIS ★ ORIGEN ★ RUTAS DE POBLAMIENTO ★ ICA 1935 ★";
 
   useEffect(() => {
     const interval = setInterval(() => {
       setProgress((prev) => {
-        const next = Math.min(prev + Math.floor(Math.random() * 6) + 4, 100);
+        const next = Math.min(prev + Math.floor(Math.random() * 8) + 5, 100);
         if (next >= 100) {
           clearInterval(interval);
           setTimeout(onComplete, 900);
@@ -32,143 +28,109 @@ export default function IcaLoader({ onComplete }) {
         const stepIndex = Math.min(Math.floor((next / 100) * steps.length), steps.length - 1);
         if (stepIndex !== activeStep) {
           setActiveStep(stepIndex);
-          setStatusText(steps[stepIndex]);
         }
 
         return next;
       });
-    }, 70);
+    }, 80);
 
     return () => clearInterval(interval);
   }, [onComplete, activeStep]);
+
+  // Typewriter effect for step logs
+  useEffect(() => {
+    let currentText = steps[activeStep];
+    let i = 0;
+    setTypewriterText('');
+    const typingInterval = setInterval(() => {
+      if (i < currentText.length) {
+        setTypewriterText((prev) => prev + currentText.charAt(i));
+        i++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, 20);
+
+    return () => clearInterval(typingInterval);
+  }, [activeStep]);
 
   return (
     <motion.div
       initial={{ opacity: 1 }}
       exit={{ 
         opacity: 0,
-        filter: "blur(20px)",
-        scale: 1.08,
-        transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1] } 
+        filter: "blur(15px)",
+        scale: 1.05,
+        transition: { duration: 0.8, ease: "easeInOut" } 
       }}
-      className="fixed inset-0 bg-[#0e0c0a] z-[2000] flex items-center justify-center text-[#c2a67a] font-mono select-none overflow-hidden"
+      className="fixed inset-0 bg-[#120f0d] z-[2000] flex items-center justify-center text-[#d4b285] font-mono select-none overflow-hidden"
     >
-      {/* Background Image & Texture */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-        <img 
-          src="/a1.jpg"
-          alt="Vintage Americanist Map"
-          className="w-full h-full object-cover opacity-15"
-          style={{ filter: 'sepia(0.9) brightness(0.4) contrast(1.1) blur(1px)' }}
-        />
-        <div className="absolute inset-0 bg-black/60 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0)_0%,_#0e0c0a_100%)]" />
-      </div>
+      {/* Heavy vintage grid overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(rgba(212,178,133,0.05)_1px,transparent_1px)] bg-[size:20px_20px] pointer-events-none" />
 
-      {/* Grid of measurement overlays */}
-      <div className="absolute inset-0 bg-[radial-gradient(rgba(194,166,122,0.06)_1px,transparent_1px)] bg-[size:30px_30px] opacity-60 pointer-events-none" />
+      {/* Top and Bottom Vintage Borders */}
+      <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-[#d4b285]/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-[#d4b285]/20 to-transparent" />
 
-      {/* Retro scientific measuring corners */}
-      <div className="absolute inset-10 border border-[#c2a67a]/5 pointer-events-none z-10 hidden md:block">
-        <div className="absolute top-0 left-0 w-8 h-8 border-t border-l border-[#c2a67a]/30" />
-        <div className="absolute top-0 right-0 w-8 h-8 border-t border-r border-[#c2a67a]/30" />
-        <div className="absolute bottom-0 left-0 w-8 h-8 border-b border-l border-[#c2a67a]/30" />
-        <div className="absolute bottom-0 right-0 w-8 h-8 border-b border-r border-[#c2a67a]/30" />
+      <div className="relative flex flex-col items-center justify-center max-w-lg px-6 z-10">
         
-        {/* Typographed stamp */}
-        <div className="absolute bottom-4 left-4 text-[9px] text-[#c2a67a]/40 tracking-widest font-mono">
-          ICA.VOL.1935.GENESIS.ANALYTICAL
+        {/* Vintage Telegram Header */}
+        <div className="border-b border-[#d4b285]/30 pb-4 mb-8 w-full text-center">
+          <span className="text-[10px] tracking-[0.4em] text-[#d4b285]/55 uppercase block mb-1">SERVICIO DE TELEGRAFÍA NACIONAL</span>
+          <h2 className="text-xl font-bold uppercase tracking-wider text-white">CONGRESO AMERICANISTAS 1935</h2>
         </div>
-        <div className="absolute bottom-4 right-4 text-[9px] text-[#c2a67a]/40 tracking-widest font-mono">
-          COORD: {coordinates}
-        </div>
-      </div>
 
-      {/* Centerpiece Layout */}
-      <div className="relative flex flex-col items-center justify-center scale-90 sm:scale-100 z-10">
-        
-        {/* Ancient Compasses / Dial Wheel */}
-        <div className="relative w-80 h-80 flex items-center justify-center rounded-full border border-[#c2a67a]/20 bg-black/40 shadow-[0_0_80px_rgba(30,25,20,0.6),inset_0_0_50px_rgba(194,166,122,0.1)] backdrop-blur-sm">
-          
-          {/* Central Medallion */}
-          <div className="absolute w-20 h-20 rounded-full bg-[#16120e] border border-[#c2a67a]/30 flex items-center justify-center shadow-[0_0_30px_rgba(194,166,122,0.15)] z-30">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ repeat: Infinity, duration: 20, ease: "linear" }}
-              className="text-[#c2a67a] flex items-center justify-center"
-            >
-              <Compass className="w-9 h-9 opacity-80" />
-            </motion.div>
+        {/* Rotating Compass Rose (Unique loader compared to Voynich's Concentric Rings) */}
+        <div className="relative w-48 h-48 flex items-center justify-center mb-8">
+          {/* Static outer compass circle */}
+          <div className="absolute inset-0 rounded-full border border-[#d4b285]/20 flex items-center justify-center">
+            {/* Degree ticks */}
+            {[0, 45, 90, 135, 180, 225, 270, 315].map((deg, i) => (
+              <div 
+                key={i} 
+                className="absolute w-2 h-[1px] bg-[#d4b285]/40" 
+                style={{ transform: `rotate(${deg}deg) translate(92px)` }}
+              />
+            ))}
           </div>
 
-          {/* Compass Rings */}
-          <motion.div
-            animate={{ rotate: -360 }}
-            transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-            className="absolute w-[240px] h-[240px] rounded-full border border-[#c2a67a]/10 flex items-center justify-center"
-          >
-            <svg viewBox="0 0 100 100" className="w-full h-full transform -rotate-90">
-              <path id="textPathIca" fill="none" d="M 50,50 m -35,0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" />
-              <text fontSize="5.5" letterSpacing="4.2" fill="#c2a67a" opacity="0.6">
-                <textPath href="#textPathIca">{ancientRings}</textPath>
-              </text>
-            </svg>
-          </motion.div>
-
-          {/* Outer Calibration Ring */}
-          <div className="absolute w-[280px] h-[280px] rounded-full border border-[#c2a67a]/5 pointer-events-none" />
-
-          {/* Rotating radar sweep */}
+          {/* Rotating inner compass rose */}
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 8, ease: "linear" }}
-            className="absolute w-[140px] h-[1px] bg-gradient-to-r from-transparent via-[#c2a67a]/20 to-[#c2a67a]/80 origin-left left-[160px] top-[159.5px] z-20 pointer-events-none"
-            style={{ transformOrigin: '0% 50%' }}
-          />
-
-          {/* Dial Ticks */}
-          {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((angle, idx) => (
-            <div
-              key={idx}
-              className="absolute w-3.5 h-[1px] bg-[#c2a67a]/25"
-              style={{
-                transform: `rotate(${angle}deg) translate(144px)`,
-              }}
-            />
-          ))}
-
-        </div>
-
-        {/* Vintage Congress Heading */}
-        <h2 className="font-maison text-2xl sm:text-3xl uppercase tracking-[0.25em] font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f4ebd0] to-[#c2a67a] mt-8 mb-1 text-center drop-shadow-md">
-          CONGRESO DE AMERICANISTAS
-        </h2>
-        <span className="font-mono text-[9px] tracking-[0.4em] text-[#c2a67a]/70 uppercase mb-8 block text-center">
-          XXVI CONGRESO INTERNACIONAL - LA PLATA 1935
-        </span>
-
-        {/* Log updates */}
-        <div className="h-10 flex items-center justify-center w-full max-w-lg mb-4">
-          <motion.p
-            key={activeStep}
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="font-mono text-[9px] text-[#c2a67a]/85 uppercase tracking-[0.18em] leading-relaxed text-center max-w-sm"
+            transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+            className="w-36 h-36 relative flex items-center justify-center opacity-85 text-[#d4b285]"
           >
-            {statusText}
-          </motion.p>
+            <Compass className="w-24 h-24 stroke-[1.2]" />
+            {/* Compass labels */}
+            <span className="absolute top-1 text-[9px] font-bold">N</span>
+            <span className="absolute bottom-1 text-[9px] font-bold">S</span>
+            <span className="absolute right-1 text-[9px] font-bold">E</span>
+            <span className="absolute left-1 text-[9px] font-bold">O</span>
+          </motion.div>
+
+          {/* Glowing central core */}
+          <div className="absolute w-4 h-4 rounded-full bg-[#1c1612] border border-[#d4b285] shadow-[0_0_15px_rgba(212,178,133,0.5)] z-20" />
         </div>
 
-        {/* Locked Progress Tracker */}
-        <div className="flex flex-col items-center gap-2">
-          <div className="flex items-center gap-1.5 font-mono text-[10px] text-[#c2a67a] tracking-[0.3em] font-bold">
-            {progress}% RESTORED
+        {/* Telegram Typewriter Box */}
+        <div className="w-full bg-[#1c1612] border border-[#d4b285]/20 rounded-2xl p-6 min-h-[100px] flex flex-col justify-between shadow-inner mb-8">
+          <div className="text-[10px] text-gray-500 font-mono tracking-widest uppercase mb-2 border-b border-[#d4b285]/10 pb-1">
+            ESTADO DE CONEXIÓN TELEGRÁFICA:
           </div>
-          
-          {/* Progress bar */}
-          <div className="w-48 h-[1px] bg-[#c2a67a]/10 rounded-full relative overflow-hidden">
+          <div className="font-mono text-xs text-[#ece2d0] tracking-wide leading-relaxed min-h-[40px] uppercase">
+            {typewriterText}
+            <span className="animate-pulse font-bold ml-1">|</span>
+          </div>
+        </div>
+
+        {/* Progress percent */}
+        <div className="flex flex-col items-center gap-2 w-full">
+          <div className="font-mono text-[10px] text-[#d4b285] tracking-[0.3em] font-bold">
+            RESTABLECIENDO COMUNICACIÓN: {progress}%
+          </div>
+          <div className="w-full h-[1.5px] bg-[#d4b285]/10 rounded-full relative overflow-hidden">
             <motion.div 
-              className="absolute top-0 left-0 h-full bg-[#c2a67a]/70 shadow-[0_0_8px_rgba(194,166,122,0.5)]"
+              className="absolute top-0 left-0 h-full bg-[#d4b285] shadow-[0_0_8px_rgba(212,178,133,0.6)]"
               style={{ width: `${progress}%` }}
               transition={{ ease: "easeOut" }}
             />
