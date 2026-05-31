@@ -57,17 +57,20 @@ export default function Starvibe() {
           </motion.h2>
           
           <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="font-codec text-lg md:text-xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed drop-shadow-md space-y-6"
+            transition={{ delay: 0.2, duration: 0.8 }}
+            className="relative bg-gradient-to-r from-white/[0.03] to-transparent border-l-4 border-[#ff007f] p-8 md:p-10 rounded-r-3xl text-left max-w-3xl mx-auto mb-16 backdrop-blur-md shadow-2xl overflow-hidden group"
           >
-            <p>
-              El sentido de la palabra "interconexión" no es solo para dar un sentido a la ramificación de problemáticas, representa una fuente de solidaridad y fortaleza. En esta II Edición de LASAMUN deseamos recordar el valor de la esperanza, forjamos una comunidad de creación, pensamiento crítico, unida por el amor y el sueño de valernos por la justicia y la sostenibilidad.
+            <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#ff007f]/10 rounded-full blur-xl group-hover:bg-[#ff007f]/20 transition-colors pointer-events-none" />
+            <Sparkles className="absolute top-6 right-6 w-10 h-10 text-[#ff007f]/10 group-hover:text-[#ff007f]/20 group-hover:scale-110 transition-all pointer-events-none" />
+            
+            <p className="font-maison text-lg md:text-2xl text-white leading-relaxed font-light mb-6 relative z-10">
+              El sentido de la palabra "interconexión" no es solo para dar un sentido a la ramificación de problemáticas: representa una fuente viva de solidaridad y fortaleza.
             </p>
-            <p>
-              Es por ello que, siguiendo con esta idea, se han diseñado espacios idóneos para desenvolverte como delegado y como humano, buscando que en este Modelo de Naciones Unidas reine la fraternidad mediante actividades recreativas.
+            <p className="font-codec text-sm md:text-base text-gray-400 font-light leading-relaxed relative z-10">
+              En esta II Edición de LASAMUN deseamos recordar el valor de la esperanza. Forjamos una comunidad de creación y pensamiento crítico, unida por el amor y el sueño de valernos por la justicia y la sostenibilidad. Es por ello que se han diseñado espacios idóneos para desenvolverte como delegado y como humano, buscando que reine la fraternidad mediante actividades recreativas.
             </p>
           </motion.div>
         </div>

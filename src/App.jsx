@@ -16,6 +16,7 @@ import Corte from './components/Corte';
 import CorteLoader from './components/CorteLoader';
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
+import AlmeidasAd from './components/AlmeidasAd';
 import Footer from './components/Footer';
 import audioSystem from './utils/audioSystem';
 
@@ -245,6 +246,7 @@ function App() {
                 <Tematica />
                 <SaveTheDate />
                 <Comites />
+                <AlmeidasAd />
                 <TopFotos />
                 <Starvibe />
                 <Footer />
