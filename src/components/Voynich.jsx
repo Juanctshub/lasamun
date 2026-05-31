@@ -71,8 +71,8 @@ export default function Voynich() {
           loop 
           muted 
           playsInline
-          className="absolute min-w-full min-h-full object-cover opacity-20 transition-opacity duration-1000"
-          style={{ filter: 'sepia(0.8) brightness(0.25) contrast(1.3) blur(2px)' }}
+          className="absolute min-w-full min-h-full object-cover opacity-35 transition-opacity duration-1000"
+          style={{ filter: 'sepia(0.8) brightness(0.5) contrast(1.2)' }}
           onEnded={() => {
             if (bgVideoRef.current) {
               bgVideoRef.current.currentTime = 0;
@@ -81,13 +81,13 @@ export default function Voynich() {
           }}
         />
         {/* Gradients merging the margins */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#070503] via-[#070503]/85 to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-[#070503] via-transparent to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(58,37,18,0.15)_0%,_#070503_100%)] z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#070503] via-[#070503]/60 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#070503]/80 via-transparent to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,0,0,0)_0%,_#070503_100%)] z-10"></div>
       </div>
 
       {/* Pulsating Audio Frequency wave representing love.mp3 rhythm */}
-      <div className="absolute top-24 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-1 opacity-20 z-20 pointer-events-none">
+      <div className="absolute top-12 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-1 opacity-20 z-20 pointer-events-none">
         {[2, 3, 5, 2, 8, 4, 3, 6, 9, 5, 3, 7, 2, 4, 6, 8, 5, 3, 1].map((val, i) => (
           <motion.div 
             key={i}
