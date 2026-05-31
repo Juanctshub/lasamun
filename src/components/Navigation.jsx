@@ -24,7 +24,6 @@ export default function Navigation() {
       { name: 'Comités', href: '#comites', hoverClass: 'hover:text-white hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)]' },
       { name: 'Reglamentos Generales', href: '#reglamentos', hoverClass: 'hover:text-white hover:drop-shadow-[0_0_20px_rgba(255,255,255,0.7)]' },
       { name: 'Staff', href: '#staff', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
-      { name: 'Corte', href: '#corte', hoverClass: 'hover:text-[#D4AF37] hover:drop-shadow-[0_0_20px_rgba(212,175,55,0.6)]' },
       { name: 'Top Fotos', href: '#galeria', hoverClass: 'hover:text-primary-yellow hover:drop-shadow-[0_0_20px_rgba(255,209,0,0.6)]' },
       { name: 'Starvibe', href: '#starvibe', hoverClass: 'hover:text-[#ff007f] hover:drop-shadow-[0_0_20px_rgba(255,0,127,0.7)]' },
     ];
@@ -183,7 +182,7 @@ export default function Navigation() {
               
               {/* Right Pane (Main Menu Links - Centers on Mobile for perfect breathing room) */}
               <div className="w-full md:w-7/12 flex flex-col justify-center items-center md:items-start h-full">
-                <ul className="flex flex-col gap-2 sm:gap-3 md:gap-2 lg:gap-3 xl:gap-4 justify-center items-center md:items-start w-full pl-0 md:pl-12">
+                <ul className="flex flex-col gap-1.5 sm:gap-2 md:gap-2 lg:gap-2 xl:gap-3 justify-center items-center md:items-start w-full pl-0 md:pl-12">
                   {menuItems.map((item, index) => (
                     <motion.li
                       key={index}
@@ -207,7 +206,7 @@ export default function Navigation() {
                           window.location.hash = item.href;
                           window.dispatchEvent(new HashChangeEvent('hashchange'));
                         }}
-                        className={`font-maison text-3xl sm:text-4xl md:text-3xl lg:text-4xl xl:text-[2.75rem] leading-[1.1] font-bold uppercase block w-full text-center md:text-left transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
+                        className={`font-maison text-2xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-[2.2rem] leading-[1.1] font-bold uppercase block w-full text-center md:text-left transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
                       >
                         {item.name}
                       </a>
