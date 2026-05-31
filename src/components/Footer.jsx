@@ -30,6 +30,14 @@ export default function Footer() {
           Fomentando el pensamiento crítico, la diplomacia y el liderazgo global.
         </p>
         <span className="block text-xs md:text-sm text-neutral-400 mt-4 tracking-widest uppercase font-medium">&copy; 2026 Todos los derechos reservados.</span>
+        <a 
+          href="https://www.instagram.com/fotagreda/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block text-xs md:text-sm text-neutral-400 hover:text-neutral-900 mt-3 tracking-widest uppercase font-bold transition-colors duration-300 group"
+        >
+          Creado por <span className="underline underline-offset-4 group-hover:text-primary-blue transition-colors">fotagreda</span>
+        </a>
       </div>
     </footer>
   );
