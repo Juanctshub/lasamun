@@ -1,14 +1,50 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Quote, ArrowUpRight, Award } from 'lucide-react';
+import { X, Quote, ArrowUpRight, Award, Sparkles, Zap } from 'lucide-react';
 
 export default function Staff() {
   const [activeDept, setActiveDept] = useState('Todos');
   const [selectedMember, setSelectedMember] = useState(null);
 
-  const departments = ['Todos', 'Logística', 'Protocolo', 'Medios'];
+  const departments = ['Todos', 'Ejecutivo', 'Academia', 'Finanzas', 'Logística', 'Protocolo', 'Medios'];
 
   const staffList = [
+    {
+      id: 14,
+      name: "Alana Cuicas",
+      role: "Secretaria General",
+      dept: "Ejecutivo",
+      quote: `Hola, soy Alana Cuicas y soy la Secretaria General de la II EDICIÓN de LASAMUN, delego desde el año 2023 y está actividad ha cambiado mi vida para mejor en todos los sentidos. Espero que todos puedan disfrutar de este modelo, el cuál preparamos con mucho cariño para todos los delegados, muchos éxitos para todos 🫶🏻.
+
+Todo está conectado. 💙💫`,
+      image: "/alana.jpg"
+    },
+    {
+      id: 15,
+      name: "Carla Marín",
+      role: "Secretaria Académica",
+      dept: "Academia",
+      quote: `"El futuro pertenece a quienes creen en la belleza de sus sueños". – Roosevelt.
+
+Hola, soy Carla Marín, y en esta hermosa oportunidad estaré fungiendo como Secretaria Académica de LASAMUN II Edition. Llevo más de dos años delegando, donde he aprendido que, más allá del debate, la belleza del MUN reside en las experiencias y las personas; por ello, en esta II Edición deseo fervientemente que la empatía y fraternidad reinen dentro de los comités.
+
+Ver materializado este sueño me llena el corazón, sé que para todas las personas que han pasado por esta delegación representa un logro inimaginable el poder realizar un modelo en La Salle.
+
+Les deseo los mayores éxitos en esta edición construída con tanta dedicación, cada comité fue armado con un rigor académico pensado para el mejor desempeño de todos los delegados.
+
+Todo está conectado. 💙💫`,
+      image: "/carla.jpg"
+    },
+    {
+      id: 16,
+      name: "Santiago Almeida",
+      role: "Secretario de Finanzas",
+      dept: "Finanzas",
+      quote: `Me llamo Santiago Almeida, tengo 16 años y soy estudiante del Instituto La Salle, un lugar donde no solo me formo académicamente, sino donde aprendo el verdadero valor del esfuerzo y la fraternidad. Formar parte del Modelo de Naciones Unidas es mucho más que un pasatiempo para mí; es la ventana a través de la cual intento comprender la complejidad del mundo. Y si algo me ha enseñado hasta ahora es que "TODO ESTÁ CONECTADO", por eso junto con nuestra temática central espero disfruten esta II EDICIÓN de LASAMUN que les preparamos con mucho cariño, esfuerzo y dedicación.
+
+Todo está conectado. 💙💫`,
+      image: "/santiago.jpg"
+    },
     {
       id: 12,
       name: "Gabriel Rodríguez",
@@ -110,9 +146,9 @@ Todo está conectado. 💙💫`,
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="font-codec text-gray-400 max-w-2xl leading-relaxed font-light text-base"
+            className="font-codec text-gray-400 max-w-2xl leading-relaxed font-light text-base text-center"
           >
-            El cuerpo de directores, estrategas y coordinadores dedicados a forjar un ecosistema de debate riguroso, excelencia académica y despliegue operativo.
+            El cuerpo de directores, estrategas y coordinadores dedicados a forjar un escenario de debate riguroso, excelencia académica y despliegue operativo.
           </motion.p>
         </div>
 
@@ -121,16 +157,16 @@ Todo está conectado. 💙💫`,
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="flex justify-center items-center mb-16 max-w-md mx-auto"
+          className="flex justify-center items-center mb-16 max-w-4xl mx-auto"
         >
-          <div className="flex gap-1 p-1 bg-white/5 border border-white/10 rounded-[2rem] backdrop-blur-xl shadow-2xl w-full justify-center">
+          <div className="flex flex-wrap gap-1 p-1 bg-white/5 border border-white/10 rounded-[1.5rem] md:rounded-[2rem] backdrop-blur-xl shadow-2xl w-full justify-center">
             {departments.map((dept) => (
               <button
                 key={dept}
                 onClick={() => setActiveDept(dept)}
-                className={`font-codec text-[10px] md:text-xs uppercase tracking-widest px-6 py-2.5 rounded-full transition-all duration-500 w-full text-center ${
+                className={`font-codec text-[9px] md:text-xs uppercase tracking-widest px-4 md:px-5 py-2.5 rounded-xl md:rounded-full transition-all duration-500 text-center ${
                   activeDept === dept 
-                    ? 'bg-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/20'
+                    ? 'bg-[#D4AF37] text-black font-bold shadow-lg shadow-[#D4AF37]/20 scale-100'
                     : 'bg-transparent text-gray-400 hover:text-white'
                 }`}
               >
@@ -140,10 +176,10 @@ Todo está conectado. 💙💫`,
           </div>
         </motion.div>
 
-        {/* Cinematic Grid Gallery (Proportional cards for 5 members) */}
+        {/* Cinematic Grid Gallery (Clean grid with custom styles) */}
         <motion.div 
           layout
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto"
         >
           <AnimatePresence mode="popLayout">
             {filteredStaff.map((member) => (
@@ -155,17 +191,38 @@ Todo está conectado. 💙💫`,
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.5 }}
                 onClick={() => setSelectedMember(member)}
-                className="group relative cursor-pointer flex flex-col justify-between bg-gradient-to-b from-white/[0.04] to-transparent border border-white/10 hover:border-[#D4AF37]/50 rounded-[2rem] p-4 transition-all duration-500 shadow-2xl hover:shadow-[0_0_20px_rgba(212,175,55,0.06)]"
+                className={`group relative cursor-pointer flex flex-col justify-between bg-gradient-to-b from-white/[0.04] to-transparent rounded-[2rem] p-4 transition-all duration-500 shadow-2xl ${
+                  member.name === 'Santiago Almeida' 
+                    ? 'border-2 border-[#D4AF37]/80 hover:border-[#D4AF37] hover:shadow-[0_0_25px_rgba(212,175,55,0.15)] shadow-[0_0_15px_rgba(212,175,55,0.06)]' 
+                    : 'border border-white/10 hover:border-[#D4AF37]/50 hover:shadow-[0_0_20px_rgba(212,175,55,0.05)]'
+                }`}
               >
                 <div>
                   {/* Photo Container */}
                   <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden mb-4 relative border border-white/5 shadow-inner">
                     <div className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors duration-500 z-10" />
                     
-                    {/* Corner Tag */}
+                    {/* Corner Department Tag */}
                     <span className="absolute top-3 left-3 z-20 bg-black/75 backdrop-blur-md border border-[#D4AF37]/30 text-[#D4AF37] text-[8px] font-mono uppercase tracking-[0.25em] px-2.5 py-1 rounded-full font-bold">
                       {member.dept}
                     </span>
+
+                    {/* Santiago Special Header Badge */}
+                    {member.name === 'Santiago Almeida' && (
+                      <>
+                        <div className="absolute top-3 right-3 z-20 bg-gradient-to-r from-[#D4AF37] to-amber-500 text-black text-[7px] font-mono font-black uppercase tracking-widest px-2.5 py-1.5 rounded-full flex items-center gap-1 shadow-lg shadow-[#D4AF37]/25 border border-black/10 animate-pulse">
+                          <Sparkles className="w-2.5 h-2.5 animate-spin" style={{ animationDuration: '6s' }} /> PROTAGONISTA
+                        </div>
+                        {/* Miniature plush on the card corner */}
+                        <motion.div
+                          animate={{ y: [-4, 4, -4], rotate: [-8, 8, -8] }}
+                          transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                          className="absolute -bottom-2 -left-2 z-20 w-16 h-16 filter drop-shadow-[0_8px_16px_rgba(212,175,55,0.4)] pointer-events-none"
+                        >
+                          <img src="/mini.png" alt="Mini Almeida" className="w-full h-full object-contain" />
+                        </motion.div>
+                      </>
+                    )}
 
                     <img 
                       src={member.image} 
@@ -211,8 +268,22 @@ Todo está conectado. 💙💫`,
               exit={{ opacity: 0, scale: 0.95, y: 30 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
               onClick={(e) => e.stopPropagation()} // Prevents closing when clicking inside
-              className="relative w-full max-w-4xl bg-[#0f0f11] border border-white/10 rounded-[2.5rem] p-6 md:p-10 shadow-2xl flex flex-col md:flex-row items-center gap-8 md:gap-12"
+              className={`relative w-full max-w-4xl bg-[#0f0f11] rounded-[2.5rem] p-6 md:p-10 shadow-2xl flex flex-col md:flex-row items-center gap-8 md:gap-12 ${
+                selectedMember.name === 'Santiago Almeida' 
+                  ? 'border-2 border-[#D4AF37] shadow-[0_0_40px_rgba(212,175,55,0.15)]' 
+                  : 'border border-white/10'
+              }`}
             >
+              
+              {/* Santiago Premium Modal Sparks */}
+              {selectedMember.name === 'Santiago Almeida' && (
+                <>
+                  <Sparkles className="absolute top-10 left-10 w-6 h-6 text-[#D4AF37]/20 animate-pulse pointer-events-none" />
+                  <Sparkles className="absolute bottom-10 left-20 w-8 h-8 text-[#D4AF37]/15 animate-bounce pointer-events-none" style={{ animationDuration: '4s' }} />
+                  <div className="absolute inset-2 border border-[#D4AF37]/10 rounded-[2.2rem] pointer-events-none" />
+                </>
+              )}
+
               {/* Close Button */}
               <button 
                 onClick={() => setSelectedMember(null)}
@@ -222,7 +293,7 @@ Todo está conectado. 💙💫`,
               </button>
 
               {/* Left Side: Portrait Photo (Proportional & well-adapted) */}
-              <div className="w-full md:w-5/12 flex-shrink-0">
+              <div className="w-full md:w-5/12 flex-shrink-0 relative">
                 <div className="w-full aspect-[3/4] max-h-[260px] md:max-h-[380px] rounded-2xl overflow-hidden border border-white/10 shadow-xl relative">
                   <img 
                     src={selectedMember.image} 
@@ -231,6 +302,24 @@ Todo está conectado. 💙💫`,
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
                 </div>
+
+                {/* --- SANTIAGO ALMEIDA EASTER EGG PLUSH (MINI.PNG) --- */}
+                {selectedMember.name === 'Santiago Almeida' && (
+                  <motion.div 
+                    animate={{ y: [-8, 8, -8], rotate: [-6, 6, -6] }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -bottom-8 -right-8 w-28 h-28 z-30 filter drop-shadow-[0_15px_25px_rgba(212,175,55,0.45)] pointer-events-none"
+                  >
+                    {/* Golden glow bubble behind plush */}
+                    <div className="absolute inset-0 bg-[#D4AF37]/15 rounded-full blur-xl -z-10 animate-pulse" />
+                    
+                    <img 
+                      src="/mini.png" 
+                      alt="Mini Almeida Protagonista" 
+                      className="w-full h-full object-contain" 
+                    />
+                  </motion.div>
+                )}
               </div>
 
               {/* Right Side: Proportional Typography Details */}
@@ -239,6 +328,13 @@ Todo está conectado. 💙💫`,
                   <span className="bg-[#D4AF37]/15 border border-[#D4AF37]/30 text-[#D4AF37] text-[8px] font-mono uppercase tracking-[0.2em] px-2.5 py-1 rounded-full font-bold">
                     {selectedMember.dept}
                   </span>
+                  
+                  {selectedMember.name === 'Santiago Almeida' && (
+                    <span className="bg-gradient-to-r from-[#D4AF37] to-amber-500 text-black text-[7px] font-mono font-black uppercase tracking-widest px-2.5 py-1.5 rounded-full flex items-center gap-1 shadow-lg shadow-[#D4AF37]/25 border border-black/10">
+                      Teddy Owner 🧸
+                    </span>
+                  )}
+                  
                   <span className="font-mono text-[9px] text-white/30 tracking-[0.3em] uppercase">
                     LASAMUN 2026
                   </span>
