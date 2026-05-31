@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Download, ShieldAlert, Cpu, Terminal, Lock, Unlock, Database, RefreshCw, ChevronRight, HelpCircle, Users, Orbit } from 'lucide-react';
+import { FileText, Download, ShieldAlert, Cpu, Terminal, Lock, Unlock, Database, RefreshCw, ChevronRight, HelpCircle, Users, Orbit, X } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Nasa() {
@@ -9,12 +9,13 @@ export default function Nasa() {
   const [passcode, setPasscode] = useState('');
   const [accessGranted, setAccessGranted] = useState(false);
   const [error, setError] = useState(false);
+  const [showMesa, setShowMesa] = useState(false);
   
   const bgVideoRef = useRef(null);
 
   useEffect(() => {
     // Switch to main cosmic sound loop
-    audioSystem.switchToMain();
+    audioSystem.switchToNasa();
     
     if (bgVideoRef.current) {
       bgVideoRef.current.play().catch(err => {
@@ -52,7 +53,7 @@ export default function Nasa() {
       <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#020205]">
         <video 
           ref={bgVideoRef}
-          src="/fondo.mp4"
+          src="/nasa.mp4"
           autoPlay 
           loop 
           muted 
@@ -82,31 +83,38 @@ export default function Nasa() {
             transition={{ duration: 0.8 }}
             className="flex flex-col items-center"
           >
-            {/* Clickable NASA-like radar symbol to trigger passcode */}
+            {/* Centered Large NASA Logo replacing the previous SVG */}
             <div 
               onClick={() => setShowPasscode(true)}
-              className="w-32 h-32 mb-6 cursor-pointer group relative flex items-center justify-center"
+              className="w-48 h-48 mb-8 cursor-pointer group relative flex items-center justify-center"
               title="Acceder al Servidor DSN..."
             >
-              <div className="absolute inset-0 bg-[#0052a5]/10 rounded-full blur-xl group-hover:bg-[#0052a5]/30 transition-all duration-500"></div>
-              <svg viewBox="0 0 100 100" className="w-24 h-24 relative z-10 group-hover:scale-105 transition-transform duration-500 filter drop-shadow-[0_0_15px_rgba(0,82,165,0.6)] text-blue-500">
-                <circle cx="50" cy="50" r="42" fill="#002654" stroke="#0052a5" strokeWidth="2" />
-                <circle cx="30" cy="35" r="1.2" fill="white" opacity="0.9" />
-                <circle cx="70" cy="65" r="1.5" fill="white" opacity="0.9" />
-                <circle cx="68" cy="30" r="1" fill="white" opacity="0.9" />
-                <circle cx="32" cy="68" r="1.2" fill="white" opacity="0.9" />
-                {/* Orbital path */}
-                <ellipse cx="50" cy="50" rx="36" ry="11" fill="none" stroke="white" strokeWidth="1.5" transform="rotate(-25 50 50)" />
-                <polygon points="77,31 83,29 79,35" fill="white" />
-                {/* Radar sweep line */}
-                <motion.line
-                  x1="50" y1="50" x2="80" y2="25"
-                  stroke="#00f0ff" strokeWidth="1" strokeLinecap="round"
-                  animate={{ rotate: 360 }}
-                  transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
-                  style={{ transformOrigin: "50px 50px" }}
-                />
-              </svg>
+              {/* Complex concentric sci-fi rings behind logo */}
+              <div className="absolute inset-0 bg-[#0052a5]/5 rounded-full blur-2xl group-hover:bg-[#0052a5]/20 transition-all duration-700 pointer-events-none"></div>
+              <motion.div 
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
+                className="absolute w-[110%] h-[110%] rounded-full border border-blue-500/10 border-dashed"
+              />
+              <motion.div 
+                animate={{ rotate: -360 }}
+                transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
+                className="absolute w-[95%] h-[95%] rounded-full border border-blue-500/20 border-dotted"
+              />
+              
+              {/* NASA Logo image */}
+              <img 
+                src="/nasa.png" 
+                alt="NASA Logo" 
+                className="w-40 h-40 object-contain relative z-10 transition-all duration-700 filter drop-shadow-[0_0_20px_rgba(0,82,165,0.7)] group-hover:scale-105"
+              />
+
+              {/* Glowing radar line indicator */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ repeat: Infinity, duration: 6, ease: "linear" }}
+                className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/0 via-cyan-400/0 to-cyan-400/20 pointer-events-none origin-center"
+              />
             </div>
 
             <h1 className="font-maison text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-blue-200 drop-shadow-md">
@@ -256,20 +264,20 @@ export default function Nasa() {
               {/* Action Buttons */}
               <div className="grid grid-cols-1 gap-4 mt-8">
                 <button 
-                  onClick={() => window.alert('Guía Académica de NASA en desarrollo...')}
+                  onClick={() => window.open('https://drive.google.com/file/d/1n5lsBqbnoiMpmBsbWOyGjN4a5Gac5wmD/view?usp=sharing', '_blank')}
                   className="group flex items-center gap-4 bg-white/5 hover:bg-blue-600/15 border border-white/10 hover:border-blue-500/50 p-4 rounded-xl transition-all duration-300"
                 >
                   <div className="p-3 bg-black/60 border border-white/5 rounded-lg group-hover:border-blue-500/30 transition-colors">
                     <Download className="w-5 h-5 text-blue-400 group-hover:scale-110 transition-transform" />
                   </div>
                   <div className="text-left">
-                    <span className="block font-bold text-white uppercase group-hover:text-blue-400 transition-colors">Guía Académica</span>
-                    <span className="block font-mono text-[9px] text-gray-400 uppercase tracking-widest mt-1">Descargar Documento</span>
+                    <span className="block font-bold text-white uppercase group-hover:text-blue-400 transition-colors">Guía de Documentos</span>
+                    <span className="block font-mono text-[9px] text-gray-400 uppercase tracking-widest mt-1">Ver Carpeta Oficial NASA</span>
                   </div>
                 </button>
                 
                 <button 
-                  onClick={() => window.alert('Mesa Directiva de NASA será anunciada pronto...')}
+                  onClick={() => setShowMesa(true)}
                   className="group flex items-center gap-4 bg-white/5 hover:bg-blue-600/15 border border-white/10 hover:border-blue-500/50 p-4 rounded-xl transition-all duration-300"
                 >
                   <div className="p-3 bg-black/60 border border-white/5 rounded-lg group-hover:border-blue-500/30 transition-colors">
@@ -277,7 +285,7 @@ export default function Nasa() {
                   </div>
                   <div className="text-left">
                     <span className="block font-bold text-white uppercase group-hover:text-blue-400 transition-colors">Mesa Directiva</span>
-                    <span className="block font-mono text-[9px] text-gray-400 uppercase tracking-widest mt-1">Contactar Delegados</span>
+                    <span className="block font-mono text-[9px] text-gray-400 uppercase tracking-widest mt-1">Conoce a tu mesa</span>
                   </div>
                 </button>
               </div>
@@ -518,6 +526,75 @@ export default function Nasa() {
                 </div>
 
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 4. Mesa Directiva Modal Popup (NASA Sci-Fi Style) */}
+      <AnimatePresence>
+        {showMesa && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+            onClick={() => setShowMesa(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl bg-[#020205] border border-blue-500/30 rounded-[2.5rem] p-8 md:p-10 text-center relative overflow-hidden shadow-2xl"
+            >
+              {/* Blue DSN trim lines */}
+              <div className="absolute top-0 left-0 w-full h-[4px] bg-[#0052a5]" />
+              <div className="absolute inset-2 border border-blue-500/10 rounded-[2.2rem] pointer-events-none" />
+
+              <button 
+                onClick={() => setShowMesa(false)}
+                className="absolute top-6 right-6 w-10 h-10 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 hover:border-white rounded-full flex items-center justify-center transition-all duration-300 z-50"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="w-16 h-16 mx-auto mb-6 bg-blue-500/10 border border-blue-500/30 rounded-2xl flex items-center justify-center text-blue-400">
+                <Users className="w-8 h-8 animate-pulse" />
+              </div>
+
+              <h3 className="font-maison text-3xl font-extrabold text-white uppercase tracking-tight mb-2">
+                MESA DIRECTIVA
+              </h3>
+              <p className="font-mono text-[10px] text-blue-400 tracking-[0.35em] uppercase mb-8 border-b border-white/10 pb-4">
+                NASA DEEP SPACE COMMAND • ESTACIÓN ATLAS-9
+              </p>
+
+              {/* Members Dossier Layout */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto mb-8">
+                {/* Presidente Card */}
+                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-blue-500/30 transition-all duration-300">
+                  <span className="font-mono text-[8px] text-blue-400 tracking-[0.2em] uppercase block mb-1">Presidente</span>
+                  <h4 className="font-maison font-bold text-xl text-white group-hover:text-blue-400 transition-colors">Isaias Tovar</h4>
+                  <div className="w-8 h-[1px] bg-white/10 mx-auto my-3 group-hover:bg-blue-500/30 transition-colors" />
+                  <p className="text-[10px] text-gray-500 font-codec leading-relaxed">Director del Centro de Misión y Comunicaciones de la Red del Espacio Profundo (DSN).</p>
+                </div>
+
+                {/* Vicepresidente Card */}
+                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-blue-500/30 transition-all duration-300">
+                  <span className="font-mono text-[8px] text-blue-400 tracking-[0.2em] uppercase block mb-1">Vicepresidente</span>
+                  <h4 className="font-maison font-bold text-xl text-white group-hover:text-blue-400 transition-colors">Victoria Hernandez</h4>
+                  <div className="w-8 h-[1px] bg-white/10 mx-auto my-3 group-hover:bg-blue-500/30 transition-colors" />
+                  <p className="text-[10px] text-gray-500 font-codec leading-relaxed">Directora de Astrofísica y Coordinación del Protocolo de Defensa Planetaria.</p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setShowMesa(false)}
+                className="bg-white/5 hover:bg-white text-gray-400 hover:text-black border border-white/10 hover:border-white px-8 py-3 rounded-xl font-mono text-xs uppercase tracking-widest font-bold transition-all"
+              >
+                Cerrar Dossier
+              </button>
             </motion.div>
           </motion.div>
         )}

@@ -9,6 +9,7 @@ export default function Corte() {
   const [passcode, setPasscode] = useState('');
   const [accessGranted, setAccessGranted] = useState(false);
   const [error, setError] = useState(false);
+  const [showMesa, setShowMesa] = useState(false);
   const videoRef = useRef(null);
   const bgVideoRef = useRef(null);
 
@@ -179,20 +180,20 @@ export default function Corte() {
               {/* Botones de Mesa Directiva y Guia Academica */}
               <div className="grid grid-cols-1 gap-4 mt-8">
                 <button 
-                  onClick={() => window.alert('Guía Académica en desarrollo...')}
+                  onClick={() => window.open('https://drive.google.com/file/d/1Z_Mpvpel6JhaR_0-7vezBC4j5JpK4SEn/view?usp=sharing', '_blank')}
                   className="group flex items-center gap-4 bg-white/5 hover:bg-[#D4AF37]/10 border border-white/10 hover:border-[#D4AF37]/50 p-4 rounded-xl transition-all duration-300"
                 >
                   <div className="p-3 bg-black/50 border border-white/5 rounded-lg group-hover:border-[#D4AF37]/30 transition-colors">
                     <Download className="w-5 h-5 text-[#D4AF37] group-hover:scale-110 transition-transform" />
                   </div>
                   <div className="text-left">
-                    <span className="block font-bold text-white uppercase group-hover:text-[#D4AF37] transition-colors">Guía Académica</span>
-                    <span className="block font-mono text-[10px] text-gray-400 uppercase tracking-widest mt-1">Descargar Documento</span>
+                    <span className="block font-bold text-white uppercase group-hover:text-[#D4AF37] transition-colors">Reglamento de Corte</span>
+                    <span className="block font-mono text-[10px] text-gray-400 uppercase tracking-widest mt-1">Ver Documento Oficial</span>
                   </div>
                 </button>
                 
                 <button 
-                  onClick={() => window.alert('Mesa Directiva será anunciada pronto...')}
+                  onClick={() => setShowMesa(true)}
                   className="group flex items-center gap-4 bg-white/5 hover:bg-[#D4AF37]/10 border border-white/10 hover:border-[#D4AF37]/50 p-4 rounded-xl transition-all duration-300"
                 >
                   <div className="p-3 bg-black/50 border border-white/5 rounded-lg group-hover:border-[#D4AF37]/30 transition-colors">
@@ -200,7 +201,7 @@ export default function Corte() {
                   </div>
                   <div className="text-left">
                     <span className="block font-bold text-white uppercase group-hover:text-[#D4AF37] transition-colors">Mesa Directiva</span>
-                    <span className="block font-mono text-[10px] text-gray-400 uppercase tracking-widest mt-1">Personal del Tribunal</span>
+                    <span className="block font-mono text-[10px] text-gray-400 uppercase tracking-widest mt-1">Conoce a tu mesa</span>
                   </div>
                 </button>
               </div>
@@ -253,13 +254,13 @@ export default function Corte() {
           </div>
           <div className="flex flex-wrap gap-4 w-full sm:w-auto">
             <button 
-              onClick={() => window.location.hash = '#staff'}
+              onClick={() => setShowMesa(true)}
               className="flex-1 sm:flex-none px-6 py-3 bg-[#D4AF37] text-black font-mono text-xs uppercase tracking-widest font-black rounded-xl hover:bg-white hover:text-black transition-all duration-300 shadow-lg shadow-[#D4AF37]/10"
             >
               Conoce a tu mesa
             </button>
             <button 
-              onClick={() => window.location.hash = '#reglamentos'}
+              onClick={() => window.open('https://drive.google.com/file/d/1Z_Mpvpel6JhaR_0-7vezBC4j5JpK4SEn/view?usp=sharing', '_blank')}
               className="flex-1 sm:flex-none px-6 py-3 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 hover:border-white font-mono text-xs uppercase tracking-widest font-bold rounded-xl transition-all duration-300"
             >
               Reglamento
@@ -372,6 +373,75 @@ export default function Corte() {
               className="w-full h-full object-contain"
               onEnded={closeEasterEgg} // Automatically close when done
             />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* 4. Mesa Directiva Modal Popup (SDNY Court Style) */}
+      <AnimatePresence>
+        {showMesa && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
+            onClick={() => setShowMesa(false)}
+          >
+            <motion.div 
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="w-full max-w-2xl bg-[#0a0a0c] border border-[#D4AF37]/30 rounded-[2.5rem] p-8 md:p-10 text-center relative overflow-hidden shadow-2xl"
+            >
+              {/* Gold trim lines */}
+              <div className="absolute top-0 left-0 w-full h-[4px] bg-[#D4AF37]" />
+              <div className="absolute inset-2 border border-[#D4AF37]/10 rounded-[2.2rem] pointer-events-none" />
+
+              <button 
+                onClick={() => setShowMesa(false)}
+                className="absolute top-6 right-6 w-10 h-10 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 hover:border-white rounded-full flex items-center justify-center transition-all duration-300 z-50"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              <div className="w-16 h-16 mx-auto mb-6 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-2xl flex items-center justify-center text-[#D4AF37]">
+                <Users className="w-8 h-8" />
+              </div>
+
+              <h3 className="font-maison text-3xl font-extrabold text-white uppercase tracking-tight mb-2">
+                MESA DIRECTIVA
+              </h3>
+              <p className="font-mono text-[10px] text-[#D4AF37] tracking-[0.35em] uppercase mb-8 border-b border-white/10 pb-4">
+                Corte Federal del Distrito Sur de Nueva York
+              </p>
+
+              {/* Members Dossier Layout */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto mb-8">
+                {/* Presidente Card */}
+                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-[#D4AF37]/30 transition-all duration-300">
+                  <span className="font-mono text-[8px] text-[#D4AF37] tracking-[0.2em] uppercase block mb-1">Presidente</span>
+                  <h4 className="font-maison font-bold text-xl text-white group-hover:text-[#D4AF37] transition-colors">Geraldine Juárez</h4>
+                  <div className="w-8 h-[1px] bg-white/10 mx-auto my-3 group-hover:bg-[#D4AF37]/30 transition-colors" />
+                  <p className="text-[10px] text-gray-500 font-codec leading-relaxed">Presidencia y moderación formal del Tribunal de Justicia del Distrito Sur de Nueva York.</p>
+                </div>
+
+                {/* Vicepresidente Card */}
+                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-[#D4AF37]/30 transition-all duration-300">
+                  <span className="font-mono text-[8px] text-[#D4AF37] tracking-[0.2em] uppercase block mb-1">Vicepresidente</span>
+                  <h4 className="font-maison font-bold text-xl text-white group-hover:text-[#D4AF37] transition-colors">Mariana Lacruz</h4>
+                  <div className="w-8 h-[1px] bg-white/10 mx-auto my-3 group-hover:bg-[#D4AF37]/30 transition-colors" />
+                  <p className="text-[10px] text-gray-500 font-codec leading-relaxed">Copresidencia y supervisión logística de deliberaciones legales.</p>
+                </div>
+              </div>
+
+              <button 
+                onClick={() => setShowMesa(false)}
+                className="bg-white/5 hover:bg-white text-gray-400 hover:text-black border border-white/10 hover:border-white px-8 py-3 rounded-xl font-mono text-xs uppercase tracking-widest font-bold transition-all"
+              >
+                Cerrar Dossier
+              </button>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

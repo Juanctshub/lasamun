@@ -61,7 +61,7 @@ function App() {
       setTimeout(() => audioSystem.switchToCorte(), 500);
     } else if (window.location.hash === '#nasa') {
       setNasaLoading(true);
-      setTimeout(() => audioSystem.switchToMain(), 500);
+      setTimeout(() => audioSystem.switchToNasa(), 500);
     }
   };
 
@@ -93,7 +93,7 @@ function App() {
       } else if (isNasa) {
         setCurrentPage('nasa');
         setNasaLoading(true);
-        audioSystem.switchToMain();
+        audioSystem.switchToNasa();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
