@@ -18,6 +18,8 @@ import Nasa from './components/Nasa';
 import NasaLoader from './components/NasaLoader';
 import Voynich from './components/Voynich';
 import VoynichLoader from './components/VoynichLoader';
+import Ica from './components/Ica';
+import IcaLoader from './components/IcaLoader';
 
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
@@ -34,6 +36,7 @@ function App() {
     if (window.location.hash === '#corte') return 'corte';
     if (window.location.hash === '#nasa') return 'nasa';
     if (window.location.hash === '#voynich') return 'voynich';
+    if (window.location.hash === '#ica') return 'ica';
     return 'landing';
 
   };
@@ -44,6 +47,7 @@ function App() {
   const [corteLoading, setCorteLoading] = useState(false);
   const [nasaLoading, setNasaLoading] = useState(false);
   const [voynichLoading, setVoynichLoading] = useState(false);
+  const [icaLoading, setIcaLoading] = useState(false);
 
 
   // Handle entering the landing page and starting audio
@@ -72,6 +76,9 @@ function App() {
     } else if (window.location.hash === '#voynich') {
       setVoynichLoading(true);
       setTimeout(() => audioSystem.switchToVoynich(), 500);
+    } else if (window.location.hash === '#ica') {
+      setIcaLoading(true);
+      setTimeout(() => audioSystem.switchToIca(), 500);
     }
   };
 
@@ -85,6 +92,7 @@ function App() {
       const isCorte = window.location.hash === '#corte';
       const isNasa = window.location.hash === '#nasa';
       const isVoynich = window.location.hash === '#voynich';
+      const isIca = window.location.hash === '#ica';
 
       
       if (isStaff) {
@@ -111,6 +119,10 @@ function App() {
         setCurrentPage('voynich');
         setVoynichLoading(true);
         audioSystem.switchToVoynich();
+      } else if (isIca) {
+        setCurrentPage('ica');
+        setIcaLoading(true);
+        audioSystem.switchToIca();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
@@ -136,7 +148,7 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich' || currentPage === 'ica') {
       window.scrollTo({ top: 0 });
     }
 
@@ -324,6 +336,25 @@ function App() {
                       transition={{ duration: 0.5 }}
                     >
                       <Voynich />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : currentPage === 'ica' ? (
+              <React.Fragment key="ica-view">
+                <AnimatePresence mode="wait">
+                  {icaLoading ? (
+                    <IcaLoader key="ica-loader" onComplete={() => setIcaLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="ica-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Ica />
                       <Footer />
                     </motion.div>
                   )}

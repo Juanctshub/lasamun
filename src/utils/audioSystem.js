@@ -7,6 +7,7 @@ class AudioSystem {
     this.mii = null;
     this.nasa = null; // New NASA audio
     this.love = null; // New Voynich audio
+    this.toby = null; // New ICA audio
 
 
     this.frutigerNode = null;
@@ -16,6 +17,7 @@ class AudioSystem {
     this.jeffreyNode = null;
     this.nasaNode = null;
     this.loveNode = null;
+    this.tobyNode = null;
 
 
     this.frutigerFilter = null;
@@ -25,6 +27,7 @@ class AudioSystem {
     this.jeffreyFilter = null;
     this.nasaFilter = null;
     this.loveFilter = null;
+    this.tobyFilter = null;
 
 
     this.frutigerGain = null;
@@ -34,6 +37,7 @@ class AudioSystem {
     this.jeffreyGain = null;
     this.nasaGain = null;
     this.loveGain = null;
+    this.tobyGain = null;
 
 
     this.activeTrack = null; 
@@ -75,6 +79,10 @@ class AudioSystem {
     this.love.loop = true;
     this.love.crossOrigin = 'anonymous';
 
+    this.toby = new Audio('/toby.mp3');
+    this.toby.loop = true;
+    this.toby.crossOrigin = 'anonymous';
+
 
     // Route elements through Web Audio API
     this.frutigerNode = this.ctx.createMediaElementSource(this.frutiger);
@@ -84,6 +92,7 @@ class AudioSystem {
     this.jeffreyNode = this.ctx.createMediaElementSource(this.jeffrey);
     this.nasaNode = this.ctx.createMediaElementSource(this.nasa);
     this.loveNode = this.ctx.createMediaElementSource(this.love);
+    this.tobyNode = this.ctx.createMediaElementSource(this.toby);
 
 
     // Create lowpass filters for the "desenfoque" muffling effect
@@ -94,9 +103,10 @@ class AudioSystem {
     this.jeffreyFilter = this.ctx.createBiquadFilter();
     this.nasaFilter = this.ctx.createBiquadFilter();
     this.loveFilter = this.ctx.createBiquadFilter();
+    this.tobyFilter = this.ctx.createBiquadFilter();
 
 
-    [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter].forEach(f => {
+    [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter, this.tobyFilter].forEach(f => {
       f.type = 'lowpass';
       f.Q.value = 1.0;
       f.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
@@ -111,9 +121,10 @@ class AudioSystem {
     this.jeffreyGain = this.ctx.createGain();
     this.nasaGain = this.ctx.createGain();
     this.loveGain = this.ctx.createGain();
+    this.tobyGain = this.ctx.createGain();
 
 
-    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain].forEach(g => {
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain, this.tobyGain].forEach(g => {
       g.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
     });
 
@@ -126,6 +137,7 @@ class AudioSystem {
     this._setupChain(this.jeffreyNode, this.jeffreyFilter, this.jeffreyGain);
     this._setupChain(this.nasaNode, this.nasaFilter, this.nasaGain);
     this._setupChain(this.loveNode, this.loveFilter, this.loveGain);
+    this._setupChain(this.tobyNode, this.tobyFilter, this.tobyGain);
 
 
     this.initialized = true;
@@ -153,6 +165,7 @@ class AudioSystem {
     this.jeffrey.play().catch(e => console.log("Playback error Jeffrey", e));
     this.nasa.play().catch(e => console.log("Playback error Nasa", e));
     this.love.play().catch(e => console.log("Playback error Love", e));
+    this.toby.play().catch(e => console.log("Playback error Toby", e));
 
 
     this.activeTrack = 'frutiger';
@@ -202,7 +215,8 @@ class AudioSystem {
       {g: this.miiGain, f: this.miiFilter},
       {g: this.jeffreyGain, f: this.jeffreyFilter},
       {g: this.nasaGain, f: this.nasaFilter},
-      {g: this.loveGain, f: this.loveFilter}
+      {g: this.loveGain, f: this.loveFilter},
+      {g: this.tobyGain, f: this.tobyFilter}
     ];
 
 
@@ -315,14 +329,27 @@ class AudioSystem {
     this._muffleAllExcept(this.loveGain);
   }
 
+  switchToIca() {
+    if (!this.initialized) return;
+    if (this.activeTrack === 'toby') {
+      if (this.toby.paused) {
+        this.toby.play().catch(e => console.log("Play error Toby on resume", e));
+      }
+      return;
+    }
+    this.activeTrack = 'toby';
+    this.toby.play().catch(e => console.log("Play error Toby on switch", e));
+    this._muffleAllExcept(this.tobyGain);
+  }
+
 
   pauseAll() {
     if (!this.initialized) return;
     this.activeTrack = null;
     const now = this.ctx.currentTime;
     
-    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain].forEach((g, i) => {
-      const f = [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter][i];
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain, this.tobyGain].forEach((g, i) => {
+      const f = [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter, this.tobyFilter][i];
       this._muffleAndFadeDown(g, f, now);
     });
 
