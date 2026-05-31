@@ -238,6 +238,35 @@ export default function Corte() {
 
           </div>
         </div>
+
+        {/* Sleek bottom navigation bar for Corte */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="max-w-4xl mx-auto mt-20 p-6 bg-white/[0.02] border border-white/10 rounded-[2rem] backdrop-blur-xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-2xl relative overflow-hidden group hover:border-[#D4AF37]/30 transition-all duration-500"
+        >
+          <div className="absolute -top-10 -right-10 w-24 h-24 bg-[#D4AF37]/5 rounded-full blur-xl pointer-events-none"></div>
+          <div className="text-left">
+            <span className="font-mono text-[9px] text-[#D4AF37] tracking-[0.35em] uppercase block mb-1">Enlaces Oficiales</span>
+            <h4 className="font-maison font-bold text-xl text-white">Recursos y Personal</h4>
+          </div>
+          <div className="flex flex-wrap gap-4 w-full sm:w-auto">
+            <button 
+              onClick={() => window.location.hash = '#staff'}
+              className="flex-1 sm:flex-none px-6 py-3 bg-[#D4AF37] text-black font-mono text-xs uppercase tracking-widest font-black rounded-xl hover:bg-white hover:text-black transition-all duration-300 shadow-lg shadow-[#D4AF37]/10"
+            >
+              Conoce a tu mesa
+            </button>
+            <button 
+              onClick={() => window.location.hash = '#reglamentos'}
+              className="flex-1 sm:flex-none px-6 py-3 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 hover:border-white font-mono text-xs uppercase tracking-widest font-bold rounded-xl transition-all duration-300"
+            >
+              Reglamento
+            </button>
+          </div>
+        </motion.div>
+
       </div>
 
       {/* --- EASTER EGG COMPONENTS --- */}

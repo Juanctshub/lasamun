@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Download, ShieldAlert, Cpu, Terminal, Lock, Unlock, Database, RefreshCw, ChevronRight, HelpCircle, Users } from 'lucide-react';
+import { FileText, Download, ShieldAlert, Cpu, Terminal, Lock, Unlock, Database, RefreshCw, ChevronRight, HelpCircle, Users, Orbit } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Nasa() {
@@ -306,6 +306,44 @@ export default function Nasa() {
               >
                 Bypass
               </button>
+            </motion.div>
+
+            {/* NASA Immersive Exhibit Dossier Grid */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 mt-8 animate-pulse-slow"
+            >
+              <div className="relative h-44 rounded-2xl overflow-hidden group border border-blue-500/20 bg-black/40">
+                <img src="/n1.webp" alt="3i/ATLAS Spectrum" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700 filter grayscale" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-left">
+                  <span className="font-mono text-[8px] text-blue-400 tracking-[0.25em] uppercase block mb-1">Dossier Exhibit 01</span>
+                  <h4 className="font-maison font-bold text-sm text-white">Anomalous Isotopic Spectrum</h4>
+                  <span className="font-mono text-[8px] text-white/40 block mt-0.5">Spectroscopic analysis showing processed iron-60</span>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div className="relative h-32 rounded-2xl overflow-hidden group border border-blue-500/20 bg-black/40">
+                  <img src="/n2.jpg" alt="Thermal Signature" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700 filter grayscale sepia-[0.2]" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"></div>
+                  <div className="absolute bottom-3 left-3 text-left">
+                    <span className="font-mono text-[7px] text-blue-400 tracking-wider uppercase block">Exhibit 02</span>
+                    <h5 className="font-maison font-bold text-[11px] text-white leading-tight">Thermal Sweep</h5>
+                  </div>
+                </div>
+
+                <div className="relative h-32 rounded-2xl overflow-hidden group border border-blue-500/20 bg-black/40">
+                  <img src="/n3.jpg" alt="Tumbling Orbit" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700 filter grayscale sepia-[0.1]" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"></div>
+                  <div className="absolute bottom-3 left-3 text-left">
+                    <span className="font-mono text-[7px] text-blue-400 tracking-wider uppercase block">Exhibit 03</span>
+                    <h5 className="font-maison font-bold text-[11px] text-white leading-tight">Tumbling Log</h5>
+                  </div>
+                </div>
+              </div>
             </motion.div>
 
           </div>

@@ -69,15 +69,25 @@ export default function NasaLoader({ onComplete }) {
 
       <div className="flex flex-col items-center justify-center max-w-xl w-full px-6 text-center relative z-10">
         
-        {/* Glowing Satellite Dish Emblem Container */}
+        {/* Glowing NASA Logo Container */}
         <div className="relative mb-8 flex items-center justify-center">
           <motion.div 
-            animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
+            animate={{ scale: [1, 1.08, 1], opacity: [0.4, 0.7, 0.4] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="absolute w-24 h-24 bg-[#0052a5]/10 rounded-full blur-xl"
+            className="absolute w-28 h-28 bg-[#0052a5]/15 rounded-full blur-2xl pointer-events-none"
           />
-          <div className="w-16 h-16 rounded-2xl border border-blue-500/30 bg-black/40 flex items-center justify-center p-3 shadow-[0_0_20px_rgba(0,82,165,0.2)]">
-            <Radio className="w-8 h-8 text-blue-400 animate-pulse" />
+          <div className="w-24 h-24 rounded-full border border-blue-500/20 bg-black/60 flex items-center justify-center p-2 shadow-[0_0_30px_rgba(0,82,165,0.4)] relative overflow-hidden group">
+            <img 
+              src="/nasa.png" 
+              alt="NASA Logo" 
+              className="w-full h-full object-contain filter drop-shadow-[0_0_10px_rgba(0,82,165,0.5)]" 
+            />
+            {/* Spinning Radar line over logo */}
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ repeat: Infinity, duration: 5, ease: "linear" }}
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-cyan-400/0 via-cyan-400/0 to-cyan-400/10 pointer-events-none origin-center"
+            />
           </div>
         </div>
 
