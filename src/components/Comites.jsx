@@ -202,7 +202,7 @@ export default function Comites() {
     { id: 4, name: 'ICFJ', desc: 'Prensa (Centro Internacional de Periodistas)', topic: 'Libertad de Prensa y Cobertura de Veracidad Global', color: '#06B6D4' },
     { id: 5, name: 'ICA (1935)', desc: 'Congreso Internacional de Americanistas', topic: 'Preservación Histórica, Identidades y Lenguas de América', color: '#D97706' },
     { id: 6, name: 'Investigación (1925)', desc: 'Investigación del Manuscrito de Voynich', topic: 'Criptografía, Lingüística y el Desafío del Códice Oculto', color: '#10B981' },
-    { id: 7, name: 'NASA', desc: 'National Aeronautics and Space Administration', topic: 'Exploración Espacial y Cooperación Científica Extraplanetaria', color: '#2563EB' },
+    { id: 7, name: 'NASA', desc: 'National Aeronautics and Space Administration (2025)', topic: 'Tópico: El caso del 3i/Atlas', color: '#0052a5' },
     { id: 8, name: 'CORTE (2021)', desc: 'Corte Federal del Distrito Sur de Nueva York', topic: 'Litigio Civil y Jurisprudencia sobre la Privacidad en el Siglo XXI', color: '#64748B' },
     { id: 9, name: 'CRISIS', desc: 'Gabinete de Crisis: Mercado Ilícito de Kraken', topic: 'Operaciones en la Dark Web, Ciberseguridad y Persecución Tecnológica', color: '#EC4899' },
   ];
@@ -295,6 +295,8 @@ export default function Comites() {
                     window.location.hash = '#crisis';
                   } else if (comite.name === 'CORTE (2021)') {
                     window.location.hash = '#corte';
+                  } else if (comite.name === 'NASA') {
+                    window.location.hash = '#nasa';
                   }
                 }}
                 className="group border-b border-white/10 py-6 px-4 md:px-6 flex flex-col md:flex-row items-start md:items-center justify-between cursor-pointer relative overflow-hidden transition-all duration-500 hover:pl-10"

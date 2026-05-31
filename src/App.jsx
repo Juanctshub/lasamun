@@ -14,6 +14,8 @@ import Reglamentos from './components/Reglamentos';
 import ReglamentosLoader from './components/ReglamentosLoader';
 import Corte from './components/Corte';
 import CorteLoader from './components/CorteLoader';
+import Nasa from './components/Nasa';
+import NasaLoader from './components/NasaLoader';
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
 import AlmeidasAd from './components/AlmeidasAd';
@@ -27,6 +29,7 @@ function App() {
     if (window.location.hash === '#crisis') return 'crisis';
     if (window.location.hash === '#reglamentos') return 'reglamentos';
     if (window.location.hash === '#corte') return 'corte';
+    if (window.location.hash === '#nasa') return 'nasa';
     return 'landing';
   };
   const [currentPage, setCurrentPage] = useState(getInitialPage());
@@ -34,6 +37,7 @@ function App() {
   const [crisisLoading, setCrisisLoading] = useState(false);
   const [reglamentosLoading, setReglamentosLoading] = useState(false);
   const [corteLoading, setCorteLoading] = useState(false);
+  const [nasaLoading, setNasaLoading] = useState(false);
 
   // Handle entering the landing page and starting audio
   const handleEnterExperience = () => {
@@ -43,7 +47,7 @@ function App() {
     // De-activate loader screen
     setLoading(false);
 
-    // If starting directly on the staff, crisis, reglamentos or corte hash, trigger its loader immediately
+    // If starting directly on the staff, crisis, reglamentos, corte or nasa hash, trigger its loader immediately
     if (window.location.hash === '#staff') {
       setStaffLoading(true);
     } else if (window.location.hash === '#crisis') {
@@ -55,6 +59,9 @@ function App() {
     } else if (window.location.hash === '#corte') {
       setCorteLoading(true);
       setTimeout(() => audioSystem.switchToCorte(), 500);
+    } else if (window.location.hash === '#nasa') {
+      setNasaLoading(true);
+      setTimeout(() => audioSystem.switchToMain(), 500);
     }
   };
 
@@ -65,6 +72,7 @@ function App() {
       const isCrisis = window.location.hash === '#crisis';
       const isReglamentos = window.location.hash === '#reglamentos';
       const isCorte = window.location.hash === '#corte';
+      const isNasa = window.location.hash === '#nasa';
       
       if (isStaff) {
         setCurrentPage('staff');
@@ -82,6 +90,10 @@ function App() {
         setCurrentPage('corte');
         setCorteLoading(true);
         audioSystem.switchToCorte();
+      } else if (isNasa) {
+        setCurrentPage('nasa');
+        setNasaLoading(true);
+        audioSystem.switchToMain();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
@@ -106,7 +118,7 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa') {
       window.scrollTo({ top: 0 });
     }
   }, [currentPage, loading]);
@@ -229,6 +241,25 @@ function App() {
                       transition={{ duration: 0.5 }}
                     >
                       <Corte />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : currentPage === 'nasa' ? (
+              <React.Fragment key="nasa-view">
+                <AnimatePresence mode="wait">
+                  {nasaLoading ? (
+                    <NasaLoader key="nasa-loader" onComplete={() => setNasaLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="nasa-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Nasa />
                       <Footer />
                     </motion.div>
                   )}
