@@ -56,7 +56,7 @@ export default function Corte() {
     <section id="corte-section" className="min-h-screen relative bg-transparent text-white overflow-x-hidden pt-24 pb-32">
       
       {/* Background Video */}
-      <div className="fixed inset-0 w-full h-full z-[-1] overflow-hidden pointer-events-none bg-[#050505]">
+      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#050505]">
         <video 
           ref={bgVideoRef}
           src="/fondo.mp4"
