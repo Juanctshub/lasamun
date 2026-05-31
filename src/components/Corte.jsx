@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Scale, FileText, ChevronRight, Gavel, FileLock2, X } from 'lucide-react';
+import { FileText, ChevronRight, Gavel, FileLock2, X } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Corte() {
@@ -14,11 +14,7 @@ export default function Corte() {
   useEffect(() => {
     // Start the jeffrey.mp3 audio
     audioSystem.switchToCorte();
-    
-    // Cleanup on unmount
-    return () => {
-      audioSystem.pauseAll(); // Or let App.js handle the switch back based on hash
-    };
+    // App.jsx handles the audio transitions when leaving, so no cleanup needed here
   }, []);
 
   // Easter Egg Logic
@@ -50,24 +46,24 @@ export default function Corte() {
   };
 
   return (
-    <section id="corte-section" className="min-h-screen relative bg-black text-white overflow-x-hidden pt-24 pb-32">
+    <section id="corte-section" className="min-h-screen relative bg-transparent text-white overflow-x-hidden pt-24 pb-32">
       
       {/* Background Video */}
-      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+      <div className="fixed inset-0 w-full h-full z-[-1] overflow-hidden pointer-events-none bg-black">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline
-          className="absolute min-w-full min-h-full object-cover opacity-30"
-          style={{ filter: 'blur(4px) brightness(0.4)' }}
+          className="absolute min-w-full min-h-full object-cover opacity-60"
+          style={{ filter: 'blur(3px) brightness(0.6)' }}
         >
           <source src="/fondo.mp4" type="video/mp4" />
         </video>
         {/* Gradient Overlays for readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#000000_100%)] z-10 opacity-80"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#000000_100%)] z-10 opacity-70"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-20">
@@ -81,11 +77,12 @@ export default function Corte() {
             className="flex flex-col items-center text-center"
           >
             <div 
-              className="w-20 h-20 bg-[#D4AF37]/10 rounded-full flex items-center justify-center mb-6 border border-[#D4AF37]/30 shadow-[0_0_30px_rgba(212,175,55,0.2)] cursor-pointer group"
+              className="w-24 h-24 mb-6 cursor-pointer group relative flex items-center justify-center"
               onClick={() => setShowPasscode(true)} // Hidden trigger
               title="¿Buscando la verdad?"
             >
-              <Scale className="w-10 h-10 text-[#D4AF37] group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-[#D4AF37]/10 rounded-full blur-xl group-hover:bg-[#D4AF37]/30 transition-all duration-500"></div>
+              <img src="/corte.svg" alt="Corte Logo" className="w-20 h-20 relative z-10 group-hover:scale-110 transition-transform duration-500 filter drop-shadow-[0_0_15px_rgba(212,175,55,0.8)]" />
             </div>
 
             <h1 className="font-maison text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter uppercase mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-[#D4AF37]/70 drop-shadow-lg">

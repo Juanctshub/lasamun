@@ -36,7 +36,7 @@ export default function CorteLoader({ onComplete }) {
         transition={{ duration: 2, ease: "easeOut" }}
         className="flex flex-col items-center relative z-10"
       >
-        <Scale className="w-16 h-16 mb-8 text-[#D4AF37] opacity-80" strokeWidth={1} />
+        <img src="/corte.svg" alt="Corte Logo" className="w-24 h-24 mb-8 opacity-80 filter drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]" />
         
         <h2 className="font-maison text-2xl md:text-4xl tracking-[0.4em] uppercase font-light text-[#D4AF37] mb-2 text-center">
           Corte Federal
