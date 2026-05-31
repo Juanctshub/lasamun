@@ -1,29 +1,61 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Award, ShoppingBag, Heart, X, Check, ShieldCheck, HelpCircle } from 'lucide-react';
+import { Sparkles, Award, ShoppingBag, Heart, X, Check, ShieldCheck, Layers, Eye } from 'lucide-react';
 
 export default function AlmeidasAd() {
+  const [activeTab, setActiveTab] = useState('peluche'); // 'peluche' or 'trofeo'
   const [showReserva, setShowReserva] = useState(false);
+
+  const productData = {
+    peluche: {
+      title: "Peluche Coleccionable",
+      tag: "EDICIÓN COLECTOR 01",
+      image: "/mini.png",
+      glowColor: "rgba(212, 175, 55, 0.15)",
+      shadowColor: "rgba(212, 175, 55, 0.35)",
+      specs: [
+        { label: "MODELO", value: "Mini Almeida Teddy" },
+        { label: "MATERIAL", value: "Felpa Premium Ultra-Soft" },
+        { label: "DETALLES", value: "Bordado a Mano Oficial" },
+        { label: "EDICIÓN", value: "Estrictamente Limitada" }
+      ]
+    },
+    trofeo: {
+      title: "Trofeo de Campeón",
+      tag: "EDICIÓN CAMPEÓN 02",
+      image: "/mini2.png",
+      glowColor: "rgba(59, 130, 246, 0.15)",
+      shadowColor: "rgba(59, 130, 246, 0.35)",
+      specs: [
+        { label: "MODELO", value: "Almeida Victory Trophy" },
+        { label: "MATERIAL", value: "Polímero y Base Acrílica" },
+        { label: "DETALLES", value: "Grabado Láser LASAMUN" },
+        { label: "EDICIÓN", value: "Especial para Ganadores" }
+      ]
+    }
+  };
+
+  const current = productData[activeTab];
 
   return (
     <section id="almeidas-ad" className="relative py-32 bg-[#030303] overflow-hidden text-white border-y border-white/5 selection:bg-[#D4AF37] selection:text-black">
       
       {/* Luxury Golden Atmospheric Glows */}
-      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[45vw] h-[45vw] bg-[#D4AF37]/5 rounded-full blur-[140px] pointer-events-none animate-pulse" style={{ animationDuration: '8s' }} />
+      <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-[45vw] h-[45vw] bg-[#D4AF37]/5 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-1/3 right-1/4 w-[40vw] h-[40vw] bg-blue-900/10 rounded-full blur-[160px] pointer-events-none" />
       
       {/* Subtle Grain Background Pattern */}
       <div className="absolute inset-0 z-0 bg-[url('/noise.svg')] opacity-[0.03] pointer-events-none mix-blend-overlay" />
 
-      {/* Elegant Technical Grid Accents */}
+      {/* Technical Grid Accent */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:40px_40px] opacity-60" />
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
         {/* Luxury Brand Header */}
-        <div className="flex flex-col items-center mb-24 text-center">
+        <div className="flex flex-col items-center mb-20 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             className="inline-flex items-center gap-2.5 px-4.5 py-2 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/30 text-[#D4AF37] mb-6 backdrop-blur-md"
@@ -54,84 +86,109 @@ export default function AlmeidasAd() {
             transition={{ delay: 0.25, duration: 0.8 }}
             className="font-codec text-gray-400 max-w-xl leading-relaxed font-light text-sm md:text-base"
           >
-            Descubre y reserva la pieza coleccionable más codiciada de la II Edición de LASAMUN. Diseños exclusivos construidos para conmemorar tu liderazgo.
+            Adquiere la pieza coleccionable más codiciada de la II Edición de LASAMUN. Ediciones limitadas diseñadas para conquistar el circuito.
           </motion.p>
         </div>
 
-        {/* Dynamic Interactive Showcase */}
+        {/* Dynamic Interactive Stage & Copy Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center max-w-5xl mx-auto">
           
-          {/* Left Column: Floating Glass Pedestals */}
-          <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-8 relative">
+          {/* Left Column: Interactive Spotlight Stage */}
+          <div className="lg:col-span-6 flex flex-col gap-6">
             
-            {/* Pedestal 1: Plush Version (The Collector Glass) */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="bg-white/[0.01] hover:bg-white/[0.03] border border-white/10 hover:border-[#D4AF37]/50 rounded-[2.5rem] p-8 flex flex-col items-center justify-between shadow-2xl relative group transition-all duration-500 backdrop-blur-3xl hover:shadow-[0_20px_50px_rgba(212,175,55,0.05)]"
-            >
-              {/* Corner Tag */}
-              <div className="absolute top-5 left-5 z-20 font-mono text-[7px] text-[#D4AF37] border border-[#D4AF37]/35 bg-[#D4AF37]/5 px-3 py-1 rounded-full font-bold tracking-widest uppercase">
-                EDICIÓN 01
+            {/* Spotlight Showcase Container */}
+            <div className="bg-white/[0.01] border border-white/10 rounded-[2.5rem] p-8 md:p-10 flex flex-col items-center justify-between shadow-2xl relative overflow-hidden backdrop-blur-3xl">
+              
+              {/* Abstract Laser Lines */}
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#D4AF37]/30 to-transparent" />
+              
+              {/* Tab Selector Segmented Control */}
+              <div className="flex bg-black/60 border border-white/10 rounded-full p-1 w-full max-w-xs justify-center relative z-20 mb-8">
+                <button
+                  onClick={() => setActiveTab('peluche')}
+                  className={`flex items-center justify-center gap-2 font-codec text-[9px] uppercase tracking-widest py-2 px-4 rounded-full transition-all duration-300 w-full ${
+                    activeTab === 'peluche'
+                      ? 'bg-[#D4AF37] text-black font-bold'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <Eye className="w-3 h-3" /> Peluche
+                </button>
+                <button
+                  onClick={() => setActiveTab('trofeo')}
+                  className={`flex items-center justify-center gap-2 font-codec text-[9px] uppercase tracking-widest py-2 px-4 rounded-full transition-all duration-300 w-full ${
+                    activeTab === 'trofeo'
+                      ? 'bg-blue-500 text-white font-bold'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  <Award className="w-3 h-3" /> Trofeo
+                </button>
               </div>
 
-              {/* Floating Plush Illustration */}
-              <motion.div
-                animate={{ y: [-12, 12, -12] }}
-                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full aspect-square flex items-center justify-center p-3 mt-6 relative z-10"
-              >
-                {/* Under-glow for Plush */}
-                <div className="absolute w-3/4 h-3/4 bg-[#D4AF37]/5 rounded-full blur-2xl group-hover:bg-[#D4AF37]/10 transition-all duration-500 pointer-events-none z-0" />
-                <img 
-                  src="/mini.png" 
-                  alt="Mini Almeida Peluche" 
-                  className="w-full h-full object-contain filter drop-shadow-[0_20px_40px_rgba(212,175,55,0.3)] group-hover:scale-105 group-hover:rotate-2 transition-transform duration-700 z-10"
+              {/* Pedestal Tag */}
+              <div className="font-mono text-[7px] text-[#D4AF37] border border-[#D4AF37]/30 bg-[#D4AF37]/5 px-3 py-1.5 rounded-full font-bold tracking-widest uppercase mb-4 relative z-20">
+                {current.tag}
+              </div>
+
+              {/* Dynamic Showcase Stage */}
+              <div className="w-full aspect-square max-h-[300px] flex items-center justify-center relative mt-4">
+                
+                {/* Spotlight Ambient Light Cone */}
+                <div 
+                  className="absolute w-48 h-48 rounded-full blur-[40px] pointer-events-none transition-all duration-700 opacity-20"
+                  style={{ backgroundColor: current.glowColor }}
                 />
-              </motion.div>
 
-              {/* Engraved Plaque */}
-              <div className="w-full bg-black/50 border border-white/10 rounded-xl p-3.5 text-center mt-6 shadow-inner group-hover:border-[#D4AF37]/30 transition-colors">
-                <span className="block font-mono text-[8px] text-gray-500 uppercase tracking-[0.25em] mb-1 font-semibold">Collector Plaque</span>
-                <span className="font-maison font-black text-white uppercase text-sm tracking-wider block">Peluche Almeida</span>
-                <span className="block font-mono text-[7px] text-[#D4AF37] tracking-[0.1em] mt-1.5 font-bold">[ ALMEIDA COLL. 2026 ]</span>
+                {/* Pedestal Floor Reflection */}
+                <div className="absolute bottom-4 w-40 h-4 bg-white/[0.03] border border-white/5 rounded-full blur-sm transform rotate-x-60 pointer-events-none" />
+
+                {/* Animated Image Element */}
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                    exit={{ opacity: 0, scale: 0.8, rotate: 5 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="w-full h-full flex items-center justify-center z-10"
+                  >
+                    <motion.img 
+                      animate={{ y: [-8, 8, -8] }}
+                      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                      src={current.image} 
+                      alt={current.title} 
+                      className="w-4/5 h-4/5 object-contain filter group-hover:scale-105 transition-all duration-700"
+                      style={{ 
+                        filter: `drop-shadow(0 15px 30px ${current.shadowColor})`
+                      }}
+                    />
+                  </motion.div>
+                </AnimatePresence>
               </div>
-            </motion.div>
 
-            {/* Pedestal 2: Trophy Version (The Champion Glass) */}
+              {/* Professional Technical Plaque */}
+              <div className="w-full bg-black/60 border border-white/10 rounded-2xl p-4 text-center mt-8 shadow-inner relative z-20">
+                <span className="block font-mono text-[8px] text-gray-500 uppercase tracking-[0.25em] mb-1 font-semibold">Exhibition Plaque</span>
+                <span className="font-maison font-black text-white uppercase text-base tracking-wider block">{current.title}</span>
+                <span className="block font-mono text-[7px] text-[#D4AF37] tracking-[0.1em] mt-1.5 font-bold">[ ALMEIDA SERIES 2026 ]</span>
+              </div>
+            </div>
+
+            {/* Technical Specifications Grid Sheet */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              key={`specs-${activeTab}`}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="bg-white/[0.01] hover:bg-white/[0.03] border border-white/10 hover:border-blue-500/50 rounded-[2.5rem] p-8 flex flex-col items-center justify-between shadow-2xl relative group transition-all duration-500 backdrop-blur-3xl hover:shadow-[0_20px_50px_rgba(59,130,246,0.05)] mt-0 sm:mt-12"
+              transition={{ duration: 0.5 }}
+              className="grid grid-cols-2 gap-3"
             >
-              {/* Corner Tag */}
-              <div className="absolute top-5 left-5 z-20 font-mono text-[7px] text-blue-400 border border-blue-500/35 bg-blue-500/5 px-3 py-1 rounded-full font-bold tracking-widest uppercase">
-                EDICIÓN 02
-              </div>
-
-              {/* Floating Trophy Illustration */}
-              <motion.div
-                animate={{ y: [12, -12, 12] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="w-full aspect-square flex items-center justify-center p-3 mt-6 relative z-10"
-              >
-                {/* Under-glow for Trophy */}
-                <div className="absolute w-3/4 h-3/4 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition-all duration-500 pointer-events-none z-0" />
-                <img 
-                  src="/mini2.png" 
-                  alt="Mini Almeida Trofeo" 
-                  className="w-full h-full object-contain filter drop-shadow-[0_20px_40px_rgba(59,130,246,0.3)] group-hover:scale-105 group-hover:-rotate-2 transition-transform duration-700 z-10"
-                />
-              </motion.div>
-
-              {/* Engraved Plaque */}
-              <div className="w-full bg-black/50 border border-white/10 rounded-xl p-3.5 text-center mt-6 shadow-inner group-hover:border-blue-500/30 transition-colors">
-                <span className="block font-mono text-[8px] text-gray-500 uppercase tracking-[0.25em] mb-1 font-semibold">Champion Special</span>
-                <span className="font-maison font-black text-white uppercase text-sm tracking-wider block">Trofeo Almeida</span>
-                <span className="block font-mono text-[7px] text-blue-400 tracking-[0.1em] mt-1.5 font-bold">[ CHAMPION EDITION 🏆 ]</span>
-              </div>
+              {current.specs.map((spec, index) => (
+                <div key={index} className="bg-white/[0.01] border border-white/5 p-3.5 rounded-2xl text-left">
+                  <span className="block font-mono text-[7px] text-gray-500 uppercase tracking-widest font-bold mb-1">{spec.label}</span>
+                  <span className="font-codec text-xs font-bold text-gray-200">{spec.value}</span>
+                </div>
+              ))}
             </motion.div>
 
           </div>
@@ -141,7 +198,7 @@ export default function AlmeidasAd() {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
             >
               <h3 className="font-maison text-3xl md:text-5xl font-black text-white mb-6 uppercase tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
                 La Dinámica Especial
@@ -156,7 +213,7 @@ export default function AlmeidasAd() {
                 </p>
               </div>
 
-              {/* Features Specification Cards */}
+              {/* Technical badges spec list */}
               <div className="grid grid-cols-2 gap-4 mb-8">
                 <div className="flex items-center gap-3.5 bg-white/[0.02] border border-white/10 p-4 rounded-2xl">
                   <Heart className="w-5 h-5 text-[#D4AF37]" />
@@ -175,14 +232,33 @@ export default function AlmeidasAd() {
                 </div>
               </div>
 
-              {/* Elegant Gold CTA Button */}
-              <button 
-                onClick={() => setShowReserva(true)}
-                className="group w-full md:w-auto inline-flex items-center justify-center gap-3 bg-gradient-to-r from-[#D4AF37] to-[#D4AF37]/80 hover:from-white hover:to-white text-black font-codec font-bold tracking-widest text-xs uppercase px-8 py-4.5 rounded-xl transition-all duration-300 shadow-2xl shadow-[#D4AF37]/20 hover:shadow-white/10 scale-100 active:scale-95"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                Reservar Mi Mini Almeida
-              </button>
+              {/* --- STUNNING HIGH-END GOLDEN TICKET TICKET BUTTON --- */}
+              <div className="relative group w-full md:w-auto inline-block">
+                {/* Outer Glow */}
+                <div className="absolute inset-0 bg-[#D4AF37]/10 rounded-2xl blur-xl group-hover:bg-[#D4AF37]/25 transition-all duration-500 pointer-events-none" />
+                
+                <button 
+                  onClick={() => setShowReserva(true)}
+                  className="relative w-full md:w-auto overflow-hidden bg-black/40 hover:bg-[#D4AF37] text-[#D4AF37] hover:text-black font-codec font-black tracking-[0.3em] text-[10px] md:text-xs uppercase px-10 py-5 transition-all duration-500 shadow-2xl active:scale-95 border-y border-dashed border-[#D4AF37] hover:border-solid hover:border-[#D4AF37] rounded-xl flex items-center justify-center gap-3"
+                >
+                  {/* Left Ticket Notch Cutout */}
+                  <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-4 bg-[#030303] border-r border-[#D4AF37] rounded-r-full group-hover:border-transparent transition-all" />
+                  
+                  {/* Right Ticket Notch Cutout */}
+                  <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-4 bg-[#030303] border-l border-[#D4AF37] rounded-l-full group-hover:border-transparent transition-all" />
+                  
+                  {/* Continuous Glossy Shine Sweep Effect */}
+                  <motion.div 
+                    animate={{ x: ["-150%", "150%"] }}
+                    transition={{ repeat: Infinity, duration: 2.2, ease: "linear" }}
+                    className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/10 group-hover:via-black/10 to-transparent skew-x-12 pointer-events-none"
+                  />
+                  
+                  <ShoppingBag className="w-4 h-4" />
+                  Reservar Mi Mini Almeida
+                </button>
+              </div>
+
             </motion.div>
           </div>
 
@@ -207,7 +283,7 @@ export default function AlmeidasAd() {
               onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-md bg-[#0b0b0d] border border-[#D4AF37]/30 rounded-[2.5rem] p-8 md:p-10 shadow-3xl text-center"
             >
-              {/* Outer Glow certificate card */}
+              {/* Outer border of certificate */}
               <div className="absolute inset-2 border border-[#D4AF37]/15 rounded-[2rem] pointer-events-none" />
 
               <button 
