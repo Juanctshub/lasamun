@@ -127,35 +127,55 @@ function App() {
   useEffect(() => {
     if (loading || currentPage !== 'landing') return;
 
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.15 // triggers when 15% of Starvibe is visible
-    };
+    let observer;
+    let starvibeSection;
 
-    const handleIntersection = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // Muffle & fade down frutiger, open up LMFAO
-          audioSystem.switchToStarvibe();
-        } else {
-          // Muffle & fade down LMFAO, open up frutiger (Aclarando!)
-          audioSystem.switchToMain();
-        }
-      });
-    };
+    const attachObserver = () => {
+      starvibeSection = document.getElementById('starvibe');
+      if (!starvibeSection) return false;
 
-    const observer = new IntersectionObserver(handleIntersection, observerOptions);
-    const starvibeSection = document.getElementById('starvibe');
-    if (starvibeSection) {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.15 // triggers when 15% of Starvibe is visible
+      };
+
+      const handleIntersection = (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Muffle & fade down frutiger, open up LMFAO
+            audioSystem.switchToStarvibe();
+          } else {
+            // Muffle & fade down LMFAO, open up frutiger (Aclarando!)
+            audioSystem.switchToMain();
+          }
+        });
+      };
+
+      observer = new IntersectionObserver(handleIntersection, observerOptions);
       observer.observe(starvibeSection);
+      return true;
+    };
+
+    // Try immediately
+    const success = attachObserver();
+
+    // If not found (e.g. exit animation is in progress), retry after a short delay
+    let timeoutId;
+    if (!success) {
+      timeoutId = setTimeout(() => {
+        attachObserver();
+      }, 600);
     }
 
     return () => {
-      if (starvibeSection) {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (observer && starvibeSection) {
         observer.unobserve(starvibeSection);
       }
-      observer.disconnect();
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, [loading, currentPage]);
 

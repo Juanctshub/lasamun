@@ -150,18 +150,22 @@ class AudioSystem {
   _muffleAndFadeDown(gainNode, filterNode, now) {
     if (this.ctx.state === 'suspended') this.ctx.resume();
     gainNode.gain.cancelScheduledValues(now);
-    gainNode.gain.setTargetAtTime(0.0001, now, 0.3); // Uses exponential approach, no need for start value
+    gainNode.gain.setValueAtTime(gainNode.gain.value, now);
+    gainNode.gain.setTargetAtTime(0.0001, now, 0.3); // Uses exponential approach
 
     filterNode.frequency.cancelScheduledValues(now);
+    filterNode.frequency.setValueAtTime(filterNode.frequency.value, now);
     filterNode.frequency.setTargetAtTime(300, now, 0.3);
   }
 
   _openAndFadeUp(gainNode, filterNode, now) {
     if (this.ctx.state === 'suspended') this.ctx.resume();
     gainNode.gain.cancelScheduledValues(now);
+    gainNode.gain.setValueAtTime(gainNode.gain.value, now);
     gainNode.gain.setTargetAtTime(1.0, now, 0.3);
 
     filterNode.frequency.cancelScheduledValues(now);
+    filterNode.frequency.setValueAtTime(filterNode.frequency.value, now);
     filterNode.frequency.setTargetAtTime(20000, now, 0.3);
   }
 
@@ -186,7 +190,13 @@ class AudioSystem {
   }
 
   switchToStarvibe() {
-    if (!this.initialized || this.activeTrack === 'lmfao') return;
+    if (!this.initialized) return;
+    if (this.activeTrack === 'lmfao') {
+      if (this.lmfao.paused) {
+        this.lmfao.play().catch(e => console.log("Play error LMFAO on resume", e));
+      }
+      return;
+    }
     this.activeTrack = 'lmfao';
     this.lmfao.play().catch(e => console.log("Play error LMFAO on switch", e));
 
@@ -197,14 +207,26 @@ class AudioSystem {
   }
 
   switchToMain() {
-    if (!this.initialized || this.activeTrack === 'frutiger') return;
+    if (!this.initialized) return;
+    if (this.activeTrack === 'frutiger') {
+      if (this.frutiger.paused) {
+        this.frutiger.play().catch(e => console.log("Play error Frutiger on resume", e));
+      }
+      return;
+    }
     this.activeTrack = 'frutiger';
     this.frutiger.play().catch(e => console.log("Play error Frutiger on switch", e));
     this._muffleAllExcept(this.frutigerGain);
   }
 
   switchToCrisis() {
-    if (!this.initialized || this.activeTrack === 'gaga') return;
+    if (!this.initialized) return;
+    if (this.activeTrack === 'gaga') {
+      if (this.gaga.paused) {
+        this.gaga.play().catch(e => console.log("Play error Gaga on resume", e));
+      }
+      return;
+    }
     this.activeTrack = 'gaga';
     
     if (this.gaga && this.gaga.readyState >= 1 && this.gaga.currentTime < 10) {
@@ -216,21 +238,39 @@ class AudioSystem {
   }
 
   switchToReglamentos() {
-    if (!this.initialized || this.activeTrack === 'mii') return;
+    if (!this.initialized) return;
+    if (this.activeTrack === 'mii') {
+      if (this.mii.paused) {
+        this.mii.play().catch(e => console.log("Play error Mii on resume", e));
+      }
+      return;
+    }
     this.activeTrack = 'mii';
     this.mii.play().catch(e => console.log("Play error Mii on switch", e));
     this._muffleAllExcept(this.miiGain);
   }
 
   switchToCorte() {
-    if (!this.initialized || this.activeTrack === 'jeffrey') return;
+    if (!this.initialized) return;
+    if (this.activeTrack === 'jeffrey') {
+      if (this.jeffrey.paused) {
+        this.jeffrey.play().catch(e => console.log("Play error Jeffrey on resume", e));
+      }
+      return;
+    }
     this.activeTrack = 'jeffrey';
     this.jeffrey.play().catch(e => console.log("Play error Jeffrey on switch", e));
     this._muffleAllExcept(this.jeffreyGain);
   }
 
   switchToNasa() {
-    if (!this.initialized || this.activeTrack === 'nasa') return;
+    if (!this.initialized) return;
+    if (this.activeTrack === 'nasa') {
+      if (this.nasa.paused) {
+        this.nasa.play().catch(e => console.log("Play error Nasa on resume", e));
+      }
+      return;
+    }
     this.activeTrack = 'nasa';
     this.nasa.play().catch(e => console.log("Play error Nasa on switch", e));
     this._muffleAllExcept(this.nasaGain);
