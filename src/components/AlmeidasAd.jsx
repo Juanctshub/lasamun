@@ -17,12 +17,12 @@ export default function AlmeidasAd() {
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
-        {/* Header Block */}
+        {/* Header Block (Animate on Mount for 100% visibility) */}
         <div className="flex flex-col items-center mb-16 text-center">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D4AF37]/10 border border-[#D4AF37]/35 text-[#D4AF37] mb-6 backdrop-blur-md"
           >
             <Sparkles className="w-3.5 h-3.5 animate-pulse" />
@@ -31,9 +31,8 @@ export default function AlmeidasAd() {
           
           <motion.h2 
             initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
             className="font-maison text-4xl sm:text-6xl font-black uppercase tracking-tight leading-none mb-4 text-center text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400"
           >
             Mini's Almeida <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-[#D4AF37]">en Venta!</span>
@@ -41,9 +40,8 @@ export default function AlmeidasAd() {
           
           <motion.p 
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
             className="font-codec text-gray-400 max-w-xl leading-relaxed font-light text-sm md:text-base"
           >
             Adquiere la pieza más emblemática y codiciada de la II Edición de LASAMUN. Ediciones limitadas diseñadas para conquistar el circuito.
@@ -59,9 +57,8 @@ export default function AlmeidasAd() {
             {/* Pedestal 1: Plush Version */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
               className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-6 flex flex-col items-center justify-between shadow-2xl relative group hover:border-[#D4AF37]/50 transition-colors backdrop-blur-md"
             >
               <div className="absolute top-4 left-4 z-20 font-mono text-[7px] text-[#D4AF37] border border-[#D4AF37]/30 px-2 py-0.5 rounded-full">
@@ -90,9 +87,8 @@ export default function AlmeidasAd() {
             {/* Pedestal 2: Trophy Version */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
               className="bg-white/[0.02] border border-white/10 rounded-[2rem] p-6 flex flex-col items-center justify-between shadow-2xl relative group hover:border-blue-500/50 transition-colors backdrop-blur-md mt-6 lg:mt-10"
             >
               <div className="absolute top-4 left-4 z-20 font-mono text-[7px] text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full">
@@ -124,9 +120,8 @@ export default function AlmeidasAd() {
           <div className="lg:col-span-6 flex flex-col text-left justify-center">
             <motion.div
               initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
             >
               <h3 className="font-maison text-3xl font-extrabold text-white mb-6 uppercase tracking-tight leading-snug">
                 ¿Preparado para Conquistar el Circuito?
