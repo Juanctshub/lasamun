@@ -49,21 +49,21 @@ export default function Corte() {
     <section id="corte-section" className="min-h-screen relative bg-transparent text-white overflow-x-hidden pt-24 pb-32">
       
       {/* Background Video */}
-      <div className="fixed inset-0 w-full h-full z-[-1] overflow-hidden pointer-events-none bg-black">
+      <div className="fixed inset-0 w-full h-full z-[-1] overflow-hidden pointer-events-none bg-[#050505]">
         <video 
           autoPlay 
           loop 
           muted 
           playsInline
-          className="absolute min-w-full min-h-full object-cover opacity-60"
-          style={{ filter: 'blur(3px) brightness(0.6)' }}
+          className="absolute min-w-full min-h-full object-cover opacity-80"
+          style={{ filter: 'blur(3px) brightness(0.8)' }}
         >
           <source src="/fondo.mp4" type="video/mp4" />
         </video>
         {/* Gradient Overlays for readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-black/40 to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#000000_100%)] z-10 opacity-70"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#000000_100%)] z-10 opacity-40"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-20">
