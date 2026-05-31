@@ -61,7 +61,7 @@ export default function Hero() {
         />
       </div>
       
-      <div className="absolute inset-0 z-10 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay"></div>
+      <div className="absolute inset-0 z-10 bg-[url('/noise.svg')] opacity-10 pointer-events-none mix-blend-overlay"></div>
 
       <div className="relative z-20 max-w-6xl px-6 text-center">
         <motion.div

@@ -53,7 +53,7 @@ function App() {
       setTimeout(() => audioSystem.switchToReglamentos(), 500);
     } else if (window.location.hash === '#corte') {
       setCorteLoading(true);
-      setTimeout(() => audioSystem.pauseAll(), 500); // Silent solemnity for the court
+      setTimeout(() => audioSystem.switchToCorte(), 500);
     }
   };
 
@@ -80,7 +80,7 @@ function App() {
       } else if (isCorte) {
         setCurrentPage('corte');
         setCorteLoading(true);
-        audioSystem.pauseAll(); // Pause audio for the solemn court
+        audioSystem.switchToCorte();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();

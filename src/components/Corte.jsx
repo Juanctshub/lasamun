@@ -10,11 +10,18 @@ export default function Corte() {
   const [accessGranted, setAccessGranted] = useState(false);
   const [error, setError] = useState(false);
   const videoRef = useRef(null);
+  const bgVideoRef = useRef(null);
 
   useEffect(() => {
     // Start the jeffrey.mp3 audio
     audioSystem.switchToCorte();
-    // App.jsx handles the audio transitions when leaving, so no cleanup needed here
+    
+    // Explicitly play the background video on mount
+    if (bgVideoRef.current) {
+      bgVideoRef.current.play().catch(err => {
+        console.warn("Background video autoplay blocked or failed:", err);
+      });
+    }
   }, []);
 
   // Easter Egg Logic
@@ -51,19 +58,25 @@ export default function Corte() {
       {/* Background Video */}
       <div className="fixed inset-0 w-full h-full z-[-1] overflow-hidden pointer-events-none bg-[#050505]">
         <video 
+          ref={bgVideoRef}
+          src="/fondo.mp4"
           autoPlay 
           loop 
           muted 
           playsInline
-          className="absolute min-w-full min-h-full object-cover opacity-80"
-          style={{ filter: 'blur(3px) brightness(0.8)' }}
-        >
-          <source src="/fondo.mp4" type="video/mp4" />
-        </video>
+          className="absolute min-w-full min-h-full object-cover opacity-90 transition-opacity duration-1000"
+          style={{ filter: 'blur(2px) brightness(0.85)' }}
+          onEnded={() => {
+            if (bgVideoRef.current) {
+              bgVideoRef.current.currentTime = 0;
+              bgVideoRef.current.play().catch(err => console.log("Bg video loop failed:", err));
+            }
+          }}
+        />
         {/* Gradient Overlays for readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#000000_100%)] z-10 opacity-40"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-transparent to-transparent z-10"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_#000000_100%)] z-10 opacity-30"></div>
       </div>
 
       <div className="container mx-auto px-6 relative z-20">
