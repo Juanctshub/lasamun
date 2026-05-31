@@ -148,6 +148,8 @@ function App() {
 
     let observer;
     let starvibeSection;
+    let pollInterval;
+    let maxTimeout;
 
     const attachObserver = () => {
       starvibeSection = document.getElementById('starvibe');
@@ -176,19 +178,21 @@ function App() {
       return true;
     };
 
-    // Try immediately
-    const success = attachObserver();
+    // Poll for the element until it exists (resolves exit animation delay)
+    pollInterval = setInterval(() => {
+      if (attachObserver()) {
+        clearInterval(pollInterval);
+      }
+    }, 100);
 
-    // If not found (e.g. exit animation is in progress), retry after a short delay
-    let timeoutId;
-    if (!success) {
-      timeoutId = setTimeout(() => {
-        attachObserver();
-      }, 600);
-    }
+    // Stop polling after 5 seconds to prevent infinite resource drain
+    maxTimeout = setTimeout(() => {
+      clearInterval(pollInterval);
+    }, 5000);
 
     return () => {
-      if (timeoutId) clearTimeout(timeoutId);
+      clearInterval(pollInterval);
+      clearTimeout(maxTimeout);
       if (observer && starvibeSection) {
         observer.unobserve(starvibeSection);
       }

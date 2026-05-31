@@ -247,9 +247,27 @@ export default function Comites() {
           <h3 className="font-codec text-sm text-white/40 tracking-[0.3em] uppercase mb-8 ml-4 text-center md:text-left">Mesa Directiva de Alta Gama</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {[
-              { role: 'SECRETARIO GENERAL', icon: Landmark, desc: 'Coordinación ejecutiva y protocolar integral del modelo.' },
-              { role: 'DIR. ACADÉMICO', icon: Scale, desc: 'Supervisión de contenidos, investigaciones y rigor de comités.' },
-              { role: 'DIR. LOGÍSTICA', icon: Users, desc: 'Gestión operativa, espacios interactivos y despliegue del evento.' }
+              { 
+                name: 'Alana Cuicas', 
+                role: 'SECRETARIA GENERAL', 
+                photo: '/alana.jpg', 
+                icon: Landmark, 
+                desc: 'Coordinación ejecutiva y protocolar integral del modelo.' 
+              },
+              { 
+                name: 'Carla Marín', 
+                role: 'SECRETARIA ACADÉMICA', 
+                photo: '/carla.jpg', 
+                icon: Scale, 
+                desc: 'Supervisión de contenidos, investigaciones y rigor de comités.' 
+              },
+              { 
+                name: 'Gabriel Rodríguez', 
+                role: 'SECRETARIO DE LOGÍSTICA', 
+                photo: '/gabriel.jpg', 
+                icon: Users, 
+                desc: 'Gestión operativa, espacios interactivos y despliegue del evento.' 
+              }
             ].map((item, i) => (
               <motion.div 
                 key={i}
@@ -257,19 +275,34 @@ export default function Comites() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.6 }}
-                className="group relative rounded-[2rem] bg-white/[0.02] border border-white/10 overflow-hidden hover:border-primary-yellow/40 transition-all duration-500 backdrop-blur-xl flex flex-col justify-between p-8 min-h-[220px] md:min-h-[260px] shadow-2xl"
+                className="group relative rounded-[2rem] bg-white/[0.02] border border-white/10 overflow-hidden hover:border-primary-yellow/40 transition-all duration-500 backdrop-blur-xl flex flex-col justify-between p-8 min-h-[280px] shadow-2xl"
               >
                 {/* Abstract corner decor */}
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary-blue/10 rounded-full blur-2xl group-hover:bg-primary-yellow/20 transition-all duration-500"></div>
                 
-                <div className="w-14 h-14 rounded-2xl border border-white/10 flex items-center justify-center bg-black/40 text-white/60 group-hover:text-primary-yellow group-hover:border-primary-yellow/40 transition-all duration-500 shadow-lg">
-                  <item.icon className="w-6 h-6" />
+                {/* Photo & Icon layout */}
+                <div className="flex justify-between items-center relative z-10 w-full">
+                  <div className="flex items-center gap-4">
+                    {/* Circle Photo */}
+                    <div className="w-16 h-16 rounded-full border border-white/20 group-hover:border-primary-yellow/40 overflow-hidden shadow-lg transition-colors duration-500 shrink-0">
+                      <img src={item.photo} alt={item.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    </div>
+                    {/* Name & Title */}
+                    <div className="text-left">
+                      <h4 className="font-maison font-bold text-lg md:text-xl text-white group-hover:text-primary-yellow transition-colors duration-300 leading-tight">{item.name}</h4>
+                      <span className="font-mono text-[9px] text-[#FFD100]/80 tracking-widest uppercase font-bold block mt-1">{item.role}</span>
+                    </div>
+                  </div>
+                  {/* Glowing Icon Badge */}
+                  <div className="w-10 h-10 rounded-xl border border-white/10 flex items-center justify-center bg-black/40 text-white/50 group-hover:text-primary-yellow group-hover:border-primary-yellow/40 transition-all duration-500 shadow-md shrink-0">
+                    <item.icon className="w-5 h-5" />
+                  </div>
                 </div>
                 
-                <div className="mt-6">
-                  <span className="font-codec text-[10px] text-white/30 tracking-[0.2em] uppercase mb-1 block">Posición Oficial</span>
-                  <h4 className="font-maison font-bold text-xl md:text-2xl text-white group-hover:text-primary-yellow transition-colors duration-300 mb-2">{item.role}</h4>
-                  <p className="font-codec text-xs text-white/50 leading-relaxed font-light">{item.desc}</p>
+                {/* Lower Description */}
+                <div className="mt-8 border-t border-white/5 pt-6 text-left relative z-10">
+                  <span className="font-codec text-[9px] text-white/30 tracking-[0.2em] uppercase mb-1.5 block">Posición Oficial</span>
+                  <p className="font-codec text-xs md:text-sm text-white/60 leading-relaxed font-light">{item.desc}</p>
                 </div>
               </motion.div>
             ))}

@@ -1,20 +1,24 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Download, ShieldAlert, Cpu, Terminal, Lock, Unlock, Database, Users, Sparkles, X, Eye } from 'lucide-react';
+import { FileText, Download, ShieldAlert, Lock, Unlock, Users, Sparkles, X, Eye, HelpCircle, BookOpen, Key, Compass } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Voynich() {
+  const [activeFolio, setActiveFolio] = useState(1); // 1: Manuscrito, 2: Tesis, 3: Mesa/Docs
   const [easterEggActive, setEasterEggActive] = useState(false);
   const [showPasscode, setShowPasscode] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [accessGranted, setAccessGranted] = useState(false);
   const [error, setError] = useState(false);
   const [showMesa, setShowMesa] = useState(false);
-  
+
+  // Hover magnifier coordinates
+  const [magnifierCoords, setMagnifierCoords] = useState({ x: 0, y: 0, show: false });
+  const containerRef = useRef(null);
+
   const bgVideoRef = useRef(null);
 
   useEffect(() => {
-    // Switch to medieval love/mystery sound loop
     audioSystem.switchToVoynich();
     
     if (bgVideoRef.current) {
@@ -23,6 +27,19 @@ export default function Voynich() {
       });
     }
   }, []);
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const { left, top, width, height } = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - left;
+    const y = e.clientY - top;
+    
+    if (x >= 0 && y >= 0 && x <= width && y <= height) {
+      setMagnifierCoords({ x, y, show: true });
+    } else {
+      setMagnifierCoords({ x: 0, y: 0, show: false });
+    }
+  };
 
   const handlePasscodeSubmit = (e) => {
     e.preventDefault();
@@ -35,21 +52,17 @@ export default function Voynich() {
       setTimeout(() => {
         setAccessGranted(false);
         setEasterEggActive(true);
-      }, 2200); // Decryption visual glitch duration
+      }, 2200); // Glitch decrypt
     } else {
       setError(true);
       setTimeout(() => setError(false), 500);
     }
   };
 
-  const closeEasterEgg = () => {
-    setEasterEggActive(false);
-  };
-
   return (
     <section id="voynich-section" className="min-h-screen relative bg-transparent text-[#f3e5ab] overflow-x-hidden pt-24 pb-32 font-sans selection:bg-[#d4af37] selection:text-black">
       
-      {/* Deep-Space Academic Dark Video Background */}
+      {/* Sepia-tinted looping background video */}
       <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#070503]">
         <video 
           ref={bgVideoRef}
@@ -58,8 +71,8 @@ export default function Voynich() {
           loop 
           muted 
           playsInline
-          className="absolute min-w-full min-h-full object-cover opacity-35 transition-opacity duration-1000"
-          style={{ filter: 'sepia(0.6) brightness(0.4) contrast(1.15) blur(1px)' }}
+          className="absolute min-w-full min-h-full object-cover opacity-20 transition-opacity duration-1000"
+          style={{ filter: 'sepia(0.8) brightness(0.25) contrast(1.3) blur(2px)' }}
           onEnded={() => {
             if (bgVideoRef.current) {
               bgVideoRef.current.currentTime = 0;
@@ -67,311 +80,339 @@ export default function Voynich() {
             }
           }}
         />
-        {/* Gradients to merge background beautifully */}
+        {/* Gradients merging the margins */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#070503] via-[#070503]/85 to-transparent z-10"></div>
         <div className="absolute inset-0 bg-gradient-to-b from-[#070503] via-transparent to-transparent z-10"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(212,175,55,0.06)_0%,_#070503_100%)] z-10"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(58,37,18,0.15)_0%,_#070503_100%)] z-10"></div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-20 max-w-7xl">
+      {/* Pulsating Audio Frequency wave representing love.mp3 rhythm */}
+      <div className="absolute top-24 left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-1 opacity-20 z-20 pointer-events-none">
+        {[2, 3, 5, 2, 8, 4, 3, 6, 9, 5, 3, 7, 2, 4, 6, 8, 5, 3, 1].map((val, i) => (
+          <motion.div 
+            key={i}
+            animate={{ height: [val * 2, val * 4.5, val * 2] }}
+            transition={{ repeat: Infinity, duration: 1 + (i % 3) * 0.2, ease: "easeInOut" }}
+            className="w-[2px] bg-[#d4af37]"
+            style={{ height: `${val * 3}px` }}
+          />
+        ))}
+      </div>
+
+      <div className="container mx-auto px-4 relative z-20 max-w-7xl">
         
-        {/* Top Header */}
-        <div className="max-w-4xl mx-auto mb-20 pt-10 text-center">
+        {/* Title Capsule */}
+        <div className="max-w-4xl mx-auto mb-16 pt-6 text-center">
           <motion.div
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
             className="flex flex-col items-center"
           >
-            {/* Centered Large Circular Medallion Medival Frame */}
-            <div 
-              onClick={() => setShowPasscode(true)}
-              className="w-48 h-48 mb-8 cursor-pointer group relative flex items-center justify-center rounded-full border border-[#d4af37]/20 p-2 bg-black/60 shadow-[0_0_50px_rgba(212,175,55,0.15)]"
-              title="Descifrar manuscrito..."
-            >
-              {/* Spinning rings behind logo */}
-              <div className="absolute inset-0 bg-[#d4af37]/5 rounded-full blur-2xl group-hover:bg-[#d4af37]/15 transition-all duration-700 pointer-events-none"></div>
-              <motion.div 
-                animate={{ rotate: -360 }}
-                transition={{ repeat: Infinity, duration: 25, ease: "linear" }}
-                className="absolute w-[108%] h-[108%] rounded-full border border-[#d4af37]/10 border-dashed"
-              />
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 15, ease: "linear" }}
-                className="absolute w-[98%] h-[98%] rounded-full border border-[#d4af37]/20 border-dotted"
-              />
-              
-              {/* Medieval Book Emblem SVG */}
-              <div className="relative z-10 w-28 h-28 flex items-center justify-center text-[#d4af37] filter drop-shadow-[0_0_15px_rgba(212,175,55,0.6)] group-hover:scale-105 transition-transform duration-500">
-                <svg viewBox="0 0 100 100" className="w-full h-full">
-                  <path d="M25 20 H75 C80 20, 85 24, 85 28 V80 C85 84, 80 88, 75 88 H25 C20 88, 15 84, 15 80 V28 C15 24, 20 20, 25 20 Z" fill="none" stroke="currentColor" strokeWidth="2.5" />
-                  <path d="M30 20 V88" stroke="currentColor" strokeWidth="1.5" />
-                  <path d="M35 32 H70 M35 44 H70 M35 56 H60 M35 68 H70" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                  <circle cx="50" cy="50" r="10" fill="none" stroke="#d4af37" strokeWidth="1" strokeDasharray="3 3" />
-                  <path d="M50 40 V60 M40 50 H60" stroke="#d4af37" strokeWidth="1" />
-                </svg>
-              </div>
-
-              {/* Glowing radar line indicator */}
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ repeat: Infinity, duration: 7, ease: "linear" }}
-                className="absolute inset-0 rounded-full bg-gradient-to-r from-[#d4af37]/0 via-[#d4af37]/0 to-[#d4af37]/15 pointer-events-none origin-center"
-              />
-            </div>
-
-            <h1 className="font-maison text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter uppercase mb-4 text-transparent bg-clip-text bg-gradient-to-b from-white to-[#f3e5ab] drop-shadow-md">
-              INVESTIGACIÓN (1925)
+            <span className="font-mono text-[9px] text-[#d4af37] tracking-[0.45em] uppercase mb-2">Sección de Codicología Oculta</span>
+            <h1 className="font-maison text-3xl sm:text-5xl lg:text-6xl font-extrabold uppercase mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white via-[#f3e5ab] to-[#d4af37] drop-shadow-md">
+              MANUSCRITO VOYNICH
             </h1>
-            <p className="font-mono text-[#d4af37] tracking-[0.35em] uppercase text-xs md:text-sm border-b border-[#d4af37]/20 pb-4 mb-8">
-              El Enigma del Manuscrito Voynich
+            <p className="font-mono text-gray-500 tracking-[0.3em] uppercase text-[9px] border-b border-[#3a2512] pb-3 mb-6">
+              Comité de Investigación (1925)
             </p>
-
-            <div className="inline-flex items-center gap-3 bg-[#3a2512]/20 border border-[#d4af37]/30 px-6 py-3 rounded-full backdrop-blur-md">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#d4af37] animate-pulse"></span>
-              <span className="font-codec text-xs md:text-sm tracking-widest uppercase text-white font-bold">
-                TÓPICO: EL ENIGMA DEL MANUSCRITO VOYNICH
-              </span>
-            </div>
           </motion.div>
         </div>
 
-        {/* Content Columns */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        {/* LABORATORY SCHOLAR DESK INTERFACE */}
+        <div className="flex flex-col lg:flex-row gap-8 items-start max-w-6xl mx-auto">
           
-          {/* Left Column: Extensive Historical Narrative */}
-          <div className="lg:col-span-7 flex flex-col gap-8">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="prose prose-invert max-w-none font-codec font-light leading-relaxed text-gray-300 text-sm md:text-base text-left"
-            >
-              {/* Core Quote Box */}
-              <div className="text-lg md:text-xl text-white font-maison leading-snug mb-8 border-l-4 border-[#d4af37] pl-6 py-2 bg-[#d4af37]/5 rounded-r-2xl">
-                💫 El estudio del Manuscrito Voynich ha constituido uno de los diálogos más desconcertantes de la criptografía y la historia medieval.
-              </div>
+          {/* Left Sidebar: Parchment Folder Tabs Selector (Medieval Folders) */}
+          <div className="w-full lg:w-1/4 flex lg:flex-col gap-4 justify-center lg:justify-start">
+            {[
+              { id: 1, label: "Folio I: El Origen", icon: BookOpen, desc: "Códice y Descifrado" },
+              { id: 2, label: "Folio II: Anomalías", icon: Compass, desc: "Nebulosas y Estructuras" },
+              { id: 3, label: "Folio III: Tribunal", icon: Users, desc: "Mesa y Directrices" }
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveFolio(tab.id)}
+                className={`flex-1 lg:flex-initial text-left p-5 rounded-2xl border transition-all duration-500 backdrop-blur-md relative overflow-hidden group ${
+                  activeFolio === tab.id 
+                    ? 'bg-[#2b1b0e]/80 border-[#d4af37]/60 shadow-[0_0_25px_rgba(212,175,55,0.15)] text-[#f3e5ab]' 
+                    : 'bg-black/50 border-white/5 hover:border-[#d4af37]/30 text-gray-400 hover:text-white'
+                }`}
+              >
+                {/* Golden wax-seal in corner of active folder */}
+                {activeFolio === tab.id && (
+                  <motion.div 
+                    layoutId="waxSeal"
+                    className="absolute -top-1 -right-1 w-6 h-6 rounded-full bg-[#8c1a1a] border border-[#d4af37]/30 flex items-center justify-center shadow-md shadow-black"
+                  >
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#630f0f] border border-[#d4af37]/20" />
+                  </motion.div>
+                )}
 
-              <p className="mb-6">
-                Tras su adquisición en 1912 por el bibliófilo Wilfrid Voynich en la Villa Mondragone, el volumen se erige hoy como un desafío que trasciende la simple bibliografía. El manuscrito demarca un objeto que desafía toda convencionalidad: un códice redactado en un sistema de escritura completamente desconocido e ilustrado con una botánica y astronomía que parecen pertenecer a un mundo ajeno a la realidad científica conocida; además, carece de visibles errores y correcciones, lo que es inusual para un manuscrito de la época.
-              </p>
-
-              {/* Graphic Vector Cryptanalysis Circle representing Voynich glyph network */}
-              <div className="bg-black/60 border border-[#d4af37]/25 rounded-3xl p-6 my-10 relative overflow-hidden flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(212,175,55,0.05)]">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.05)_0%,_transparent_75%)]" />
-                <span className="font-mono text-[9px] tracking-widest uppercase text-[#d4af37]/50 mb-4 self-start">MONDRAGONE GLYPH ANALYZER - DECR-12</span>
-                
-                {/* SVG Cryptanalysis Circle */}
-                <svg viewBox="0 0 400 200" className="w-full max-w-lg h-auto relative z-10 text-[#d4af37]">
-                  {/* Circle outline */}
-                  <circle cx="200" cy="100" r="75" fill="none" stroke="rgba(212,175,55,0.15)" strokeWidth="1" />
-                  <circle cx="200" cy="100" r="50" fill="none" stroke="rgba(212,175,55,0.08)" strokeDasharray="3 3" />
-                  
-                  {/* Center Emblem */}
-                  <circle cx="200" cy="100" r="10" fill="#070503" stroke="#d4af37" strokeWidth="1.5" />
-                  
-                  {/* Nodes around the circle representing glyph connections */}
-                  {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, idx) => {
-                    const rad = (angle * Math.PI) / 180;
-                    const x = 200 + 75 * Math.cos(rad);
-                    const y = 100 + 75 * Math.sin(rad);
-                    const glyphs = ["☿", "☉", "☽", "♁", "♃", "♄", "♈", "♉"];
-                    return (
-                      <g key={idx}>
-                        <circle cx={x} cy={y} r="5" fill="#070503" stroke="#d4af37" strokeWidth="1" />
-                        <text x={x + 8} y={y + 3} fill="rgba(243,229,171,0.7)" fontSize="9" fontFamily="monospace">{glyphs[idx]}</text>
-                      </g>
-                    );
-                  })}
-                  
-                  {/* Decryption rays intersecting */}
-                  <motion.path
-                    d="M 125 100 L 275 100 M 200 25 L 200 175 M 147 47 L 253 153 M 147 153 L 253 47"
-                    fill="none"
-                    stroke="#d4af37"
-                    strokeWidth="0.5"
-                    strokeDasharray="4 4"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                    opacity="0.3"
-                  />
-                  
-                  {/* Decrypted trace trail path */}
-                  <motion.path
-                    d="M 125 100 L 200 25 L 275 100 L 200 175 Z"
-                    fill="none"
-                    stroke="#f3e5ab"
-                    strokeWidth="1.5"
-                    initial={{ pathLength: 0 }}
-                    animate={{ pathLength: 1 }}
-                    transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                    opacity="0.85"
-                  />
-                  
-                  {/* Active ping beacon */}
-                  <circle cx="200" cy="25" r="4" fill="#d4af37" className="animate-ping" style={{ animationDuration: '2s' }} />
-                </svg>
-              </div>
-
-              <p className="mb-6">
-                A más de una década de su adquisición, el escaso conocimiento sobre el manuscrito hace pensar que tan solo ayer fue dado a conocer al público. La reciente tesis del profesor William Romaine Newbold propone que el manuscrito oculta conocimientos científicos imposibles para el medievo, como la estructura de nebulosas espirales o procesos biológicos microscópicos; además, ante la imposibilidad de hallar una raíz lingüística terrestre, se comienza a plantear que el libro es un objeto que simplemente no debería existir en nuestra línea temporal.
-              </p>
-
-              <div className="bg-[#3a2512]/15 border border-[#d4af37]/20 p-8 rounded-2xl my-8 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-[#d4af37]"></div>
-                <h3 className="font-maison text-xl text-white mb-4 uppercase tracking-wide">La Disyuntiva del Idioma</h3>
-                <p className="text-gray-400 text-sm md:text-base mb-0">
-                  La disyuntiva conduce a cuestionamientos fundamentales sobre el códice: ¿Se trata de una lengua genuina inventada por el ser humano, una lengua perdida, o un código secreto? ¿Fue escrito para que nadie lo entendiera, a modo de expresión personal-artística, o para que solo un grupo selecto con la clave pudiera leerlo?
-                </p>
-              </div>
-
-              <div className="text-lg md:text-xl font-maison text-[#f3e5ab]/90 border-l-2 border-[#d4af37]/40 pl-5 italic mt-8 leading-relaxed">
-                ¿Es el Manuscrito Voynich un mapa cifrado hacia conocimientos prohibidos del pasado, o una de las farsas más sublimes y duraderas de la historia del libro?
-              </div>
-
-            </motion.div>
-          </div>
-
-          {/* Right Column: Parameters, Document Links, Dossier Images */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            
-            {/* Parameters Block */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="bg-[#0b0704]/90 backdrop-blur-xl border border-[#d4af37]/20 rounded-3xl p-8 relative overflow-hidden shadow-2xl"
-            >
-              <div className="absolute top-0 right-0 p-4 opacity-5 text-[#d4af37]">
-                <Sparkles className="w-36 h-36" />
-              </div>
-              
-              <h3 className="font-mono text-xs tracking-widest uppercase text-[#d4af37] mb-2">Parámetros del Comité</h3>
-              <div className="text-2xl sm:text-3xl font-maison font-black text-white mb-6 uppercase tracking-wide">Modalidad y Ciclo</div>
-              
-              <div className="flex items-center gap-4 bg-[#3a2512]/15 p-4 rounded-2xl border border-[#3a2512]/30 mb-8">
-                <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 flex items-center justify-center border border-[#d4af37]/20">
-                  <FileText className="w-6 h-6 text-[#d4af37]" />
+                <div className="flex items-center gap-3 relative z-10">
+                  <tab.icon className={`w-5 h-5 shrink-0 ${activeFolio === tab.id ? 'text-[#d4af37] animate-pulse' : 'text-gray-500'}`} />
+                  <div>
+                    <div className="font-maison font-bold text-xs sm:text-sm uppercase tracking-wide">{tab.label}</div>
+                    <div className="font-mono text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">{tab.desc}</div>
+                  </div>
                 </div>
-                <div className="text-left">
-                  <div className="font-codec text-xs text-[#d4af37]/60 uppercase tracking-widest">Formato Operativo</div>
-                  <div className="font-bold text-lg text-white">Mixto / Individual</div>
-                </div>
-              </div>
+              </button>
+            ))}
 
-              {/* Technical Specifications Overlay Grid */}
-              <div className="grid grid-cols-2 gap-4 border-t border-[#3a2512]/40 pt-6">
-                {[
-                  { label: "CÓDICE", val: "MS 408 Voynich" },
-                  { label: "ESTATUS", val: "DESAFÍO CRIPTO" },
-                  { label: "ADQUISICIÓN", val: "1912 Mondragone" },
-                  { label: "ESCRITURA", val: "SINFÍN CORRECCIÓN" }
-                ].map((stat, idx) => (
-                  <div key={idx} className="bg-black/40 border border-[#d4af37]/5 p-3.5 rounded-xl text-left">
-                    <span className="font-mono text-[8px] text-[#d4af37]/50 uppercase tracking-widest block mb-0.5">{stat.label}</span>
-                    <span className="font-mono text-xs text-[#f3e5ab] font-bold">{stat.val}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Action Buttons */}
-              <div className="grid grid-cols-1 gap-4 mt-8">
-                <button 
-                  onClick={() => window.open('https://drive.google.com/file/d/1-b1DQqWR2000lnLk5it1IrRRt8sPiLme/view?usp=sharing', '_blank')}
-                  className="group flex items-center gap-4 bg-white/5 hover:bg-[#d4af37]/10 border border-white/10 hover:border-[#d4af37]/45 p-4 rounded-xl transition-all duration-300"
-                >
-                  <div className="p-3 bg-black/60 border border-white/5 rounded-lg group-hover:border-[#d4af37]/30 transition-colors">
-                    <Download className="w-5 h-5 text-[#d4af37] group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div className="text-left">
-                    <span className="block font-bold text-white uppercase group-hover:text-[#d4af37] transition-colors">Guía Académica</span>
-                    <span className="block font-mono text-[9px] text-gray-400 uppercase tracking-widest mt-1">Ver Carpeta Voynich</span>
-                  </div>
-                </button>
-                
-                <button 
-                  onClick={() => window.open('https://drive.google.com/file/d/1PLTWtkaMW7vwApTS5O56OZhGRQ4cRx2B/view?usp=sharing', '_blank')}
-                  className="group flex items-center gap-4 bg-white/5 hover:bg-[#d4af37]/10 border border-white/10 hover:border-[#d4af37]/45 p-4 rounded-xl transition-all duration-300"
-                >
-                  <div className="p-3 bg-black/60 border border-white/5 rounded-lg group-hover:border-[#d4af37]/30 transition-colors">
-                    <Eye className="w-5 h-5 text-[#d4af37] group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div className="text-left">
-                    <span className="block font-bold text-white uppercase group-hover:text-[#d4af37] transition-colors">Códice Voynich</span>
-                    <span className="block font-mono text-[9px] text-gray-400 uppercase tracking-widest mt-1">Ver Manuscrito Original (PDF)</span>
-                  </div>
-                </button>
-
-                <button 
-                  onClick={() => setShowMesa(true)}
-                  className="group flex items-center gap-4 bg-[#d4af37]/10 hover:bg-[#d4af37]/15 border border-[#d4af37]/30 hover:border-[#d4af37]/50 p-4 rounded-xl transition-all duration-300"
-                >
-                  <div className="p-3 bg-black/60 border border-[#d4af37]/20 rounded-lg group-hover:border-[#d4af37]/30 transition-colors">
-                    <Users className="w-5 h-5 text-[#d4af37] group-hover:scale-110 transition-transform" />
-                  </div>
-                  <div className="text-left">
-                    <span className="block font-bold text-[#d4af37] uppercase">Mesa Directiva</span>
-                    <span className="block font-mono text-[9px] text-[#f3e5ab]/60 uppercase tracking-widest mt-1">Conoce a tu mesa</span>
-                  </div>
-                </button>
-              </div>
-
-            </motion.div>
-
-            {/* Classified Decrypt Console Trigger Widget */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="bg-black/60 border border-[#d4af37]/20 hover:border-[#d4af37]/45 rounded-3xl p-6 relative overflow-hidden flex items-center justify-between transition-all duration-300 shadow-lg"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-lg bg-[#3a2512]/20 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37]">
-                  <ShieldAlert className="w-5 h-5 animate-pulse" />
-                </div>
-                <div className="text-left">
-                  <div className="font-mono text-[10px] text-[#d4af37] font-bold uppercase tracking-widest">CIPHER DECRYPTION TERMINAL</div>
-                  <div className="font-mono text-xs text-gray-400 mt-0.5">Acceso a clave cripto de Newbold.</div>
-                </div>
+            {/* Quick Decrypt Widget */}
+            <div className="hidden lg:flex items-center justify-between p-5 rounded-2xl border border-red-950/20 bg-black/60 relative overflow-hidden group hover:border-[#d4af37]/35 transition-colors">
+              <div>
+                <span className="font-mono text-[8px] text-red-500 tracking-wider uppercase font-bold">Decrypt MS 408</span>
+                <span className="block font-mono text-[10px] text-gray-400 mt-1">Bypass satélite de Mondragone.</span>
               </div>
               <button 
                 onClick={() => setShowPasscode(true)}
-                className="bg-[#d4af37]/15 hover:bg-[#d4af37] text-[#d4af37] hover:text-black border border-[#d4af37]/30 px-3.5 py-1.5 rounded-lg font-mono text-[10px] uppercase font-bold tracking-widest transition-all duration-300 shadow-md"
+                className="p-2 border border-[#d4af37]/30 hover:border-[#d4af37] bg-white/5 hover:bg-[#d4af37] text-[#d4af37] hover:text-black rounded-lg transition-all"
               >
-                Decrypt
+                <Key className="w-3.5 h-3.5" />
               </button>
-            </motion.div>
+            </div>
+          </div>
 
-            {/* Immersive Voynich Exhibit Dossier Grid */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4 mt-8"
-            >
-              <div className="relative h-44 rounded-2xl overflow-hidden group border border-[#d4af37]/20 bg-black/40">
-                <img src="/v1.jpg" alt="Botanical folio" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700 filter sepia-[0.3]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-left">
-                  <span className="font-mono text-[8px] text-[#d4af37] tracking-[0.25em] uppercase block mb-1">Dossier Exhibit 01</span>
-                  <h4 className="font-maison font-bold text-sm text-white">Anomalous Botanical Folio</h4>
-                  <span className="font-mono text-[8px] text-white/40 block mt-0.5">Illustrations of non-existent botanical specimens</span>
-                </div>
-              </div>
-              
-              <div className="relative h-44 rounded-2xl overflow-hidden group border border-[#d4af37]/20 bg-black/40">
-                <img src="/v2.webp" alt="Astronomical spiral" className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700 filter sepia-[0.2] contrast-[1.05]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-left">
-                  <span className="font-mono text-[8px] text-[#d4af37] tracking-[0.25em] uppercase block mb-1">Dossier Exhibit 02</span>
-                  <h4 className="font-maison font-bold text-sm text-white">Cosmological Chart Folio</h4>
-                  <span className="font-mono text-[8px] text-white/40 block mt-0.5">Spiral structures resembling modern galaxy sweeps</span>
-                </div>
-              </div>
-            </motion.div>
+          {/* Central Workspace: Open Codicology Folio Book Simulator */}
+          <div className="w-full lg:w-3/4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeFolio}
+                initial={{ opacity: 0, rotateY: -10, filter: "blur(5px)" }}
+                animate={{ opacity: 1, rotateY: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, rotateY: 10, filter: "blur(5px)" }}
+                transition={{ duration: 0.6, ease: "easeInOut" }}
+                className="relative rounded-[2.5rem] bg-[#ede1cb] border-[8px] border-[#3a2512] shadow-[0_25px_60px_rgba(0,0,0,0.8)] min-h-[520px] text-black font-serif overflow-hidden select-text"
+              >
+                {/* Codex parchment fine lines background */}
+                <div className="absolute inset-0 opacity-[0.1] bg-[radial-gradient(#000_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
+                
+                {/* Book vertical middle shadow crease */}
+                <div className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-8 bg-gradient-to-r from-black/20 via-black/40 to-black/20 pointer-events-none z-10 hidden md:block" />
 
+                {/* TAB CONTENT 1: ORIGIN & MAGNIFIER VIEWPORT */}
+                {activeFolio === 1 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 h-full min-h-[500px]">
+                    
+                    {/* Left Page: Narrative Text */}
+                    <div className="p-8 sm:p-10 border-r border-[#3a2512]/10 h-full flex flex-col justify-between">
+                      <div>
+                        <div className="font-mono text-[8px] tracking-[0.25em] text-red-800 uppercase font-bold mb-4">★ FOLIO 01R • SCRIPTUM ORIGINE ★</div>
+                        <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-6 border-b border-[#3a2512]/20 pb-2">El Misterio del Códice</h3>
+                        <p className="text-sm leading-relaxed text-amber-950/80 mb-4 antialiased">
+                          El estudio del Manuscrito Voynich ha constituido uno de los diálogos más desconcertantes de la criptografía y la historia medieval. Tras su adquisición en 1912 por el bibliófilo Wilfrid Voynich en la Villa Mondragone, el volumen se erige hoy como un desafío que trasciende la simple bibliografía.
+                        </p>
+                        <p className="text-sm leading-relaxed text-amber-950/80 antialiased">
+                          El manuscrito demarca un objeto que desafía toda convencionalidad: un códice redactado en un sistema de escritura completamente desconocido e ilustrado con una botánica y astronomía que parecen pertenecer a un mundo ajeno a la realidad científica conocida; además, carece de visibles errores y correcciones, lo que es inusual para un manuscrito de la época.
+                        </p>
+                      </div>
+                      
+                      {/* Wax Seal Quote stamp */}
+                      <div className="flex gap-4 items-center bg-[#8c1a1a]/5 border border-[#8c1a1a]/20 p-4 rounded-xl mt-6">
+                        <div className="w-10 h-10 rounded-full bg-[#8c1a1a] flex items-center justify-center text-white shrink-0 shadow shadow-black">
+                          <Eye className="w-5 h-5" />
+                        </div>
+                        <p className="font-serif italic text-[11px] text-[#630f0f] leading-snug text-left">"¿Fantasía medieval, lengua perdida, o un código exógeno cifrado para que solo selectos sabios lograsen interpretarlo?"</p>
+                      </div>
+                    </div>
+
+                    {/* Right Page: Experimental Cursor Magnifier Decryptor */}
+                    <div className="p-8 sm:p-10 flex flex-col justify-between h-full bg-[#e8dbbf]">
+                      <div className="text-left w-full">
+                        <div className="font-mono text-[8px] tracking-[0.25em] text-red-800 uppercase font-bold mb-4">★ FOLIO 01V • MICROSCOPIC OVERLAY ★</div>
+                        <span className="block font-serif italic text-xs text-amber-900/60 mb-6">Pasa el cursor para escanear y traducir morfologías.</span>
+                        
+                        {/* Interactive Magnifier Viewport Area */}
+                        <div 
+                          ref={containerRef}
+                          onMouseMove={handleMouseMove}
+                          onMouseLeave={() => setMagnifierCoords(prev => ({ ...prev, show: false }))}
+                          className="relative h-64 w-full rounded-2xl overflow-hidden border border-[#3a2512]/30 cursor-crosshair bg-black/10 select-none shadow-[inset_0_0_10px_rgba(0,0,0,0.1)]"
+                        >
+                          {/* Original Image (v1.jpg) */}
+                          <img 
+                            src="/v1.jpg" 
+                            alt="Voynich botanical" 
+                            className="absolute inset-0 w-full h-full object-cover filter sepia-[0.4]" 
+                          />
+
+                          {/* CSS Circular Decrypt Magnifier Lens following the mouse */}
+                          {magnifierCoords.show && (
+                            <div 
+                              className="absolute rounded-full pointer-events-none border border-[#d4af37] bg-black/90 shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                              style={{
+                                width: '130px',
+                                height: '130px',
+                                left: `${magnifierCoords.x - 65}px`,
+                                top: `${magnifierCoords.y - 65}px`,
+                                backgroundImage: 'radial-gradient(circle, rgba(58,37,18,0.2) 0%, rgba(0,0,0,0.95) 100%)',
+                                overflow: 'hidden',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center'
+                              }}
+                            >
+                              {/* Decrypted Vector telemetries inside Lens */}
+                              <div className="text-[7px] font-mono text-[#d4af37] text-center p-2 leading-tight">
+                                <span className="block font-bold text-white uppercase tracking-wider mb-0.5">FOLIO DECODED</span>
+                                <span className="block text-gray-400">[CELLULAR_ANOMALY]</span>
+                                <span className="block text-[#f3e5ab] mt-1 italic">Fibra metálica entrelazada con cloroplastos.</span>
+                              </div>
+                              {/* Glowing fine vector grid inside lens */}
+                              <div className="absolute inset-0 border border-[#d4af37]/20 rounded-full bg-[linear-gradient(rgba(212,175,55,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(212,175,55,0.08)_1px,transparent_1px)] bg-[size:10px_10px]" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Morphological Analysis Footer card */}
+                      <div className="bg-[#ede1cb] border border-[#3a2512]/15 p-4 rounded-xl text-left mt-6">
+                        <span className="font-mono text-[8px] text-amber-900 uppercase font-bold block mb-1">Dossier Morphological Scan</span>
+                        <p className="font-serif text-[11px] leading-snug text-amber-950/80 mb-0">La botánica ilustrada exhibe un sistema venoso geométrico que no encaja con ninguna taxonomía vegetal terrestre registrada.</p>
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+
+                {/* TAB CONTENT 2: NEWBOLD TESIS & ACTIVE SVG PLANETARY CONNECTOR */}
+                {activeFolio === 2 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 h-full min-h-[500px]">
+                    
+                    {/* Left Page: Thesis detail */}
+                    <div className="p-8 sm:p-10 border-r border-[#3a2512]/10 h-full flex flex-col justify-between">
+                      <div>
+                        <div className="font-mono text-[8px] tracking-[0.25em] text-red-800 uppercase font-bold mb-4">★ FOLIO 02R • NEWBOLD CALIBRATION ★</div>
+                        <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-6 border-b border-[#3a2512]/20 pb-2">Tesis Newbold</h3>
+                        <p className="text-sm leading-relaxed text-amber-950/80 mb-4 antialiased text-left">
+                          A más de una década de su adquisición, la tesis del profesor William Romaine Newbold propone que el manuscrito oculta conocimientos científicos imposibles para el medievo, como la estructura de nebulosas espirales o procesos biológicos microscópicos.
+                        </p>
+                        <p className="text-sm leading-relaxed text-amber-950/80 antialiased text-left">
+                          Ante la imposibilidad de hallar una raíz lingüística terrestre, se comienza a plantear que el libro es un objeto que simplemente no debería existir en nuestra línea temporal. ¿Se trata de un cometa, o de un portal a conocimientos interestelares prohibidos?
+                        </p>
+                      </div>
+
+                      <div className="bg-black/5 p-4 rounded-xl border border-[#3a2512]/15 text-left mt-6">
+                        <span className="font-mono text-[8px] text-amber-900 uppercase font-bold block mb-1">Isotopic Ratio Log</span>
+                        <p className="font-serif text-[11px] leading-snug text-amber-950/70 mb-0">El pigmento de hierro analizado en las espirales no coincide con la composición de los metales forjados en Europa en el siglo XV.</p>
+                      </div>
+                    </div>
+
+                    {/* Right Page: Immersive Astronomical Diagram & SVG Analyzer */}
+                    <div className="p-8 sm:p-10 flex flex-col justify-between h-full bg-[#e8dbbf]">
+                      <div className="text-left w-full">
+                        <div className="font-mono text-[8px] tracking-[0.25em] text-red-800 uppercase font-bold mb-4">★ FOLIO 02V • ASTRONOMICAL SPIRALS ★</div>
+                        <span className="block font-serif italic text-xs text-amber-900/60 mb-4">Espectro estelar de Andrómeda (v2.webp) y simulación de giros.</span>
+
+                        <div className="relative h-44 rounded-xl overflow-hidden border border-[#3a2512]/30 shadow-inner bg-black/10">
+                          <img src="/v2.webp" alt="Voynich astronomical" className="absolute inset-0 w-full h-full object-cover filter sepia-[0.3]" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+                          <div className="absolute bottom-3 left-3 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-ping" />
+                            <span className="font-mono text-[8px] text-white font-bold uppercase tracking-widest">Active Cosmological Folio</span>
+                          </div>
+                        </div>
+
+                        {/* Interactive decryption trace overlay inside the book page */}
+                        <div className="mt-4 p-3 bg-black/5 border border-[#3a2512]/10 rounded-xl flex items-center justify-between">
+                          <span className="font-mono text-[9px] text-amber-950/70 uppercase">Cripto-Analizador:</span>
+                          <span className="font-mono text-[10px] text-amber-900 font-bold animate-pulse">MSS_DECODE_RUNNING</span>
+                        </div>
+                      </div>
+
+                      {/* SVG Astrolabe Plotter inside Book */}
+                      <svg viewBox="0 0 200 60" className="w-full h-auto text-amber-950/30 mt-6 relative z-10">
+                        <circle cx="100" cy="30" r="25" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="3 3" />
+                        <line x1="50" x2="150" y1="30" y2="30" stroke="currentColor" strokeWidth="0.25" />
+                        <motion.circle 
+                          cx="100" cy="30" r="2" fill="#8c1a1a"
+                          animate={{ cx: [75, 125, 75] }}
+                          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                        />
+                      </svg>
+                    </div>
+
+                  </div>
+                )}
+
+                {/* TAB CONTENT 3: TRIBUNAL & DRIVE ACADEMIC LETTERS */}
+                {activeFolio === 3 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 h-full min-h-[500px]">
+                    
+                    {/* Left Page: Wax-Sealed Mesa Directiva */}
+                    <div className="p-8 sm:p-10 border-r border-[#3a2512]/10 h-full flex flex-col justify-between">
+                      <div>
+                        <div className="font-mono text-[8px] tracking-[0.25em] text-red-800 uppercase font-bold mb-4">★ FOLIO 03R • TRIBUNALE MONDRAGONE ★</div>
+                        <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-6 border-b border-[#3a2512]/20 pb-2">Mesa Directiva</h3>
+                        
+                        {/* Daniel Card */}
+                        <div className="bg-white/40 border border-[#3a2512]/10 rounded-2xl p-5 mb-4 relative overflow-hidden group hover:border-[#8c1a1a]/30 transition-all duration-300">
+                          <span className="font-mono text-[8px] text-red-800 tracking-[0.2em] uppercase block mb-1">Presidente</span>
+                          <h4 className="font-serif font-black text-lg text-amber-950">Daniel Zambrano</h4>
+                          <p className="text-[10px] text-amber-900 leading-snug mt-1 font-sans">Criptoanalista Principal y Director de la Sección de Codicología y Textos Ocultos de la Villa.</p>
+                        </div>
+
+                        {/* Mathias Card */}
+                        <div className="bg-white/40 border border-[#3a2512]/10 rounded-2xl p-5 relative overflow-hidden group hover:border-[#8c1a1a]/30 transition-all duration-300">
+                          <span className="font-mono text-[8px] text-red-800 tracking-[0.2em] uppercase block mb-1">Vicepresidente</span>
+                          <h4 className="font-serif font-black text-lg text-amber-950">Mathias Martinez</h4>
+                          <p className="text-[10px] text-amber-900 leading-snug mt-1 font-sans">Investigador de Anomalías Cronométricas, Botánicas e Historiografía del Medievo.</p>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 font-mono text-[7px] text-amber-900/40 text-center uppercase tracking-widest">Estación Mondragone • Investigación 1925</div>
+                    </div>
+
+                    {/* Right Page: Academic Documents styled as Letters */}
+                    <div className="p-8 sm:p-10 flex flex-col justify-between h-full bg-[#e8dbbf]">
+                      <div className="text-left w-full">
+                        <div className="font-mono text-[8px] tracking-[0.25em] text-red-800 uppercase font-bold mb-4">★ FOLIO 03V • SCHOLAR ARCHIVES ★</div>
+                        <h3 className="font-serif italic text-2xl font-black text-amber-950 mb-6 border-b border-[#3a2512]/20 pb-2">Documentos</h3>
+
+                        <div className="grid grid-cols-1 gap-4">
+                          <button 
+                            onClick={() => window.open('https://drive.google.com/file/d/1-b1DQqWR2000lnLk5it1IrRRt8sPiLme/view?usp=sharing', '_blank')}
+                            className="group flex items-center gap-4 bg-white/40 hover:bg-[#8c1a1a]/10 border border-[#3a2512]/20 hover:border-[#8c1a1a]/50 p-4 rounded-xl transition-all duration-300"
+                          >
+                            <div className="p-3 bg-black/5 border border-white/20 rounded-lg group-hover:border-[#8c1a1a]/30">
+                              <Download className="w-5 h-5 text-amber-900 group-hover:scale-110 transition-transform" />
+                            </div>
+                            <div className="text-left font-serif">
+                              <span className="block font-black text-amber-950 text-sm group-hover:text-[#8c1a1a]">Guía Académica</span>
+                              <span className="block font-mono text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">Dossier de Criptografía</span>
+                            </div>
+                          </button>
+
+                          <button 
+                            onClick={() => window.open('https://drive.google.com/file/d/1PLTWtkaMW7vwApTS5O56OZhGRQ4cRx2B/view?usp=sharing', '_blank')}
+                            className="group flex items-center gap-4 bg-white/40 hover:bg-[#8c1a1a]/10 border border-[#3a2512]/20 hover:border-[#8c1a1a]/50 p-4 rounded-xl transition-all duration-300"
+                          >
+                            <div className="p-3 bg-black/5 border border-white/20 rounded-lg group-hover:border-[#8c1a1a]/30">
+                              <FileText className="w-5 h-5 text-amber-900 group-hover:scale-110 transition-transform" />
+                            </div>
+                            <div className="text-left font-serif">
+                              <span className="block font-black text-amber-950 text-sm group-hover:text-[#8c1a1a]">Códice Completo</span>
+                              <span className="block font-mono text-[8px] text-gray-500 uppercase tracking-widest mt-0.5">Manuscrito Escaneado (PDF)</span>
+                            </div>
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Small visual of old document stamp */}
+                      <div className="flex items-center justify-end opacity-25 mt-6">
+                        <svg viewBox="0 0 100 100" className="w-16 h-16 text-red-900">
+                          <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="3 3" />
+                          <circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" strokeWidth="1" />
+                          <text x="32" y="55" fontSize="13" fontWeight="bold" fontFamily="monospace" fill="currentColor">VILLA</text>
+                        </svg>
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+
+              </motion.div>
+            </AnimatePresence>
           </div>
 
         </div>
@@ -393,7 +434,6 @@ export default function Voynich() {
               exit={{ scale: 0.95, y: 20 }}
               className={`w-full max-w-md bg-[#090704] border border-[#d4af37]/30 rounded-3xl p-8 text-center relative overflow-hidden shadow-2xl ${error ? 'animate-shake' : ''}`}
             >
-              {/* Golden tech background line */}
               <div className="absolute top-0 left-0 w-full h-[2px] bg-[#d4af37]" />
               
               <div className="w-16 h-16 mx-auto mb-6 bg-[#3a2512]/40 border border-[#d4af37]/30 rounded-2xl flex items-center justify-center text-[#d4af37] shadow-inner">
@@ -487,10 +527,8 @@ export default function Voynich() {
               exit={{ scale: 0.95, y: 30 }}
               className="w-full max-w-4xl bg-[#070503] border border-[#d4af37]/30 rounded-[2.5rem] p-6 md:p-10 shadow-2xl relative overflow-hidden max-h-[90vh] overflow-y-auto"
             >
-              {/* Golden Warning Frame */}
               <div className="absolute top-0 left-0 w-full h-[4px] bg-[#d4af37]" />
               
-              {/* Close Button */}
               <button 
                 onClick={closeEasterEgg}
                 className="absolute top-6 right-6 w-10 h-10 bg-white/5 hover:bg-[#d4af37] text-white hover:text-black rounded-full flex items-center justify-center transition-all duration-300 z-50 border border-white/10 hover:border-[#d4af37]"
@@ -500,7 +538,6 @@ export default function Voynich() {
 
               <div className="flex flex-col gap-6 font-mono text-left max-w-3xl mx-auto pt-6 text-sm">
                 
-                {/* Header warning */}
                 <div className="flex items-center gap-4 bg-[#3a2512]/20 border border-[#d4af37]/30 p-4 rounded-xl text-[#d4af37]">
                   <Sparkles className="w-6 h-6 shrink-0 animate-bounce" />
                   <div>
@@ -541,75 +578,6 @@ export default function Voynich() {
                 </div>
 
               </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* 4. Mesa Directiva Modal Popup (Voynich Scroll Style) */}
-      <AnimatePresence>
-        {showMesa && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-md flex items-center justify-center p-4"
-            onClick={() => setShowMesa(false)}
-          >
-            <motion.div 
-              initial={{ scale: 0.95, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-2xl bg-[#090704] border border-[#d4af37]/30 rounded-[2.5rem] p-8 md:p-10 text-center relative overflow-hidden shadow-2xl"
-            >
-              {/* Golden scroll borders */}
-              <div className="absolute top-0 left-0 w-full h-[4px] bg-[#d4af37]" />
-              <div className="absolute inset-2 border border-[#d4af37]/10 rounded-[2.2rem] pointer-events-none" />
-
-              <button 
-                onClick={() => setShowMesa(false)}
-                className="absolute top-6 right-6 w-10 h-10 bg-white/5 hover:bg-[#d4af37] text-white hover:text-black border border-white/10 hover:border-[#d4af37] rounded-full flex items-center justify-center transition-all duration-300 z-50"
-              >
-                <X className="w-5 h-5" />
-              </button>
-
-              <div className="w-16 h-16 mx-auto mb-6 bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-2xl flex items-center justify-center text-[#d4af37]">
-                <Users className="w-8 h-8 animate-pulse" />
-              </div>
-
-              <h3 className="font-maison text-3xl font-extrabold text-white uppercase tracking-tight mb-2">
-                MESA DIRECTIVA
-              </h3>
-              <p className="font-mono text-[10px] text-[#d4af37] tracking-[0.35em] uppercase mb-8 border-b border-white/10 pb-4">
-                INVESTIGACIÓN DE COLOGÍA • ESTACIÓN MONDRAGONE
-              </p>
-
-              {/* Members Dossier Layout */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-xl mx-auto mb-8">
-                {/* Presidente Card */}
-                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-[#d4af37]/30 transition-all duration-300">
-                  <span className="font-mono text-[8px] text-[#d4af37] tracking-[0.2em] uppercase block mb-1">Presidente</span>
-                  <h4 className="font-maison font-bold text-xl text-white group-hover:text-[#d4af37] transition-colors">Daniel Zambrano</h4>
-                  <div className="w-8 h-[1px] bg-white/10 mx-auto my-3 group-hover:bg-[#d4af37]/30 transition-colors" />
-                  <p className="text-[10px] text-gray-500 font-codec leading-relaxed">Criptoanalista Principal y Director de la Sección de Codicología y Textos Ocultos.</p>
-                </div>
-
-                {/* Vicepresidente Card */}
-                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 relative overflow-hidden group hover:border-[#d4af37]/30 transition-all duration-300">
-                  <span className="font-mono text-[8px] text-[#d4af37] tracking-[0.2em] uppercase block mb-1">Vicepresidente</span>
-                  <h4 className="font-maison font-bold text-xl text-white group-hover:text-[#d4af37] transition-colors">Mathias Martinez</h4>
-                  <div className="w-8 h-[1px] bg-white/10 mx-auto my-3 group-hover:bg-[#d4af37]/30 transition-colors" />
-                  <p className="text-[10px] text-gray-500 font-codec leading-relaxed">Investigador de Anomalías Cronométricas, Botánicas y Historiografía del Medievo.</p>
-                </div>
-              </div>
-
-              <button 
-                onClick={() => setShowMesa(false)}
-                className="bg-white/5 hover:bg-[#d4af37] text-gray-400 hover:text-black border border-white/10 hover:border-[#d4af37] px-8 py-3 rounded-xl font-mono text-xs uppercase tracking-widest font-bold transition-all"
-              >
-                Cerrar Dossier
-              </button>
             </motion.div>
           </motion.div>
         )}
