@@ -217,7 +217,7 @@ Todo está conectado. 💙💫`,
                         <motion.div
                           animate={{ y: [-4, 4, -4], rotate: [-8, 8, -8] }}
                           transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                          className="absolute -bottom-2 -left-2 z-20 w-16 h-16 filter drop-shadow-[0_8px_16px_rgba(212,175,55,0.4)] pointer-events-none"
+                          className="absolute -bottom-4 -left-4 z-20 w-24 h-24 md:w-28 md:h-28 filter drop-shadow-[0_8px_20px_rgba(212,175,55,0.45)] pointer-events-none"
                         >
                           <img src="/mini.png" alt="Mini Almeida" className="w-full h-full object-contain" />
                         </motion.div>
@@ -308,10 +308,10 @@ Todo está conectado. 💙💫`,
                   <motion.div 
                     animate={{ y: [-8, 8, -8], rotate: [-6, 6, -6] }}
                     transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -bottom-8 -right-8 w-28 h-28 z-30 filter drop-shadow-[0_15px_25px_rgba(212,175,55,0.45)] pointer-events-none"
+                    className="absolute -bottom-10 -right-10 md:-bottom-14 md:-right-14 w-40 h-40 md:w-48 md:h-48 z-30 filter drop-shadow-[0_20px_35px_rgba(212,175,55,0.5)] pointer-events-none"
                   >
                     {/* Golden glow bubble behind plush */}
-                    <div className="absolute inset-0 bg-[#D4AF37]/15 rounded-full blur-xl -z-10 animate-pulse" />
+                    <div className="absolute inset-0 bg-[#D4AF37]/20 rounded-full blur-2xl -z-10 animate-pulse" />
                     
                     <img 
                       src="/mini.png" 
