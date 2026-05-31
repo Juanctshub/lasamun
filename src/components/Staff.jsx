@@ -72,6 +72,38 @@ export default function Staff() {
       dept: "Logística",
       quote: "Administrar recursos con absoluta transparencia y eficiencia operativa garantiza un ecosistema académico sostenible en el tiempo.",
       image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=800&auto=format&fit=crop"
+    },
+    {
+      id: 9,
+      name: "Diego Mendoza",
+      role: "Secretario de Logística Adjunto",
+      dept: "Logística",
+      quote: `Hola, soy Diego Mendoza y soy el Secretario de Logística adjunto de esta II Edición de LASAMUN, mi trayectoria empieza desde hace 2 años en dónde entre al Modelo de Naciones Unidas sin saber nada de política y ahora no paro de pensar en cuando será la próxima vez que delegue, me especializo en comités estilo prensa y ONU, sobre todo con temas de tecnología, espero que sea de su agrado y sobre todo que disfruten el modelo, nos vemos en poco tiempo.
+
+Todo está conectado. 💙💫`,
+      image: "/diego.jpg"
+    },
+    {
+      id: 10,
+      name: "Gisel Palma",
+      role: "Jefa de Protocolo",
+      dept: "Logística",
+      quote: `¡Hola! Soy Gisel Palma. Durante el último año y medio he tenido la oportunidad de formar parte del equipo de protocolo en diferentes ponencias y jornadas académicas dentro del Instituto La Salle, una experiencia que para mí ha sido increíble.
+
+En esta ocasión, me parece sumamente emocionante participar por primera vez como Jefa de Protocolo en un modelo. Estoy lista para dar lo mejor de mí junto al equipo. ¡Muchísima suerte en el modelo, chicos!
+
+Todo está conectado. 💫💙`,
+      image: "/gisel.jpg"
+    },
+    {
+      id: 11,
+      name: "Daniel Sigala",
+      role: "Jefe Protocolar",
+      dept: "Logística",
+      quote: `Hola mi nombre es Daniel Sigala, en esta ocasión soy Jefe Protocolar, un honor para mi; agradezco todo lo que esta maravillosa actividad ha fomentado en mi persona y por toda la gente que he conocido, que disfruten del modelo!
+
+Todo está conectado. 💫💙`,
+      image: "/daniel.jpg"
     }
   ];
 
