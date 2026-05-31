@@ -4,32 +4,38 @@ class AudioSystem {
     this.frutiger = null;
     this.lmfao = null;
     this.gaga = null;
+    this.mii = null;
+    this.jeffrey = null; // New Corte audio
+
     this.frutigerNode = null;
     this.lmfaoNode = null;
     this.gagaNode = null;
+    this.miiNode = null;
+    this.jeffreyNode = null;
+
     this.frutigerFilter = null;
     this.lmfaoFilter = null;
     this.gagaFilter = null;
+    this.miiFilter = null;
+    this.jeffreyFilter = null;
+
     this.frutigerGain = null;
     this.lmfaoGain = null;
     this.gagaGain = null;
-    this.gagaGain = null;
-    this.mii = null;
-    this.miiNode = null;
-    this.miiFilter = null;
     this.miiGain = null;
-    this.activeTrack = null; // 'frutiger', 'lmfao', 'gaga', or 'mii'
+    this.jeffreyGain = null;
+
+    this.activeTrack = null; 
     this.initialized = false;
   }
 
-  init() {
+  async init() {
     if (this.initialized) return;
 
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
     this.ctx = new AudioContext();
 
-    // Create HTML Audio Elements
     this.frutiger = new Audio('/frutiger.mp3');
     this.frutiger.loop = true;
     this.frutiger.crossOrigin = 'anonymous';
@@ -46,64 +52,55 @@ class AudioSystem {
     this.mii.loop = true;
     this.mii.crossOrigin = 'anonymous';
 
+    this.jeffrey = new Audio('/jeffrey.mp3');
+    this.jeffrey.loop = true;
+    this.jeffrey.crossOrigin = 'anonymous';
+
     // Route elements through Web Audio API
     this.frutigerNode = this.ctx.createMediaElementSource(this.frutiger);
     this.lmfaoNode = this.ctx.createMediaElementSource(this.lmfao);
     this.gagaNode = this.ctx.createMediaElementSource(this.gaga);
     this.miiNode = this.ctx.createMediaElementSource(this.mii);
+    this.jeffreyNode = this.ctx.createMediaElementSource(this.jeffrey);
 
     // Create lowpass filters for the "desenfoque" muffling effect
     this.frutigerFilter = this.ctx.createBiquadFilter();
-    this.frutigerFilter.type = 'lowpass';
-    this.frutigerFilter.Q.value = 1.0;
-    this.frutigerFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
-
     this.lmfaoFilter = this.ctx.createBiquadFilter();
-    this.lmfaoFilter.type = 'lowpass';
-    this.lmfaoFilter.Q.value = 1.0;
-    this.lmfaoFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
-
     this.gagaFilter = this.ctx.createBiquadFilter();
-    this.gagaFilter.type = 'lowpass';
-    this.gagaFilter.Q.value = 1.0;
-    this.gagaFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
-
     this.miiFilter = this.ctx.createBiquadFilter();
-    this.miiFilter.type = 'lowpass';
-    this.miiFilter.Q.value = 1.0;
-    this.miiFilter.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
+    this.jeffreyFilter = this.ctx.createBiquadFilter();
+
+    [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter].forEach(f => {
+      f.type = 'lowpass';
+      f.Q.value = 1.0;
+      f.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
+    });
 
     // Create gain nodes for volume crossfades
     this.frutigerGain = this.ctx.createGain();
-    this.frutigerGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
-
     this.lmfaoGain = this.ctx.createGain();
-    this.lmfaoGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
-
     this.gagaGain = this.ctx.createGain();
-    this.gagaGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
-
     this.miiGain = this.ctx.createGain();
-    this.miiGain.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
+    this.jeffreyGain = this.ctx.createGain();
+
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain].forEach(g => {
+      g.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
+    });
 
     // Connect node chains: Source -> Filter -> Gain -> Destination
-    this.frutigerNode.connect(this.frutigerFilter);
-    this.frutigerFilter.connect(this.frutigerGain);
-    this.frutigerGain.connect(this.ctx.destination);
-
-    this.lmfaoNode.connect(this.lmfaoFilter);
-    this.lmfaoFilter.connect(this.lmfaoGain);
-    this.lmfaoGain.connect(this.ctx.destination);
-
-    this.gagaNode.connect(this.gagaFilter);
-    this.gagaFilter.connect(this.gagaGain);
-    this.gagaGain.connect(this.ctx.destination);
-
-    this.miiNode.connect(this.miiFilter);
-    this.miiFilter.connect(this.miiGain);
-    this.miiGain.connect(this.ctx.destination);
+    this._setupChain(this.frutigerNode, this.frutigerFilter, this.frutigerGain);
+    this._setupChain(this.lmfaoNode, this.lmfaoFilter, this.lmfaoGain);
+    this._setupChain(this.gagaNode, this.gagaFilter, this.gagaGain);
+    this._setupChain(this.miiNode, this.miiFilter, this.miiGain);
+    this._setupChain(this.jeffreyNode, this.jeffreyFilter, this.jeffreyGain);
 
     this.initialized = true;
+  }
+
+  _setupChain(source, filter, gain) {
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
   }
 
   async startExperience() {
@@ -119,6 +116,7 @@ class AudioSystem {
     this.lmfao.play().catch(e => console.log("Playback error LMFAO", e));
     this.gaga.play().catch(e => console.log("Playback error Gaga", e));
     this.mii.play().catch(e => console.log("Playback error Mii", e));
+    this.jeffrey.play().catch(e => console.log("Playback error Jeffrey", e));
 
     this.activeTrack = 'frutiger';
 
@@ -156,71 +154,67 @@ class AudioSystem {
     filterNode.frequency.exponentialRampToValueAtTime(20000, now + 1.5);
   }
 
+  _muffleAllExcept(activeGain) {
+    const now = this.ctx.currentTime;
+    const targets = [
+      {g: this.frutigerGain, f: this.frutigerFilter},
+      {g: this.lmfaoGain, f: this.lmfaoFilter},
+      {g: this.gagaGain, f: this.gagaFilter},
+      {g: this.miiGain, f: this.miiFilter},
+      {g: this.jeffreyGain, f: this.jeffreyFilter}
+    ];
+
+    targets.forEach(t => {
+      if (t.g !== activeGain) {
+        this._muffleAndFadeDown(t.g, t.f, now);
+      } else {
+        this._openAndFadeUp(t.g, t.f, now);
+      }
+    });
+  }
+
   switchToStarvibe() {
     if (!this.initialized || this.activeTrack === 'lmfao') return;
     this.activeTrack = 'lmfao';
-
-    const now = this.ctx.currentTime;
     this.lmfao.play().catch(e => console.log("Play error LMFAO on switch", e));
 
-    // Jump exactly to the drop if near beginning
     if (this.lmfao && this.lmfao.readyState >= 1 && this.lmfao.currentTime < 15) {
       this.lmfao.currentTime = 15.5; 
     }
-
-    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
-    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
-    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
-    this._openAndFadeUp(this.lmfaoGain, this.lmfaoFilter, now);
+    this._muffleAllExcept(this.lmfaoGain);
   }
 
   switchToMain() {
     if (!this.initialized || this.activeTrack === 'frutiger') return;
     this.activeTrack = 'frutiger';
-
-    const now = this.ctx.currentTime;
     this.frutiger.play().catch(e => console.log("Play error Frutiger on switch", e));
-
-    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
-    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
-    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
-    this._openAndFadeUp(this.frutigerGain, this.frutigerFilter, now);
+    this._muffleAllExcept(this.frutigerGain);
   }
 
   switchToCrisis() {
     if (!this.initialized || this.activeTrack === 'gaga') return;
     this.activeTrack = 'gaga';
-
-    const now = this.ctx.currentTime;
     
     if (this.gaga && this.gaga.readyState >= 1 && this.gaga.currentTime < 10) {
       this.gaga.currentTime = 32.5; 
     }
     
     this.gaga.play().catch(e => console.log("Play error Gaga on switch", e));
-
-    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
-    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
-    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
-    
-    // Smoothly fade up Gaga
-    this._openAndFadeUp(this.gagaGain, this.gagaFilter, now);
+    this._muffleAllExcept(this.gagaGain);
   }
 
   switchToReglamentos() {
     if (!this.initialized || this.activeTrack === 'mii') return;
     this.activeTrack = 'mii';
-
-    const now = this.ctx.currentTime;
-    
     this.mii.play().catch(e => console.log("Play error Mii on switch", e));
+    this._muffleAllExcept(this.miiGain);
+  }
 
-    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
-    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
-    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
-    
-    // Smoothly fade up Mii
-    this._openAndFadeUp(this.miiGain, this.miiFilter, now);
+  switchToCorte() {
+    if (!this.initialized || this.activeTrack === 'jeffrey') return;
+    this.activeTrack = 'jeffrey';
+    this.jeffrey.play().catch(e => console.log("Play error Jeffrey on switch", e));
+    this._muffleAllExcept(this.jeffreyGain);
   }
 
   pauseAll() {
@@ -228,10 +222,10 @@ class AudioSystem {
     this.activeTrack = null;
     const now = this.ctx.currentTime;
     
-    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
-    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
-    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
-    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain].forEach((g, i) => {
+      const f = [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter][i];
+      this._muffleAndFadeDown(g, f, now);
+    });
   }
 }
 

@@ -151,17 +151,12 @@ const CommitteeLogo = ({ name }) => {
         );
       case 'CORTE (2021)':
         return (
-          <svg viewBox="0 0 100 100" className="w-full h-full text-slate-400">
-            <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="2" />
-            <path d="M28 66 H72 V69 H28 Z M32 38 H68 V42 H32 Z M35 34 H65 V38 H35 Z" fill="currentColor" />
-            <rect x="35.5" y="42" width="4" height="24" fill="currentColor" />
-            <rect x="44.5" y="42" width="4" height="24" fill="currentColor" />
-            <rect x="52.5" y="42" width="4" height="24" fill="currentColor" />
-            <rect x="60.5" y="42" width="4" height="24" fill="currentColor" />
-            <path d="M50 20 V38" stroke="#FFD100" strokeWidth="2.5" />
-            <path d="M38 25 H62" stroke="#FFD100" strokeWidth="2" />
-            <path d="M38 25 Q38 35 41 35 Q44 35 44 25 M56 25 Q56 35 59 35 Q62 35 62 25" fill="none" stroke="#FFD100" strokeWidth="1.2" />
-          </svg>
+          <img 
+            src="/corte.svg"
+            alt="Corte Logo"
+            className="w-full h-full object-contain filter drop-shadow-md rounded-lg p-0.5"
+            onError={() => setImgError(true)}
+          />
         );
       case 'CRISIS':
         return (
