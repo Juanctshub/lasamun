@@ -5,8 +5,9 @@ class AudioSystem {
     this.lmfao = null;
     this.gaga = null;
     this.mii = null;
-    this.jeffrey = null; // New Corte audio
     this.nasa = null; // New NASA audio
+    this.love = null; // New Voynich audio
+
 
     this.frutigerNode = null;
     this.lmfaoNode = null;
@@ -14,6 +15,8 @@ class AudioSystem {
     this.miiNode = null;
     this.jeffreyNode = null;
     this.nasaNode = null;
+    this.loveNode = null;
+
 
     this.frutigerFilter = null;
     this.lmfaoFilter = null;
@@ -21,6 +24,8 @@ class AudioSystem {
     this.miiFilter = null;
     this.jeffreyFilter = null;
     this.nasaFilter = null;
+    this.loveFilter = null;
+
 
     this.frutigerGain = null;
     this.lmfaoGain = null;
@@ -28,6 +33,8 @@ class AudioSystem {
     this.miiGain = null;
     this.jeffreyGain = null;
     this.nasaGain = null;
+    this.loveGain = null;
+
 
     this.activeTrack = null; 
     this.initialized = false;
@@ -64,6 +71,11 @@ class AudioSystem {
     this.nasa.loop = true;
     this.nasa.crossOrigin = 'anonymous';
 
+    this.love = new Audio('/love.mp3');
+    this.love.loop = true;
+    this.love.crossOrigin = 'anonymous';
+
+
     // Route elements through Web Audio API
     this.frutigerNode = this.ctx.createMediaElementSource(this.frutiger);
     this.lmfaoNode = this.ctx.createMediaElementSource(this.lmfao);
@@ -71,6 +83,8 @@ class AudioSystem {
     this.miiNode = this.ctx.createMediaElementSource(this.mii);
     this.jeffreyNode = this.ctx.createMediaElementSource(this.jeffrey);
     this.nasaNode = this.ctx.createMediaElementSource(this.nasa);
+    this.loveNode = this.ctx.createMediaElementSource(this.love);
+
 
     // Create lowpass filters for the "desenfoque" muffling effect
     this.frutigerFilter = this.ctx.createBiquadFilter();
@@ -79,12 +93,15 @@ class AudioSystem {
     this.miiFilter = this.ctx.createBiquadFilter();
     this.jeffreyFilter = this.ctx.createBiquadFilter();
     this.nasaFilter = this.ctx.createBiquadFilter();
+    this.loveFilter = this.ctx.createBiquadFilter();
 
-    [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter].forEach(f => {
+
+    [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter].forEach(f => {
       f.type = 'lowpass';
       f.Q.value = 1.0;
       f.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
     });
+
 
     // Create gain nodes for volume crossfades
     this.frutigerGain = this.ctx.createGain();
@@ -93,10 +110,13 @@ class AudioSystem {
     this.miiGain = this.ctx.createGain();
     this.jeffreyGain = this.ctx.createGain();
     this.nasaGain = this.ctx.createGain();
+    this.loveGain = this.ctx.createGain();
 
-    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain].forEach(g => {
+
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain].forEach(g => {
       g.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
     });
+
 
     // Connect node chains: Source -> Filter -> Gain -> Destination
     this._setupChain(this.frutigerNode, this.frutigerFilter, this.frutigerGain);
@@ -105,6 +125,8 @@ class AudioSystem {
     this._setupChain(this.miiNode, this.miiFilter, this.miiGain);
     this._setupChain(this.jeffreyNode, this.jeffreyFilter, this.jeffreyGain);
     this._setupChain(this.nasaNode, this.nasaFilter, this.nasaGain);
+    this._setupChain(this.loveNode, this.loveFilter, this.loveGain);
+
 
     this.initialized = true;
   }
@@ -130,6 +152,8 @@ class AudioSystem {
     this.mii.play().catch(e => console.log("Playback error Mii", e));
     this.jeffrey.play().catch(e => console.log("Playback error Jeffrey", e));
     this.nasa.play().catch(e => console.log("Playback error Nasa", e));
+    this.love.play().catch(e => console.log("Playback error Love", e));
+
 
     this.activeTrack = 'frutiger';
 
@@ -177,8 +201,10 @@ class AudioSystem {
       {g: this.gagaGain, f: this.gagaFilter},
       {g: this.miiGain, f: this.miiFilter},
       {g: this.jeffreyGain, f: this.jeffreyFilter},
-      {g: this.nasaGain, f: this.nasaFilter}
+      {g: this.nasaGain, f: this.nasaFilter},
+      {g: this.loveGain, f: this.loveFilter}
     ];
+
 
     targets.forEach(t => {
       if (t.g !== activeGain) {
@@ -276,15 +302,30 @@ class AudioSystem {
     this._muffleAllExcept(this.nasaGain);
   }
 
+  switchToVoynich() {
+    if (!this.initialized) return;
+    if (this.activeTrack === 'love') {
+      if (this.love.paused) {
+        this.love.play().catch(e => console.log("Play error Love on resume", e));
+      }
+      return;
+    }
+    this.activeTrack = 'love';
+    this.love.play().catch(e => console.log("Play error Love on switch", e));
+    this._muffleAllExcept(this.loveGain);
+  }
+
+
   pauseAll() {
     if (!this.initialized) return;
     this.activeTrack = null;
     const now = this.ctx.currentTime;
     
-    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain].forEach((g, i) => {
-      const f = [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter][i];
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain].forEach((g, i) => {
+      const f = [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter][i];
       this._muffleAndFadeDown(g, f, now);
     });
+
   }
 }
 

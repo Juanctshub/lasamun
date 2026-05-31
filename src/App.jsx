@@ -16,6 +16,9 @@ import Corte from './components/Corte';
 import CorteLoader from './components/CorteLoader';
 import Nasa from './components/Nasa';
 import NasaLoader from './components/NasaLoader';
+import Voynich from './components/Voynich';
+import VoynichLoader from './components/VoynichLoader';
+
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
 import AlmeidasAd from './components/AlmeidasAd';
@@ -30,7 +33,9 @@ function App() {
     if (window.location.hash === '#reglamentos') return 'reglamentos';
     if (window.location.hash === '#corte') return 'corte';
     if (window.location.hash === '#nasa') return 'nasa';
+    if (window.location.hash === '#voynich') return 'voynich';
     return 'landing';
+
   };
   const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [staffLoading, setStaffLoading] = useState(false);
@@ -38,6 +43,8 @@ function App() {
   const [reglamentosLoading, setReglamentosLoading] = useState(false);
   const [corteLoading, setCorteLoading] = useState(false);
   const [nasaLoading, setNasaLoading] = useState(false);
+  const [voynichLoading, setVoynichLoading] = useState(false);
+
 
   // Handle entering the landing page and starting audio
   const handleEnterExperience = () => {
@@ -62,8 +69,12 @@ function App() {
     } else if (window.location.hash === '#nasa') {
       setNasaLoading(true);
       setTimeout(() => audioSystem.switchToNasa(), 500);
+    } else if (window.location.hash === '#voynich') {
+      setVoynichLoading(true);
+      setTimeout(() => audioSystem.switchToVoynich(), 500);
     }
   };
+
 
   // Hash-based router listener
   useEffect(() => {
@@ -73,6 +84,8 @@ function App() {
       const isReglamentos = window.location.hash === '#reglamentos';
       const isCorte = window.location.hash === '#corte';
       const isNasa = window.location.hash === '#nasa';
+      const isVoynich = window.location.hash === '#voynich';
+
       
       if (isStaff) {
         setCurrentPage('staff');
@@ -94,10 +107,15 @@ function App() {
         setCurrentPage('nasa');
         setNasaLoading(true);
         audioSystem.switchToNasa();
+      } else if (isVoynich) {
+        setCurrentPage('voynich');
+        setVoynichLoading(true);
+        audioSystem.switchToVoynich();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
       }
+
     };
     window.addEventListener('hashchange', handleHashChange);
     return () => window.removeEventListener('hashchange', handleHashChange);
@@ -118,9 +136,10 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich') {
       window.scrollTo({ top: 0 });
     }
+
   }, [currentPage, loading]);
 
   // Scroll tracking to crossfade tracks when entering or exiting Starvibe
@@ -285,7 +304,27 @@ function App() {
                   )}
                 </AnimatePresence>
               </React.Fragment>
+            ) : currentPage === 'voynich' ? (
+              <React.Fragment key="voynich-view">
+                <AnimatePresence mode="wait">
+                  {voynichLoading ? (
+                    <VoynichLoader key="voynich-loader" onComplete={() => setVoynichLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="voynich-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Voynich />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
             ) : (
+
               <motion.div 
                 key="landing-view"
                 initial={{ opacity: 0 }}

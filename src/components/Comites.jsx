@@ -297,6 +297,8 @@ export default function Comites() {
                     window.location.hash = '#corte';
                   } else if (comite.name === 'NASA') {
                     window.location.hash = '#nasa';
+                  } else if (comite.name === 'Investigación (1925)') {
+                    window.location.hash = '#voynich';
                   }
                 }}
                 className="group border-b border-white/10 py-6 px-4 md:px-6 flex flex-col md:flex-row items-start md:items-center justify-between cursor-pointer relative overflow-hidden transition-all duration-500 hover:pl-10"
