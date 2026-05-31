@@ -12,6 +12,8 @@ import Crisis from './components/Crisis';
 import CrisisLoader from './components/CrisisLoader';
 import Reglamentos from './components/Reglamentos';
 import ReglamentosLoader from './components/ReglamentosLoader';
+import Corte from './components/Corte';
+import CorteLoader from './components/CorteLoader';
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
 import Footer from './components/Footer';
@@ -23,12 +25,14 @@ function App() {
     if (window.location.hash === '#staff') return 'staff';
     if (window.location.hash === '#crisis') return 'crisis';
     if (window.location.hash === '#reglamentos') return 'reglamentos';
+    if (window.location.hash === '#corte') return 'corte';
     return 'landing';
   };
   const [currentPage, setCurrentPage] = useState(getInitialPage());
   const [staffLoading, setStaffLoading] = useState(false);
   const [crisisLoading, setCrisisLoading] = useState(false);
   const [reglamentosLoading, setReglamentosLoading] = useState(false);
+  const [corteLoading, setCorteLoading] = useState(false);
 
   // Handle entering the landing page and starting audio
   const handleEnterExperience = () => {
@@ -38,7 +42,7 @@ function App() {
     // De-activate loader screen
     setLoading(false);
 
-    // If starting directly on the staff or crisis hash, trigger its loader immediately
+    // If starting directly on the staff, crisis, reglamentos or corte hash, trigger its loader immediately
     if (window.location.hash === '#staff') {
       setStaffLoading(true);
     } else if (window.location.hash === '#crisis') {
@@ -47,6 +51,9 @@ function App() {
     } else if (window.location.hash === '#reglamentos') {
       setReglamentosLoading(true);
       setTimeout(() => audioSystem.switchToReglamentos(), 500);
+    } else if (window.location.hash === '#corte') {
+      setCorteLoading(true);
+      setTimeout(() => audioSystem.pauseAll(), 500); // Silent solemnity for the court
     }
   };
 
@@ -56,6 +63,8 @@ function App() {
       const isStaff = window.location.hash === '#staff';
       const isCrisis = window.location.hash === '#crisis';
       const isReglamentos = window.location.hash === '#reglamentos';
+      const isCorte = window.location.hash === '#corte';
+      
       if (isStaff) {
         setCurrentPage('staff');
         setStaffLoading(true);
@@ -68,6 +77,10 @@ function App() {
         setCurrentPage('reglamentos');
         setReglamentosLoading(true);
         audioSystem.switchToReglamentos();
+      } else if (isCorte) {
+        setCurrentPage('corte');
+        setCorteLoading(true);
+        audioSystem.pauseAll(); // Pause audio for the solemn court
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
@@ -92,7 +105,7 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte') {
       window.scrollTo({ top: 0 });
     }
   }, [currentPage, loading]);
@@ -134,7 +147,7 @@ function App() {
   }, [loading, currentPage]);
 
   return (
-    <div className={`app-container min-h-screen transition-colors duration-500 ${currentPage !== 'landing' ? 'bg-[#050508]' : 'bg-white'}`} style={{ position: 'relative' }}>
+    <div className={`app-container min-h-screen transition-colors duration-500 ${currentPage !== 'landing' && currentPage !== 'staff' ? 'bg-[#050508]' : 'bg-white'}`} style={{ position: 'relative' }}>
       <AnimatePresence>
         {loading && <Loader onEnter={handleEnterExperience} />}
       </AnimatePresence>
@@ -196,6 +209,25 @@ function App() {
                       transition={{ duration: 0.5 }}
                     >
                       <Reglamentos />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : currentPage === 'corte' ? (
+              <React.Fragment key="corte-view">
+                <AnimatePresence mode="wait">
+                  {corteLoading ? (
+                    <CorteLoader key="corte-loader" onComplete={() => setCorteLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="corte-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Corte />
                       <Footer />
                     </motion.div>
                   )}

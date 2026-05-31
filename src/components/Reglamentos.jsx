@@ -153,35 +153,36 @@ export default function Reglamentos() {
   const [activeSection, setActiveSection] = useState('reglamento');
 
   return (
-    <div id="reglamentos" className="min-h-screen bg-[#F8F9FA] pt-32 pb-24 text-gray-900 selection:bg-[#0033A0] selection:text-white">
+    <div id="reglamentos" className="min-h-screen bg-[#050505] pt-32 pb-24 text-white selection:bg-[#0033A0] selection:text-white relative overflow-hidden">
       
       {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-[#0033A0]/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[10%] left-[-10%] w-[500px] h-[500px] bg-primary-yellow/10 rounded-full blur-[100px]" />
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-br from-[#0033A0]/20 to-transparent rounded-full blur-[150px] opacity-60" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-primary-yellow/10 to-transparent rounded-full blur-[120px] opacity-40" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_20%,transparent_100%)]" />
       </div>
 
       <div className="container mx-auto px-6 max-w-7xl relative z-10">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0033A0]/5 border border-[#0033A0]/10 text-[#0033A0] font-codec text-xs font-bold tracking-[0.2em] uppercase mb-6">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-white/70 font-mono text-[10px] font-bold tracking-[0.3em] uppercase mb-6 backdrop-blur-md">
             Documentación Oficial
           </span>
-          <h1 className="font-maison text-5xl md:text-7xl font-extrabold text-[#0033A0] tracking-tighter uppercase mb-6 drop-shadow-sm">
+          <h1 className="font-maison text-5xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 tracking-tighter uppercase mb-6 drop-shadow-2xl">
             Reglamentos
           </h1>
-          <p className="font-codec text-gray-500 text-lg leading-relaxed font-light">
+          <p className="font-codec text-white/50 text-lg leading-relaxed font-light">
             Consulta la documentación sustancial, normativas, y protocolos que rigen el desenvolvimiento de todas las delegaciones participantes en LASAMUN 2026.
           </p>
         </div>
 
         {/* Content Layout */}
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-20">
+        <div className="flex flex-col lg:flex-row gap-8 lg:gap-16">
           
           {/* Sidebar Navigation */}
           <div className="w-full lg:w-1/3 shrink-0">
-            <div className="sticky top-32 flex flex-col gap-3">
+            <div className="sticky top-32 flex flex-col gap-4">
               {sections.map((section) => {
                 const Icon = section.icon;
                 const isActive = activeSection === section.id;
@@ -189,23 +190,23 @@ export default function Reglamentos() {
                   <button
                     key={section.id}
                     onClick={() => setActiveSection(section.id)}
-                    className={`flex items-center justify-between p-6 rounded-2xl text-left transition-all duration-300 border ${
+                    className={`flex items-center justify-between p-5 rounded-2xl text-left transition-all duration-500 border backdrop-blur-xl ${
                       isActive 
-                        ? 'bg-white border-transparent shadow-[0_20px_40px_rgba(0,51,160,0.08)] scale-[1.02]' 
-                        : 'bg-transparent border-gray-200 hover:bg-white/50 hover:border-gray-300 text-gray-500 hover:text-gray-800'
+                        ? 'bg-white/10 border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.05)] scale-[1.02]' 
+                        : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/10 text-white/50 hover:text-white/90'
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`p-3 rounded-xl transition-colors ${isActive ? 'bg-[#0033A0]/10' : 'bg-gray-100'}`}>
-                        <Icon className={`w-6 h-6 ${isActive ? 'text-[#0033A0]' : 'text-gray-400'}`} />
+                      <div className={`p-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-white text-black' : 'bg-white/5 text-white/50'}`}>
+                        <Icon className="w-5 h-5" />
                       </div>
-                      <span className={`font-maison text-xl uppercase font-bold tracking-wide ${isActive ? 'text-[#0033A0]' : ''}`}>
+                      <span className={`font-maison text-lg uppercase font-bold tracking-widest ${isActive ? 'text-white' : ''}`}>
                         {section.title}
                       </span>
                     </div>
                     {isActive && (
-                      <motion.div layoutId="activeIndicator">
-                        <ChevronRight className="w-5 h-5 text-[#0033A0]" />
+                      <motion.div layoutId="activeIndicatorReglamentos">
+                        <ChevronRight className="w-5 h-5 text-white" />
                       </motion.div>
                     )}
                   </button>
@@ -216,16 +217,17 @@ export default function Reglamentos() {
 
           {/* Main Content Area */}
           <div className="w-full lg:w-2/3">
-            <div className="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-[0_30px_60px_rgba(0,0,0,0.03)] border border-gray-100 min-h-[500px]">
+            <div className="bg-black/40 backdrop-blur-2xl rounded-[2.5rem] p-8 md:p-12 shadow-[0_30px_80px_rgba(0,0,0,0.5)] border border-white/10 min-h-[500px] relative overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#0033A0] via-primary-yellow to-transparent opacity-50" />
               <AnimatePresence mode="wait">
                 {sections.map((section) => (
                   activeSection === section.id && (
                     <motion.div
                       key={section.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.3 }}
+                      initial={{ opacity: 0, y: 20, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -20, filter: "blur(10px)" }}
+                      transition={{ duration: 0.4 }}
                     >
                       {section.content}
                     </motion.div>

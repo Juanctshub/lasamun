@@ -222,6 +222,17 @@ class AudioSystem {
     // Smoothly fade up Mii
     this._openAndFadeUp(this.miiGain, this.miiFilter, now);
   }
+
+  pauseAll() {
+    if (!this.initialized) return;
+    this.activeTrack = null;
+    const now = this.ctx.currentTime;
+    
+    this._muffleAndFadeDown(this.frutigerGain, this.frutigerFilter, now);
+    this._muffleAndFadeDown(this.lmfaoGain, this.lmfaoFilter, now);
+    this._muffleAndFadeDown(this.gagaGain, this.gagaFilter, now);
+    this._muffleAndFadeDown(this.miiGain, this.miiFilter, now);
+  }
 }
 
 const audioSystem = new AudioSystem();
