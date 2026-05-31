@@ -135,23 +135,21 @@ class AudioSystem {
   }
 
   _muffleAndFadeDown(gainNode, filterNode, now) {
+    if (this.ctx.state === 'suspended') this.ctx.resume();
     gainNode.gain.cancelScheduledValues(now);
-    gainNode.gain.setValueAtTime(gainNode.gain.value || 0, now);
-    gainNode.gain.linearRampToValueAtTime(0.0, now + 1.5);
+    gainNode.gain.setTargetAtTime(0.0001, now, 0.3); // Uses exponential approach, no need for start value
 
     filterNode.frequency.cancelScheduledValues(now);
-    filterNode.frequency.setValueAtTime(filterNode.frequency.value || 20000, now);
-    filterNode.frequency.exponentialRampToValueAtTime(300, now + 1.5);
+    filterNode.frequency.setTargetAtTime(300, now, 0.3);
   }
 
   _openAndFadeUp(gainNode, filterNode, now) {
+    if (this.ctx.state === 'suspended') this.ctx.resume();
     gainNode.gain.cancelScheduledValues(now);
-    gainNode.gain.setValueAtTime(gainNode.gain.value || 0, now);
-    gainNode.gain.linearRampToValueAtTime(1.0, now + 1.5);
+    gainNode.gain.setTargetAtTime(1.0, now, 0.3);
 
     filterNode.frequency.cancelScheduledValues(now);
-    filterNode.frequency.setValueAtTime(filterNode.frequency.value || 300, now);
-    filterNode.frequency.exponentialRampToValueAtTime(20000, now + 1.5);
+    filterNode.frequency.setTargetAtTime(20000, now, 0.3);
   }
 
   _muffleAllExcept(activeGain) {

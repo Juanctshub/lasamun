@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, ChevronRight, Gavel, FileLock2, X } from 'lucide-react';
+import { FileText, ChevronRight, Gavel, FileLock2, X, Download, Users } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Corte() {
@@ -77,12 +77,12 @@ export default function Corte() {
             className="flex flex-col items-center text-center"
           >
             <div 
-              className="w-24 h-24 mb-6 cursor-pointer group relative flex items-center justify-center"
+              className="w-36 h-36 mb-6 cursor-pointer group relative flex items-center justify-center"
               onClick={() => setShowPasscode(true)} // Hidden trigger
               title="¿Buscando la verdad?"
             >
               <div className="absolute inset-0 bg-[#D4AF37]/10 rounded-full blur-xl group-hover:bg-[#D4AF37]/30 transition-all duration-500"></div>
-              <img src="/corte.svg" alt="Corte Logo" className="w-20 h-20 relative z-10 group-hover:scale-110 transition-transform duration-500 filter drop-shadow-[0_0_15px_rgba(212,175,55,0.8)]" />
+              <img src="/corte.svg" alt="Corte Logo" className="w-32 h-32 relative z-10 group-hover:scale-110 transition-transform duration-500 filter drop-shadow-[0_0_15px_rgba(212,175,55,0.8)]" />
             </div>
 
             <h1 className="font-maison text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter uppercase mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-[#D4AF37]/70 drop-shadow-lg">
@@ -161,6 +161,35 @@ export default function Corte() {
                   <div className="font-codec text-sm text-gray-400 uppercase tracking-wider">Formato Operativo</div>
                   <div className="font-bold text-xl text-white">Mixto / Individual</div>
                 </div>
+              </div>
+
+              {/* Botones de Mesa Directiva y Guia Academica */}
+              <div className="grid grid-cols-1 gap-4 mt-8">
+                <button 
+                  onClick={() => window.alert('Guía Académica en desarrollo...')}
+                  className="group flex items-center gap-4 bg-white/5 hover:bg-[#D4AF37]/10 border border-white/10 hover:border-[#D4AF37]/50 p-4 rounded-xl transition-all duration-300"
+                >
+                  <div className="p-3 bg-black/50 border border-white/5 rounded-lg group-hover:border-[#D4AF37]/30 transition-colors">
+                    <Download className="w-5 h-5 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                  </div>
+                  <div className="text-left">
+                    <span className="block font-bold text-white uppercase group-hover:text-[#D4AF37] transition-colors">Guía Académica</span>
+                    <span className="block font-mono text-[10px] text-gray-400 uppercase tracking-widest mt-1">Descargar Documento</span>
+                  </div>
+                </button>
+                
+                <button 
+                  onClick={() => window.alert('Mesa Directiva será anunciada pronto...')}
+                  className="group flex items-center gap-4 bg-white/5 hover:bg-[#D4AF37]/10 border border-white/10 hover:border-[#D4AF37]/50 p-4 rounded-xl transition-all duration-300"
+                >
+                  <div className="p-3 bg-black/50 border border-white/5 rounded-lg group-hover:border-[#D4AF37]/30 transition-colors">
+                    <Users className="w-5 h-5 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                  </div>
+                  <div className="text-left">
+                    <span className="block font-bold text-white uppercase group-hover:text-[#D4AF37] transition-colors">Mesa Directiva</span>
+                    <span className="block font-mono text-[10px] text-gray-400 uppercase tracking-widest mt-1">Personal del Tribunal</span>
+                  </div>
+                </button>
               </div>
             </motion.div>
 
