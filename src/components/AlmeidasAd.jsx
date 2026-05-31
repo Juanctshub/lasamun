@@ -132,7 +132,7 @@ export default function AlmeidasAd() {
               </div>
 
               {/* Dynamic Showcase Stage */}
-              <div className="w-full aspect-square max-h-[300px] flex items-center justify-center relative mt-4">
+              <div className="w-full aspect-square max-h-[400px] flex items-center justify-center relative mt-4">
                 
                 {/* Spotlight Ambient Light Cone */}
                 <div 
@@ -158,9 +158,9 @@ export default function AlmeidasAd() {
                       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                       src={current.image} 
                       alt={current.title} 
-                      className="w-4/5 h-4/5 object-contain filter group-hover:scale-105 transition-all duration-700"
+                      className="w-full h-full object-contain filter group-hover:scale-105 transition-all duration-700"
                       style={{ 
-                        filter: `drop-shadow(0 15px 30px ${current.shadowColor})`
+                        filter: `drop-shadow(0 15px 40px ${current.shadowColor})`
                       }}
                     />
                   </motion.div>
