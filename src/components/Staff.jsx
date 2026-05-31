@@ -90,7 +90,7 @@ export default function Staff() {
             Directorio Oficial
           </span>
           <h2 className="font-maison text-5xl md:text-7xl font-extrabold tracking-tighter uppercase text-black mb-6">
-            Conoce a tu <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-800">Mesa</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-400 to-gray-800">Staff</span> Organizador
           </h2>
           <p className="font-codec text-gray-500 max-w-2xl leading-relaxed font-light">
             Descubre a los líderes, estrategas y pensadores que hacen posible la segunda edición de LASAMUN. Un equipo comprometido con la excelencia académica.

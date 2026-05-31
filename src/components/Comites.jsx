@@ -298,6 +298,8 @@ export default function Comites() {
                 onClick={() => {
                   if (comite.name === 'CRISIS') {
                     window.location.hash = '#crisis';
+                  } else if (comite.name === 'CORTE (2021)') {
+                    window.location.hash = '#corte';
                   }
                 }}
                 className="group border-b border-white/10 py-6 px-4 md:px-6 flex flex-col md:flex-row items-start md:items-center justify-between cursor-pointer relative overflow-hidden transition-all duration-500 hover:pl-10"
