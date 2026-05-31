@@ -166,6 +166,7 @@ class AudioSystem {
   }
 
   _muffleAllExcept(activeGain) {
+    const now = this.ctx.currentTime;
     const targets = [
       {g: this.frutigerGain, f: this.frutigerFilter},
       {g: this.lmfaoGain, f: this.lmfaoFilter},
