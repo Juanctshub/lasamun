@@ -6,7 +6,7 @@ export default function Staff() {
   const [activeDept, setActiveDept] = useState('Todos');
   const [selectedMember, setSelectedMember] = useState(null);
 
-  const departments = ['Todos', 'Logística', 'Medios'];
+  const departments = ['Todos', 'Logística', 'Protocolo', 'Medios'];
 
   const staffList = [
     {
@@ -33,7 +33,7 @@ Todo está conectado. 💙💫`,
       id: 10,
       name: "Gisel Palma",
       role: "Jefa de Protocolo",
-      dept: "Logística",
+      dept: "Protocolo",
       quote: `¡Hola! Soy Gisel Palma. Durante el último año y medio he tenido la oportunidad de formar parte del equipo de protocolo en diferentes ponencias y jornadas académicas dentro del Instituto La Salle, una experiencia que para mí ha sido increíble.
 
 En esta ocasión, me parece sumamente emocionante participar por primera vez como Jefa de Protocolo en un modelo. Estoy lista para dar lo mejor de mí junto al equipo. ¡Muchísima suerte en el modelo, chicos!
@@ -45,7 +45,7 @@ Todo está conectado. 💫💙`,
       id: 11,
       name: "Daniel Sigala",
       role: "Jefe Protocolar",
-      dept: "Logística",
+      dept: "Protocolo",
       quote: `Hola mi nombre es Daniel Sigala, en esta ocasión soy Jefe Protocolar, un honor para mi; agradezco todo lo que esta maravillosa actividad ha fomentado en mi persona y por toda la gente que he conocido, que disfruten del modelo!
 
 Todo está conectado. 💫💙`,
