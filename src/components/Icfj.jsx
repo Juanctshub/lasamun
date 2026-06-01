@@ -13,6 +13,18 @@ export default function Icfj() {
   const [checkedStatements, setCheckedStatements] = useState({});
   const [checkingId, setCheckingId] = useState(null);
 
+  // Custom live telex publisher states
+  const [customHeadline, setCustomHeadline] = useState('');
+  const [headlines, setHeadlines] = useState([
+    "LIVE CORRESPONDENT TRANSMISSION SYSTEM // NYC OPERATIONS CENTRE // WISIN.MP3 PLAYBACK ACTIVE",
+    "ALERT: NASA DETECTS ANOMALOUS ACCELERATION IN INTERSTELLAR INTRUDER 3I/ATLAS",
+    "CONGRESS DIARY LEAKED // Miramar deep fossils confirmed by 1935 commission archives",
+    "VOYNICH CODE MS 408 DECRYPTION REPORT SUBMITTED FOR ETHICAL VERIFICATION"
+  ]);
+
+  // Theme explanation interactive tab state
+  const [activeThemeTab, setActiveThemeTab] = useState('mision');
+
   const bgVideoRef = useRef(null);
 
   useEffect(() => {
@@ -100,8 +112,8 @@ export default function Icfj() {
   return (
     <section id="icfj-section" className="min-h-screen relative bg-[#040608] text-[#00f0ff] overflow-x-hidden pt-28 pb-32 font-mono selection:bg-[#00f0ff] selection:text-black">
       
-      {/* High-Contrast Clear Background Video Layer */}
-      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#030508]">
+      {/* High-Contrast Clear Background Video Layer - Vividly visible, no blur */}
+      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#020304]">
         <video 
           ref={bgVideoRef}
           src="/york.mp4"
@@ -109,8 +121,8 @@ export default function Icfj() {
           loop 
           muted 
           playsInline
-          className="absolute min-w-full min-h-full object-cover opacity-[0.55] transition-opacity duration-1000"
-          style={{ filter: 'grayscale(0.3) brightness(0.35) contrast(1.2)' }}
+          className="absolute min-w-full min-h-full object-cover opacity-[0.80] transition-opacity duration-1000"
+          style={{ filter: 'brightness(0.55) contrast(1.15) saturate(1.2)' }}
           onEnded={() => {
             if (bgVideoRef.current) {
               bgVideoRef.current.currentTime = 0;
@@ -118,25 +130,28 @@ export default function Icfj() {
             }
           }}
         />
-        {/* Soft, clean professional overlays (No heavy blackouts) */}
-        <div className="absolute inset-0 bg-[#040608]/75 z-10" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,240,255,0.04)_0%,_#040608_100%)] z-10" />
+        {/* Soft, clean professional overlays (No heavy blackouts / transparent) */}
+        <div className="absolute inset-0 bg-[#040608]/40 z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(0,240,255,0.03)_0%,_#040608_95%)] z-10" />
       </div>
 
       {/* Razor-sharp grid lines representing a professional dashboard */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,240,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,240,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-10" />
 
-      {/* Live Breaking News Ticker Tape */}
+      {/* Live Moving Ticker Tape */}
       <div className="absolute top-16 left-0 right-0 h-8 bg-black/90 border-y border-white/10 overflow-hidden flex items-center z-20">
-        <div className="flex gap-16 whitespace-nowrap animate-marquee font-bold text-[9px] text-white/80 tracking-[0.35em] uppercase">
-          <span>LIVE CORRESPONDENT TRANSMISSION SYSTEM // NYC OPERATIONS CENTRE // WISIN.MP3 PLAYBACK ACTIVE</span>
-          <span>★</span>
-          <span>ALERT: NASA DETECTS ANOMALOUS ACCELERATION IN INTERESTELLAR INTROUDER 3I/ATLAS</span>
-          <span>★</span>
-          <span>CONGRESS DIARY LEAKED // Miramar deep fossils confirmed by 1935 commission archives</span>
-          <span>★</span>
-          <span>VOYNICH CODE MS 408 DECRYPTION REPORT SUBMITTED FOR ETHICAL VERIFICATION</span>
-        </div>
+        <motion.div 
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{ repeat: Infinity, ease: "linear", duration: 35 }}
+          className="flex gap-16 whitespace-nowrap font-bold text-[9px] text-[#00f0ff] tracking-[0.35em] uppercase w-max pr-16"
+        >
+          {[...headlines, ...headlines].map((text, idx) => (
+            <React.Fragment key={idx}>
+              <span>{text}</span>
+              <span>★</span>
+            </React.Fragment>
+          ))}
+        </motion.div>
       </div>
 
       <div className="container mx-auto px-6 relative z-20 max-w-7xl mt-6">
@@ -165,18 +180,93 @@ export default function Icfj() {
             { name: "SAT FEED 02: VOYNICH (1925)", info: "Codicology decryption database", status: "DECODING CORE", metric: "IPS: 142/s" },
             { name: "SAT FEED 03: ICA (1935)", info: "Stratigraphic Miramar archives", status: "TELEPRINT RUNNING", metric: "VOL: 85.1" }
           ].map((feed, i) => (
-            <div key={i} className="p-4 border border-white/10 rounded-2xl bg-black/60 backdrop-blur-md text-left flex flex-col justify-between min-h-[90px]">
+            <div key={i} className="p-4 border border-white/15 rounded-2xl bg-black/80 backdrop-blur-md text-left flex flex-col justify-between min-h-[90px] shadow-2xl">
               <div className="flex justify-between items-center mb-1">
                 <span className="text-[9px] font-bold text-[#00f0ff] tracking-widest uppercase">{feed.name}</span>
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-pulse" />
               </div>
-              <span className="text-xs text-white/80 font-light leading-snug">{feed.info}</span>
-              <div className="flex justify-between items-center text-[8px] text-gray-500 tracking-wider mt-3 border-t border-white/5 pt-2">
+              <span className="text-xs text-white/95 font-light leading-snug">{feed.info}</span>
+              <div className="flex justify-between items-center text-[8px] text-gray-400 tracking-wider mt-3 border-t border-white/5 pt-2">
                 <span>STATUS: {feed.status}</span>
                 <span>{feed.metric}</span>
               </div>
             </div>
           ))}
+        </div>
+
+        {/* INTERACTIVE JOURNALISM DIRECTIVE TERMINAL (Theme Explanation) */}
+        <div className="max-w-7xl mx-auto mb-10 bg-black/80 border border-white/15 rounded-3xl p-6 text-left shadow-2xl backdrop-blur-md">
+          <div className="flex items-center gap-2 mb-4 border-b border-white/15 pb-2">
+            <Radio className="w-4 h-4 text-[#ff00a0] animate-pulse" />
+            <h3 className="text-xs font-bold uppercase tracking-widest text-white">MANIFIESTO Y LÍNEA EDITORIAL DEL COMITÉ</h3>
+          </div>
+
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Interactive Selector Buttons */}
+            <div className="flex flex-row md:flex-col gap-2 shrink-0 w-full md:w-56">
+              {[
+                { id: 'mision', label: "La Misión y Verdad" },
+                { id: 'rigor', label: "Rigor Analítico" },
+                { id: 'ecosistema', label: "Ecosistema Digital" }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveThemeTab(tab.id)}
+                  className={`px-4 py-2.5 rounded-xl border text-[10px] font-bold uppercase tracking-widest text-left transition-all ${
+                    activeThemeTab === tab.id
+                      ? 'bg-[#00f0ff] text-black border-[#00f0ff] shadow-md'
+                      : 'bg-[#0d1319]/40 border-white/10 text-gray-400 hover:text-white'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Dynamic briefing dispatch text */}
+            <div className="flex-1 bg-[#0d1319]/50 border border-white/5 rounded-2xl p-5 text-xs sm:text-sm text-gray-300 leading-relaxed">
+              <AnimatePresence mode="wait">
+                {activeThemeTab === 'mision' && (
+                  <motion.div
+                    key="mision"
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <span className="font-mono text-[9px] text-[#ff00a0] tracking-widest block uppercase mb-2">★ DICTAMEN I: LA VERDAD FRENTE A LAS FRONTERAS ★</span>
+                    En un mundo donde la información fluye a velocidades vertiginosas y las herramientas digitales redefinen las fronteras del conocimiento, el periodismo emerge como pilar indispensable para discernir la verdad de la ficción, esto a través de análisis de superficialidad y otras herramientas necesarias en un corresponsal.
+                  </motion.div>
+                )}
+
+                {activeThemeTab === 'rigor' && (
+                  <motion.div
+                    key="rigor"
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <span className="font-mono text-[9px] text-[#ff00a0] tracking-widest block uppercase mb-2">★ DICTAMEN II: EL CORRESPONSAL ANALÍTICO ★</span>
+                    Los delegados del Centro Internacional de Periodistas (ICFJ) representan la vanguardia editorial de este modelo: un espacio donde los delegados no solo se encargarán de narrar eventos sucedidos en un ámbito diplomático, sino que los diseccionan con rigor analítico, creatividad auténtica y responsabilidad ética.
+                  </motion.div>
+                )}
+
+                {activeThemeTab === 'ecosistema' && (
+                  <motion.div
+                    key="ecosistema"
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <span className="font-mono text-[9px] text-[#ff00a0] tracking-widest block uppercase mb-2">★ DICTAMEN III: INTEGRIDAD FRENTE A LA IA ★</span>
+                    En el ecosistema informativo actual, el desafío no es solo la rapidez, sino la integridad del dato. Los delegados del ICFJ asumen la tarea crítica de verificar y contrastar en tiempo real, actuando como un filtro necesario frente a la desinformación y el uso malintencionado de la inteligencia artificial.
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
 
         {/* -------------------- HIGH-DENSITY PROFESSIONAL WORKSPACE -------------------- */}
@@ -221,10 +311,38 @@ export default function Icfj() {
                   );
                 })}
               </div>
+              {/* Live Telex Dispatcher - High-fidelity interactivity */}
+              <div className="mt-6 pt-4 border-t border-white/5 text-left">
+                <span className="text-[8.5px] text-[#00f0ff] tracking-widest block uppercase mb-2.5">DESPACHAR TITULAR A LA CINTA EN VIVO</span>
+                <form 
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (!customHeadline.trim()) return;
+                    setHeadlines((prev) => [`[FLASH CABLE] ${customHeadline.toUpperCase()}`, ...prev]);
+                    setCustomHeadline('');
+                  }}
+                  className="flex gap-2"
+                >
+                  <input 
+                    type="text" 
+                    placeholder="REDACCIÓN DE ÚLTIMA HORA..."
+                    value={customHeadline}
+                    onChange={(e) => setCustomHeadline(e.target.value)}
+                    className="flex-1 bg-black/50 border border-white/10 rounded-xl px-3 py-2 text-xs text-[#00f0ff] placeholder-white/20 focus:outline-none focus:border-[#00f0ff] transition-all font-mono uppercase"
+                  />
+                  <button 
+                    type="submit"
+                    className="px-4 py-2 bg-[#00f0ff] text-black text-[10px] font-black rounded-xl uppercase tracking-wider transition-all hover:scale-95 shadow-[0_0_10px_rgba(0,240,255,0.2)]"
+                  >
+                    PUBLICAR
+                  </button>
+                </form>
+              </div>
             </div>
 
             <div className="mt-8 pt-4 border-t border-white/5 text-[8.5px] text-gray-500 text-left">
               REGISTRY NETWORK DIRECTORY SYSTEM CORRESPONDENT
+            </div>
             </div>
           </div>
 

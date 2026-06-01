@@ -358,6 +358,12 @@ class AudioSystem {
 
   switchToIcfj() {
     if (!this.initialized) return;
+    if (this.activeTrack === 'wisin') {
+      if (this.wisin.paused) {
+        this.wisin.play().catch(e => console.log("Play error Wisin on resume", e));
+      }
+      return;
+    }
     this.activeTrack = 'wisin';
     
     // Play with pumping energy! Reset to 0 so the intro plays from the start
