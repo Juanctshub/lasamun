@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Landmark, Coins, Scale, FileText, Download, Users, X, Award, CheckCircle, TrendingUp, AlertOctagon, HelpCircle, Activity, Globe, DollarSign, PlusCircle } from 'lucide-react';
+import { Landmark, Coins, Scale, FileText, Download, Users, X, Award, CheckCircle, TrendingUp, AlertTriangle, Globe, DollarSign, Activity, Settings, ChevronRight } from 'lucide-react';
 import audioSystem from '../utils/audioSystem';
 
 export default function Brics() {
-  const [activeTab, setActiveTab] = useState('expansion');
+  const [activeNarrativeTab, setActiveNarrativeTab] = useState('ppp');
   const [showMesaModal, setShowMesaModal] = useState(false);
   const [easterEggActive, setEasterEggActive] = useState(false);
   const [showPasscode, setShowPasscode] = useState(false);
@@ -17,14 +17,14 @@ export default function Brics() {
 
   // BRICS Pay transaction history state
   const [transactions, setTransactions] = useState([
-    { id: 'TX-9041', from: 'Brazil (BRL)', to: 'Russia (RUB)', amount: '12,400,000', commodity: 'Soybeans', status: 'VALIDADO' },
-    { id: 'TX-9042', from: 'China (CNY)', to: 'Saudi Arabia (SAR)', amount: '85,000,000', commodity: 'Crude Oil', status: 'VALIDADO' },
-    { id: 'TX-9043', from: 'India (INR)', to: 'South Africa (ZAR)', amount: '4,200,000', commodity: 'Industrial Machinery', status: 'VALIDADO' }
+    { id: 'TX-7011', from: 'Brasil (BRL)', to: 'Rusia (RUB)', amount: '15,800,000', commodity: 'Fertilizantes', status: 'COMPLETADO' },
+    { id: 'TX-7012', from: 'China (CNY)', to: 'Egipto (EGP)', amount: '42,000,000', commodity: 'Granos de Trigo', status: 'COMPLETADO' },
+    { id: 'TX-7013', from: 'India (INR)', to: 'Sudáfrica (ZAR)', amount: '8,500,000', commodity: 'Mineral de Hierro', status: 'COMPLETADO' }
   ]);
   const [customAmount, setCustomAmount] = useState('');
-  const [customCommodity, setCustomCommodity] = useState('Wheat');
+  const [customCommodity, setCustomCommodity] = useState('Granos de Trigo');
   const [customFrom, setCustomFrom] = useState('China (CNY)');
-  const [customTo, setCustomTo] = useState('Egypt (EGP)');
+  const [customTo, setCustomTo] = useState('Egipto (EGP)');
 
   // Fluctuating financial indices
   const [dollarShare, setDollarShare] = useState(58.45);
@@ -64,7 +64,7 @@ export default function Brics() {
       to: customTo,
       amount: parseFloat(customAmount).toLocaleString(),
       commodity: customCommodity,
-      status: 'VALIDADO'
+      status: 'COMPLETADO'
     };
 
     setTransactions((prev) => [newTx, ...prev]);
@@ -91,33 +91,33 @@ export default function Brics() {
 
   const geopoliticalBriefings = {
     'china-india': {
-      title: "Delhi ↔ Beijing: Rivalidad del Dragón y el Elefante",
+      title: "Delhi ↔ Beijing: Cooperación de Potencias Nucleares",
       alignment: 42,
       friction: "CRÍTICA",
-      color: "from-amber-600 to-red-600",
-      content: "Las tensiones fronterizas en el Himalaya (línea LAC) y la competencia por la influencia comercial en el Océano Índico representan la brecha de confianza más profunda dentro del bloque. A pesar de los discursos de cooperación en foros internacionales, ambas potencias nucleares mantienen contingentes militares listos y compiten por el liderazgo industrial de los mercados emergentes."
+      color: "from-amber-600 to-red-700",
+      content: "Las tensiones de soberanía fronteriza en la línea LAC del Himalaya y la competencia comercial en el Océano Índico representan la brecha más profunda de confianza del bloque. A pesar del diálogo en foros comunes, ambas potencias compiten fuertemente por liderar el Sur Global."
     },
     'egypt-ethiopia': {
-      title: "Cairo ↔ Addis Ababa: Crisis Hidrológica del Nilo",
+      title: "El Cairo ↔ Adís Abeba: Disputa Hidrológica del Nilo",
       alignment: 55,
       friction: "ELEVADA",
-      color: "from-blue-600 to-amber-700",
-      content: "La gran presa del Renacimiento Etíope (GERD) en el Nilo Azul sigue siendo una disputa existencial. Egipto percibe el control del flujo del agua como una amenaza directa a su seguridad nacional, mientras que Etiopía lo defiende como su motor clave de soberanía energética. La integración de ambos en el bloque busca obligar a un arbitraje pacífico alternativo a Occidente."
+      color: "from-[#c5a059]/40 to-blue-800",
+      content: "La gran presa del Renacimiento Etíope (GERD) sigue siendo un conflicto existencial. Egipto percibe el control del flujo del agua como una amenaza directa a su seguridad nacional, mientras que Etiopía lo defiende como un pilar fundamental de su soberanía energética."
     },
     'russia-brazil': {
-      title: "Brasilia ↔ Moscow: Respaldo Comercial y Commodities",
+      title: "Brasilia ↔ Moscú: Respaldo Agroalimentario y Fertilizantes",
       alignment: 85,
       friction: "ESTABLE",
-      color: "from-emerald-600 to-blue-500",
-      content: "Una de las relaciones más armoniosas y estratégicas. Brasil, gigante agropecuario, depende profundamente de los fertilizantes nitrogenados rusos para sostener sus récords de exportación de soja y carne. A cambio, Moscú encuentra en Brasil un aliado geopolítico neutral clave que rechaza las sanciones unilaterales y promueve firmemente sistemas alternativos al dólar."
+      color: "from-emerald-600 to-yellow-600",
+      content: "Una relación de alta sinergia. Brasil depende del nitrógeno ruso para sostener sus cosechas récord, mientras que Moscú encuentra en Brasil un socio geopolítico clave que rechaza sanciones unilaterales y promueve balances financieros multilaterales."
     }
   };
 
   return (
-    <section id="brics-section" className="min-h-screen relative bg-[#040608] text-[#c5a059] overflow-x-hidden pt-28 pb-32 font-mono selection:bg-[#c5a059] selection:text-black">
+    <section id="brics-section" className="min-h-screen relative bg-[#060504] text-[#c5a059] overflow-x-hidden pt-28 pb-32 font-mono selection:bg-[#c5a059] selection:text-black">
       
       {/* High-Contrast Clear Background Video Layer */}
-      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#030405]">
+      <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none bg-[#030202]">
         <video 
           ref={bgVideoRef}
           src="/ri.mp4"
@@ -126,7 +126,7 @@ export default function Brics() {
           muted 
           playsInline
           className="absolute min-w-full min-h-full object-cover opacity-[0.80] transition-opacity duration-1000"
-          style={{ filter: 'brightness(0.50) contrast(1.20) saturate(0.95)' }}
+          style={{ filter: 'brightness(0.45) contrast(1.25) saturate(0.9)' }}
           onEnded={() => {
             if (bgVideoRef.current) {
               bgVideoRef.current.currentTime = 0;
@@ -134,397 +134,408 @@ export default function Brics() {
             }
           }}
         />
-        {/* Sleek dark gradient overlays */}
-        <div className="absolute inset-0 bg-[#040608]/40 z-10" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(197,160,89,0.025)_0%,_#040608_95%)] z-10" />
+        {/* Sleek warm gradient overlays */}
+        <div className="absolute inset-0 bg-[#060504]/50 z-10" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(197,160,89,0.03)_0%,_#060504_95%)] z-10" />
       </div>
 
-      {/* Grid overlay for console style */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(197,160,89,0.012)_1px,transparent_1px),linear-gradient(to_bottom,rgba(197,160,89,0.012)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-10" />
+      {/* Ornate Copper Grid Lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(197,160,89,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(197,160,89,0.015)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-10" />
 
-      {/* Live Ticker Bar */}
-      <div className="absolute top-16 left-0 right-0 h-8 bg-black/90 border-y border-[#c5a059]/20 overflow-hidden flex items-center z-20">
+      {/* Live Sovereign Ticker */}
+      <div className="absolute top-16 left-0 right-0 h-8 bg-[#090807]/90 border-y border-[#c5a059]/20 overflow-hidden flex items-center z-20">
         <motion.div 
           animate={{ x: ["0%", "-50%"] }}
-          transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
-          className="flex gap-16 whitespace-nowrap font-bold text-[8.5px] text-[#c5a059] tracking-[0.35em] uppercase w-max pr-16"
+          transition={{ repeat: Infinity, ease: "linear", duration: 42 }}
+          className="flex gap-16 whitespace-nowrap font-bold text-[8.5px] text-[#c5a059] tracking-[0.4em] uppercase w-max pr-16"
         >
           {Array.from({ length: 4 }).map((_, idx) => (
             <React.Fragment key={idx}>
               <span>CONSOLIDACIÓN BRICS+ 2026</span>
               <span>★</span>
-              <span>DE-DOLLARIZATION INDEX: CNY/RUB SETTLEMENT ACTIVE</span>
+              <span>R5 FINANCIAL BASKET ACTIVATED</span>
               <span>★</span>
-              <span>SOVEREIGN COMMODITIES LEDGER CONNECTED</span>
+              <span>SOVEREIGN WEALTH & RESERVE METRIC SYSTEM</span>
               <span>★</span>
-              <span>ALERT: RESERVE WEIGHT SHIFTS DETECTED</span>
+              <span>DE-DOLLARIZATION COEFFICIENT IN PROCESS</span>
               <span>★</span>
             </React.Fragment>
           ))}
         </motion.div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-20 max-w-7xl mt-6">
+      <div className="container mx-auto px-6 relative z-20 max-w-7xl mt-8">
         
-        {/* Sovereign Header */}
-        <div className="max-w-4xl mx-auto mb-16 pt-6 text-center border-b border-[#c5a059]/15 pb-6">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-col items-center"
-          >
-            <div 
-              className="w-24 h-24 mb-4 cursor-pointer relative group flex items-center justify-center"
-              onClick={() => setShowPasscode(true)}
-              title="Acceso al expediente de reservas"
-            >
-              <div className="absolute inset-0 bg-[#c5a059]/5 rounded-full blur-xl group-hover:bg-[#c5a059]/20 transition-all" />
-              <img 
-                src="/brics_logo.png" 
-                alt="BRICS Logo" 
-                className="w-20 h-20 relative z-10 transition-transform group-hover:scale-105 duration-500 filter drop-shadow-[0_0_15px_rgba(197,160,89,0.5)]" 
-              />
-            </div>
-            
-            <span className="text-[10px] tracking-[0.45em] text-[#c5a059] uppercase mb-2 block font-bold">MULTILATERAL GEOPOLITICAL DECK</span>
-            <h1 className="font-sans text-4xl sm:text-5xl lg:text-6xl font-black uppercase mb-1 tracking-tight text-white leading-none">
-              BRICS+ SUMMIT 2026
-            </h1>
-            <span className="text-[9px] text-gray-500 tracking-[0.3em] uppercase block mt-1">
-              COOPERATION FOR A JUST GLOBAL DEVELOPMENT
-            </span>
-          </motion.div>
-        </div>
-
-        {/* Live Index Exchange Tracker Board */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        {/* -------------------- THREE-COLUMN LUXURY VAULT DECK -------------------- */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16">
           
-          <div className="p-4 border border-[#c5a059]/15 rounded-2xl bg-black/80 backdrop-blur-md text-left flex flex-col justify-between min-h-[90px] shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full bg-red-800/40" />
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[9px] font-bold text-gray-400 tracking-widest uppercase">USD GLOBAL COMMERCE SHARE</span>
-              <DollarSign className="w-3 h-3 text-red-500 animate-pulse" />
+          {/* LEFT PANEL (3 cols): Central Sovereign reserves & de-dollarization dials */}
+          <div className="lg:col-span-3 flex flex-col bg-[#0b0a09]/85 border border-[#c5a059]/20 rounded-[2rem] p-6 shadow-2xl justify-between relative overflow-hidden">
+            <div className="absolute top-0 right-0 p-4 opacity-5">
+              <Landmark className="w-24 h-24 text-[#c5a059]" />
             </div>
-            <div className="font-mono text-xl sm:text-2xl font-black text-white/95">
-              {dollarShare}% <span className="text-[9px] font-normal text-red-500">▼ REGRESIÓN</span>
+
+            <div>
+              <div className="flex items-center gap-2 mb-6 border-b border-[#c5a059]/15 pb-3">
+                <TrendingUp className="w-4 h-4 text-[#c5a059]" />
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-white">RESERVAS SOBERANAS</h3>
+              </div>
+
+              {/* Fluctuating Index metrics card style */}
+              <div className="space-y-6 text-left">
+                
+                <div className="bg-[#12100e] border border-[#c5a059]/10 p-4 rounded-2xl relative">
+                  <span className="text-[7.5px] text-gray-500 font-bold block uppercase tracking-widest mb-1">Dólar en Comercio Global</span>
+                  <div className="text-2xl font-black text-white font-mono flex items-baseline gap-1.5 leading-none">
+                    {dollarShare}%
+                    <span className="text-[9px] text-red-500 font-bold">▼ REGRESIÓN</span>
+                  </div>
+                  <span className="text-[7px] text-gray-500 block mt-1 tracking-wider">REDUCCIÓN HISTÓRICA CONTINUA</span>
+                </div>
+
+                <div className="bg-[#12100e] border border-[#c5a059]/10 p-4 rounded-2xl relative">
+                  <span className="text-[7.5px] text-gray-500 font-bold block uppercase tracking-widest mb-1">BRICS Currency Basket (BCI)</span>
+                  <div className="text-2xl font-black text-white font-mono flex items-baseline gap-1.5 leading-none">
+                    {bricsIndex}
+                    <span className="text-[9px] text-emerald-500 font-bold">▲ ACUMULACIÓN</span>
+                  </div>
+                  <span className="text-[7px] text-gray-500 block mt-1 tracking-wider">PESO ASIGNADO EN BASE R5</span>
+                </div>
+
+                <div className="bg-[#12100e] border border-[#c5a059]/10 p-4 rounded-2xl relative">
+                  <span className="text-[7.5px] text-gray-500 font-bold block uppercase tracking-widest mb-1">Reserva en Oro Físico</span>
+                  <div className="text-2xl font-black text-white font-mono flex items-baseline gap-1.5 leading-none">
+                    ${goldOunce}
+                    <span className="text-[8px] text-emerald-500 font-bold">/ OZ</span>
+                  </div>
+                  <span className="text-[7px] text-gray-500 block mt-1 tracking-wider">VALORACIÓN COMERCIAL STANDARD</span>
+                </div>
+
+              </div>
             </div>
-            <span className="text-[7.5px] text-gray-500 tracking-wider">SWIFT REPORT / INT-COMMERCE RATINGS</span>
+
+            <div className="mt-8 pt-4 border-t border-[#c5a059]/10 text-[8px] text-gray-600 text-left">
+              NDB CENTRAL BANK RESERVES MONITORING
+            </div>
           </div>
 
-          <div className="p-4 border border-[#c5a059]/15 rounded-2xl bg-black/80 backdrop-blur-md text-left flex flex-col justify-between min-h-[90px] shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full bg-[#c5a059]/40" />
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[9px] font-bold text-gray-400 tracking-widest uppercase">BRICS COMMODITY INDEX (BCI)</span>
-              <TrendingUp className="w-3 h-3 text-emerald-500" />
+          {/* MIDDLE PANEL (6 cols): The Grand Sovereign Commodities Vault (Luxury Codex Theme) */}
+          <div className="lg:col-span-6 flex flex-col bg-[#0b0a09]/90 border-2 border-[#c5a059]/30 rounded-[2.5rem] p-8 shadow-2xl justify-between relative overflow-hidden">
+            
+            {/* Elegant luxury framing lines */}
+            <div className="absolute inset-2 border border-[#c5a059]/10 rounded-[2.2rem] pointer-events-none" />
+            
+            <div className="flex flex-col items-center">
+              
+              {/* STRETCHED AND ENLARGED BRICS BANNER LOGO (ALARGADO Y MAS GRANDE) */}
+              <div 
+                className="w-full flex justify-center mb-8 border-b border-[#c5a059]/15 pb-6 cursor-pointer"
+                onClick={() => setShowPasscode(true)}
+              >
+                <motion.img 
+                  src="/brics_logo.png" 
+                  alt="BRICS+ Logo" 
+                  className="w-full max-w-lg sm:max-w-xl h-24 sm:h-28 object-contain filter drop-shadow-[0_0_25px_rgba(197,160,89,0.6)] hover:scale-[1.03] transition-transform duration-500" 
+                />
+              </div>
+
+              {/* Luxury Serif Narrative Codex */}
+              <div className="bg-[#f0e7d5] border border-gray-400 rounded-3xl p-6 text-[#291e13] font-serif text-left shadow-inner w-full mb-6 relative">
+                {/* Gold Seal Watermark overlay */}
+                <div className="absolute top-4 right-4 border border-[#b59049]/40 text-[#b59049]/40 px-2 py-0.5 rounded text-[8px] font-mono font-bold tracking-widest transform rotate-12">
+                  NDB CONFIDENTIAL
+                </div>
+
+                <div className="flex justify-between items-center mb-3 border-b border-amber-900/10 pb-2">
+                  <span className="font-mono text-[7px] text-amber-900/80 tracking-widest uppercase block">
+                    CUMBRE MULTILATERAL DE COOPERACIÓN DEL SUR GLOBAL
+                  </span>
+                </div>
+
+                <AnimatePresence mode="wait">
+                  {activeNarrativeTab === 'ppp' && (
+                    <motion.div
+                      key="ppp"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <h4 className="text-lg italic font-black text-amber-950 mb-2 leading-tight">
+                        El Desafío Definitivo al Orden del Norte Global
+                      </h4>
+                      <p className="text-xs sm:text-sm leading-relaxed text-amber-950/95 font-serif antialiased first-letter:text-3xl first-letter:font-black first-letter:float-left first-letter:mr-2 first-letter:text-amber-900">
+                        El ascenso de los BRICS+ se presenta como el desafío definitivo al orden económico del Norte Global. Con una fuerza que ya representa el 30% del PIB mundial y supera el crecimiento anual del G7, el bloque busca consolidar un multilateralismo inclusivo que desplace la hegemonía del dólar. Sin embargo, detrás de las cifras de expansión, emergen interrogantes que ponen en duda la cohesión real de esta alianza.
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {activeNarrativeTab === 'tension' && (
+                    <motion.div
+                      key="tension"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <h4 className="text-lg italic font-black text-amber-950 mb-2 leading-tight">
+                        Fricciones Geopolíticas e Informalidad Sistémica
+                      </h4>
+                      <p className="text-xs sm:text-sm leading-relaxed text-amber-950/95 font-serif antialiased first-letter:text-3xl first-letter:font-black first-letter:float-left first-letter:mr-2 first-letter:text-amber-900">
+                        Las tensiones geopolíticas entre China e India y las disputas históricas entre nuevos miembros como Egipto y Etiopía representan un riesgo latente para la estabilidad y el consenso del bloque; del mismo modo, a pesar de los esfuerzos por sistemas como BRICS Pay, el dólar aún domina el 60% del comercio exterior. Los BRICS+ funcionan bajo una cooperación intergubernamental que a menudo roza la informalidad.
+                      </p>
+                    </motion.div>
+                  )}
+
+                  {activeNarrativeTab === 'soberania' && (
+                    <motion.div
+                      key="soberania"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <h4 className="text-lg italic font-black text-amber-950 mb-2 leading-tight">
+                        El Reto de la Diversidad y la Legitimidad
+                      </h4>
+                      <p className="text-xs sm:text-sm leading-relaxed text-amber-950/95 font-serif antialiased first-letter:text-3xl first-letter:font-black first-letter:float-left first-letter:mr-2 first-letter:text-amber-900">
+                        La expansión de los BRICS va más allá de un aumento númerico en sus miembros, es un reto para la legitimidad del bloque: La pregunta ya no es si los BRICS pueden crecer, sino si pueden sobrevivir a su propia diversidad sin paralizarse o fragmentarse ante las presiones de Occidente. ¿Seguirán siendo un bloque de asistencia económica o se consolidarán como una alianza antiimperialista?
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+
+                {/* Codex Selector Tabs */}
+                <div className="flex gap-2 mt-6 pt-4 border-t border-amber-900/10 justify-end">
+                  {[
+                    { id: 'ppp', label: "Consolidación" },
+                    { id: 'tension', label: "Tensiones" },
+                    { id: 'soberania', label: "Legitimidad" }
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveNarrativeTab(tab.id)}
+                      className={`px-3 py-1.5 rounded-lg border font-mono text-[9px] uppercase tracking-wider transition-all font-bold ${
+                        activeNarrativeTab === tab.id
+                          ? 'bg-[#1c140d] text-[#f2e7d5] border-[#1c140d]'
+                          : 'bg-transparent border-amber-900/20 text-amber-900 hover:border-amber-900'
+                      }`}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="font-mono text-xl sm:text-2xl font-black text-white/95">
-              {bricsIndex} <span className="text-[9px] font-normal text-emerald-500">▲ +0.22%</span>
+
+            <div className="mt-2 text-[9px] text-[#c5a059] font-bold tracking-widest flex items-center justify-between">
+              <span>MULTILATERAL BLOCK DISPATCH</span>
+              <div className="flex gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059] animate-ping" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#c5a059]" />
+              </div>
             </div>
-            <span className="text-[7.5px] text-gray-500 tracking-wider">R5 SOVEREIGN BASKET AVERAGE WEIGHT</span>
+
           </div>
 
-          <div className="p-4 border border-[#c5a059]/15 rounded-2xl bg-black/80 backdrop-blur-md text-left flex flex-col justify-between min-h-[90px] shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 left-0 w-1 h-full bg-emerald-800/40" />
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-[9px] font-bold text-gray-400 tracking-widest uppercase">SOVEREIGN GOLD RESERVES</span>
-              <Coins className="w-3 h-3 text-emerald-500 animate-bounce" />
+          {/* RIGHT PANEL (3 cols): BRICS Pay Settlement Simulator */}
+          <div className="lg:col-span-3 flex flex-col bg-[#0b0a09]/85 border border-[#c5a059]/20 rounded-[2rem] p-6 shadow-2xl justify-between relative overflow-hidden">
+            <div>
+              <div className="flex items-center gap-2 mb-6 border-b border-[#c5a059]/15 pb-3">
+                <Coins className="w-4 h-4 text-[#c5a059]" />
+                <h3 className="text-[10px] font-bold uppercase tracking-widest text-white">BRICS PAY TRANSACTION</h3>
+              </div>
+
+              <form onSubmit={handleBricsPaySubmit} className="space-y-4 text-left">
+                
+                <div className="flex flex-col gap-1">
+                  <label className="text-[7px] text-gray-500 uppercase tracking-widest font-black">ORIGEN DE DIVISAS:</label>
+                  <select 
+                    value={customFrom}
+                    onChange={(e) => setCustomFrom(e.target.value)}
+                    className="bg-[#12100e] border border-[#c5a059]/20 rounded-xl p-2.5 text-[9.5px] text-white focus:outline-none focus:border-[#c5a059] w-full"
+                  >
+                    <option>Brasil (BRL)</option>
+                    <option>Rusia (RUB)</option>
+                    <option>India (INR)</option>
+                    <option>China (CNY)</option>
+                    <option>Sudáfrica (ZAR)</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[7px] text-gray-500 uppercase tracking-widest font-black">DESTINO DE LIQUIDACIÓN:</label>
+                  <select 
+                    value={customTo}
+                    onChange={(e) => setCustomTo(e.target.value)}
+                    className="bg-[#12100e] border border-[#c5a059]/20 rounded-xl p-2.5 text-[9.5px] text-white focus:outline-none focus:border-[#c5a059] w-full"
+                  >
+                    <option>Arabia Saudita (SAR)</option>
+                    <option>Egipto (EGP)</option>
+                    <option>Etiopía (ETB)</option>
+                    <option>EAU (AED)</option>
+                    <option>Irán (IRR)</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[7px] text-gray-500 uppercase tracking-widest font-black">COMMODITY VINCULADO:</label>
+                  <select 
+                    value={customCommodity}
+                    onChange={(e) => setCustomCommodity(e.target.value)}
+                    className="bg-[#12100e] border border-[#c5a059]/20 rounded-xl p-2.5 text-[9.5px] text-white focus:outline-none focus:border-[#c5a059] w-full"
+                  >
+                    <option>Granos de Trigo</option>
+                    <option>Barriles de Crudo</option>
+                    <option>Oro en Lingotes</option>
+                    <option>Fertilizantes Nitrogenados</option>
+                    <option>Minerales de Tierras Raras</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[7px] text-gray-500 uppercase tracking-widest font-black">MONTO DE TRANSFERENCIA (USD EQUIVALENT):</label>
+                  <input 
+                    type="number" 
+                    placeholder="Monto en USD..."
+                    value={customAmount}
+                    onChange={(e) => setCustomAmount(e.target.value)}
+                    className="bg-[#12100e] border border-[#c5a059]/20 rounded-xl p-2.5 text-[10px] text-[#c5a059] placeholder-[#c5a059]/30 focus:outline-none focus:border-[#c5a059] w-full"
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  className="w-full py-3 bg-[#c5a059] hover:bg-[#b59049] text-black font-black text-[9.5px] rounded-xl uppercase tracking-widest transition-transform hover:scale-95 shadow-[0_0_15px_rgba(197,160,89,0.3)]"
+                >
+                  EJECUTAR TRANSACCIÓN
+                </button>
+
+              </form>
+
             </div>
-            <div className="font-mono text-xl sm:text-2xl font-black text-white/95">
-              ${goldOunce} <span className="text-[9px] font-normal text-emerald-500">/ OZ</span>
+
+            {/* Micro transaction list for ledger */}
+            <div className="mt-4 border border-white/5 bg-black/50 rounded-xl p-2.5 text-left">
+              <span className="text-[7px] text-gray-500 font-bold block uppercase tracking-widest mb-1.5">LEDGER TRANSACTIONS VINCULADOS</span>
+              <div className="space-y-1.5 max-h-[85px] overflow-y-auto pr-1">
+                {transactions.map((tx) => (
+                  <div key={tx.id} className="flex justify-between items-center text-[8.5px] bg-[#12100e] border border-white/5 p-1.5 rounded-lg">
+                    <div className="flex flex-col">
+                      <span className="font-bold text-white leading-tight">{tx.from} ➔ {tx.to}</span>
+                      <span className="text-[6.5px] text-gray-500">{tx.commodity}</span>
+                    </div>
+                    <span className="font-black text-[#c5a059]">${tx.amount}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <span className="text-[7.5px] text-gray-500 tracking-wider">GOLD STANDARD EQUIVALENCY METRIC</span>
+
           </div>
 
         </div>
 
-        {/* INTERACTIVE MULTILATERAL DIRECTIVE TERMINAL (Theme Explanation) */}
-        <div className="max-w-7xl mx-auto mb-10 bg-black/80 border border-[#c5a059]/15 rounded-3xl p-6 text-left shadow-2xl backdrop-blur-md">
-          <div className="flex items-center gap-2 mb-4 border-b border-[#c5a059]/15 pb-2">
-            <Globe className="w-4 h-4 text-[#c5a059] animate-pulse" />
-            <h3 className="text-xs font-bold uppercase tracking-widest text-white">INTERROGANTES CLAVES Y LÍNEA COOPERATIVA</h3>
+        {/* -------------------- GEOPOLITICAL ALIGNMENT & FRICTION MATRIX (Full Width) -------------------- */}
+        <div className="max-w-7xl mx-auto bg-[#0b0a09]/85 border border-[#c5a059]/25 rounded-[2.5rem] p-8 text-left shadow-2xl mb-12 relative overflow-hidden">
+          
+          <div className="flex items-center gap-2 mb-6 border-b border-[#c5a059]/15 pb-3">
+            <Globe className="w-4 h-4 text-[#c5a059]" />
+            <h3 className="text-xs font-bold uppercase tracking-widest text-white">MATRIZ GEOPOLÍTICA BRICS+ (ALINEACIÓN DE SOCIOS)</h3>
           </div>
 
-          <div className="flex flex-col md:flex-row gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             
-            {/* Interactive Selectors */}
-            <div className="flex flex-row md:flex-col gap-2 shrink-0 w-full md:w-56">
+            {/* Left Col: Dynamic Selector Buttons */}
+            <div className="md:col-span-4 flex flex-col gap-3">
               {[
-                { id: 'expansion', label: "Consolidación y Peso" },
-                { id: 'tensiones', label: "Tensiones Geopolíticas" },
-                { id: 'hegemonia', label: "Desafío al Dólar" }
-              ].map((tab) => (
+                { id: 'china-india', label: "Delhi ↔ Beijing (LAC Himalaya)" },
+                { id: 'egypt-ethiopia', label: "El Cairo ↔ Adís Abeba (GERD Nilo)" },
+                { id: 'russia-brazil', label: "Brasilia ↔ Moscú (Nitrógeno & Soja)" }
+              ].map((pair) => (
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`px-4 py-2.5 rounded-xl border text-[10px] font-bold uppercase tracking-widest text-left transition-all ${
-                    activeTab === tab.id
-                      ? 'bg-[#c5a059] text-black border-[#c5a059] shadow-md'
-                      : 'bg-[#0d1319]/40 border-[#c5a059]/10 text-gray-400 hover:text-white'
+                  key={pair.id}
+                  onClick={() => setSelectedPair(pair.id)}
+                  className={`w-full p-4 rounded-xl border text-left transition-all duration-300 ${
+                    selectedPair === pair.id
+                      ? 'bg-[#c5a059]/10 border-[#c5a059] shadow-[0_0_15px_rgba(197,160,89,0.08)]'
+                      : 'bg-[#12100e]/40 border-white/5 hover:border-[#c5a059]/30 text-gray-400 hover:text-white'
                   }`}
                 >
-                  {tab.label}
+                  <span className="text-xs font-bold tracking-widest block uppercase text-white mb-0.5">
+                    {pair.label.split(' (')[0]}
+                  </span>
+                  <span className="text-[8px] text-gray-500 uppercase tracking-widest">
+                    PAR: {pair.label.split(' (')[1].slice(0, -1)}
+                  </span>
                 </button>
               ))}
             </div>
 
-            {/* Briefing text block */}
-            <div className="flex-1 bg-[#0d1319]/40 border border-[#c5a059]/5 rounded-2xl p-5 text-xs sm:text-sm text-gray-300 leading-relaxed min-h-[140px]">
-              <AnimatePresence mode="wait">
-                {activeTab === 'expansion' && (
+            {/* Right Col: Animated Alignment Details and meters */}
+            <div className="md:col-span-8 bg-[#12100e] border border-[#c5a059]/10 rounded-3xl p-6 relative overflow-hidden">
+              
+              <div className="flex justify-between items-center mb-4 pb-2 border-b border-[#c5a059]/10">
+                <h4 className="text-sm font-bold text-white uppercase">{geopoliticalBriefings[selectedPair].title}</h4>
+                <div className="flex items-center gap-2">
+                  <span className="text-[7.5px] text-gray-500 uppercase tracking-widest font-black">NIVEL DE FRICCIÓN:</span>
+                  <span className="text-[9.5px] text-red-500 font-bold uppercase tracking-widest bg-red-950/40 border border-red-500/20 px-2.5 py-0.5 rounded">
+                    {geopoliticalBriefings[selectedPair].friction}
+                  </span>
+                </div>
+              </div>
+
+              {/* Progress Chart */}
+              <div className="flex flex-col gap-1.5 mb-4">
+                <div className="flex justify-between text-[8px] font-bold text-gray-400 tracking-wider">
+                  <span>COHESIÓN COMERCIAL Y ALINEAMIENTO GEOPOLÍTICO:</span>
+                  <span>{geopoliticalBriefings[selectedPair].alignment}%</span>
+                </div>
+                <div className="w-full h-2.5 bg-white/5 rounded-full relative overflow-hidden">
                   <motion.div
-                    key="expansion"
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <span className="font-mono text-[9px] text-[#c5a059] tracking-widest block uppercase mb-2">★ CAPÍTULO I: EL ASCENSO DEL SUR GLOBAL ★</span>
-                    El ascenso de los BRICS+ se presenta como el desafío definitivo al orden económico del Norte Global. Con una fuerza que ya representa el 30% del PIB mundial y supera el crecimiento anual del G7, el bloque busca consolidar un multilateralismo inclusivo que desplace la hegemonía del dólar. Sin embargo, detrás de las cifras de expansión, emergen interrogantes que ponen en duda la cohesión real de esta alianza.
-                  </motion.div>
-                )}
-
-                {activeTab === 'tensiones' && (
-                  <motion.div
-                    key="tensiones"
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <span className="font-mono text-[9px] text-[#c5a059] tracking-widest block uppercase mb-2">★ CAPÍTULO II: CONFLICTOS E INFORMALIDAD ★</span>
-                    Las tensiones geopolíticas entre China e India y las disputas históricas entre nuevos miembros como Egipto y Etiopía representan un riesgo latente para la estabilidad y el consenso del bloque; del mismo modo, los BRICS+ funcionan bajo una cooperación intergubernamental que a menudo roza la informalidad; sin tratados vinculantes, el bloque depende exclusivamente del consenso.
-                  </motion.div>
-                )}
-
-                {activeTab === 'hegemonia' && (
-                  <motion.div
-                    key="hegemonia"
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <span className="font-mono text-[9px] text-[#c5a059] tracking-widest block uppercase mb-2">★ CAPÍTULO III: LA LEGITIMIDAD EN JUEGO ★</span>
-                    La expansión de los BRICS va más allá de un aumento númerico en sus miembros, es un reto para la legitimidad del bloque: La pregunta ya no es si los BRICS pueden crecer, sino si pueden sobrevivir a su propia diversidad sin paralizarse o fragmentarse ante las presiones de Occidente. ¿Seguirán siendo un bloque de asistencia económica o una alianza antiimperialista?
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-          </div>
-        </div>
-
-        {/* -------------------- HIGH-DENSITY PROFESSIONAL WORKSPACE -------------------- */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mb-16 max-w-7xl mx-auto">
-          
-          {/* LEFT PANEL (4 cols): Geopolitical Alignment Analyzer */}
-          <div className="lg:col-span-4 flex flex-col bg-black/60 border border-[#c5a059]/15 rounded-3xl p-6 shadow-2xl relative overflow-hidden justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-6 border-b border-[#c5a059]/10 pb-3">
-                <Activity className="w-4 h-4 text-[#c5a059]" />
-                <h3 className="text-xs font-bold uppercase tracking-widest text-white">ANÁLISIS DE FRICCIÓN ALINEAMIENTOS</h3>
-              </div>
-
-              {/* Selector buttons for alignment pairs */}
-              <div className="flex flex-col gap-2.5 mb-6">
-                {[
-                  { id: 'china-india', label: "China ↔ India" },
-                  { id: 'egypt-ethiopia', label: "Egipto ↔ Etiopía" },
-                  { id: 'russia-brazil', label: "Rusia ↔ Brasil" }
-                ].map((pair) => (
-                  <button
-                    key={pair.id}
-                    onClick={() => setSelectedPair(pair.id)}
-                    className={`w-full p-3.5 rounded-xl border text-left transition-all duration-300 ${
-                      selectedPair === pair.id
-                        ? 'bg-[#c5a059]/5 border-[#c5a059] shadow-[0_0_15px_rgba(197,160,89,0.06)]'
-                        : 'bg-[#0d1319]/20 border-white/5 hover:border-[#c5a059]/30 text-gray-400 hover:text-white'
-                    }`}
-                  >
-                    <span className="text-[10px] font-bold tracking-widest block uppercase text-white mb-0.5">
-                      {pair.label}
-                    </span>
-                    <span className="text-[7.5px] text-gray-500 uppercase tracking-widest">
-                      Fricción: {geopoliticalBriefings[pair.id].friction}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Dynamic brief box */}
-              <div className="bg-[#0e1115] border border-[#c5a059]/10 rounded-2xl p-4 text-left">
-                <h4 className="text-xs font-bold text-white uppercase mb-2">
-                  {geopoliticalBriefings[selectedPair].title}
-                </h4>
-                
-                {/* Visual meter alignment */}
-                <div className="flex flex-col gap-1 mb-3">
-                  <div className="flex justify-between text-[8px] font-bold text-gray-400 tracking-wider">
-                    <span>COHESIÓN GEOPOLÍTICA:</span>
-                    <span>{geopoliticalBriefings[selectedPair].alignment}%</span>
-                  </div>
-                  <div className="w-full h-1.5 bg-white/5 rounded-full relative overflow-hidden">
-                    <motion.div
-                      key={selectedPair}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${geopoliticalBriefings[selectedPair].alignment}%` }}
-                      className={`absolute top-0 left-0 h-full bg-gradient-to-r ${geopoliticalBriefings[selectedPair].color}`}
-                      transition={{ duration: 0.6 }}
-                    />
-                  </div>
-                </div>
-
-                <p className="text-[10.5px] leading-relaxed text-gray-400">
-                  {geopoliticalBriefings[selectedPair].content}
-                </p>
-              </div>
-
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-[#c5a059]/10 text-[8px] text-gray-600 text-left">
-              MULTILATERAL BALANCE DECK COMPILATION SYSTEM
-            </div>
-          </div>
-
-          {/* MIDDLE PANEL (5 cols): BRICS Pay Ledger Simulator */}
-          <div className="lg:col-span-5 flex flex-col bg-black/60 border border-[#c5a059]/15 rounded-3xl p-6 shadow-2xl justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-6 border-b border-[#c5a059]/10 pb-3">
-                <Landmark className="w-4 h-4 text-[#c5a059]" />
-                <h3 className="text-xs font-bold uppercase tracking-widest text-white">BRICS PAY TRANSACTION LEDGER</h3>
-              </div>
-
-              {/* Form to submit transaction */}
-              <form onSubmit={handleBricsPaySubmit} className="grid grid-cols-2 gap-3 mb-6 text-left">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[7.5px] text-gray-500 uppercase tracking-widest font-black">ORIGEN DE LIQUIDACIÓN:</label>
-                  <select 
-                    value={customFrom}
-                    onChange={(e) => setCustomFrom(e.target.value)}
-                    className="bg-[#0c0e12] border border-white/10 rounded-lg p-2 text-[10px] text-white focus:outline-none focus:border-[#c5a059]"
-                  >
-                    <option>Brazil (BRL)</option>
-                    <option>Russia (RUB)</option>
-                    <option>India (INR)</option>
-                    <option>China (CNY)</option>
-                    <option>South Africa (ZAR)</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1">
-                  <label className="text-[7.5px] text-gray-500 uppercase tracking-widest font-black">DESTINO LIQUIDACIÓN:</label>
-                  <select 
-                    value={customTo}
-                    onChange={(e) => setCustomTo(e.target.value)}
-                    className="bg-[#0c0e12] border border-white/10 rounded-lg p-2 text-[10px] text-white focus:outline-none focus:border-[#c5a059]"
-                  >
-                    <option>Saudi Arabia (SAR)</option>
-                    <option>Egypt (EGP)</option>
-                    <option>Ethiopia (ETB)</option>
-                    <option>UAE (AED)</option>
-                    <option>Iran (IRR)</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1 col-span-2">
-                  <label className="text-[7.5px] text-gray-500 uppercase tracking-widest font-black">ACTIVO / COMMODITY VINCULADO:</label>
-                  <select 
-                    value={customCommodity}
-                    onChange={(e) => setCustomCommodity(e.target.value)}
-                    className="bg-[#0c0e12] border border-white/10 rounded-lg p-2 text-[10px] text-white focus:outline-none focus:border-[#c5a059]"
-                  >
-                    <option>Wheat & Grain Reserves</option>
-                    <option>Crude Oil & Gas Barrels</option>
-                    <option>Gold Bullion Ounces</option>
-                    <option>Agricultural Fertilizers</option>
-                    <option>Industrial Minerals</option>
-                  </select>
-                </div>
-
-                <div className="flex flex-col gap-1 col-span-2">
-                  <label className="text-[7.5px] text-gray-500 uppercase tracking-widest font-black">MONTO DE TRANSFERENCIA (COMMODITY EQUIVALENT):</label>
-                  <div className="flex gap-2">
-                    <input 
-                      type="number"
-                      placeholder="Monto en USD..."
-                      value={customAmount}
-                      onChange={(e) => setCustomAmount(e.target.value)}
-                      className="flex-1 bg-[#0c0e12] border border-white/10 rounded-lg p-2 text-[10px] text-[#c5a059] focus:outline-none focus:border-[#c5a059]"
-                    />
-                    <button 
-                      type="submit"
-                      className="px-4 py-2 bg-[#c5a059] hover:bg-[#b59049] text-black font-black text-[9px] uppercase rounded-lg transition-transform hover:scale-95 shadow-[0_0_10px_rgba(197,160,89,0.3)]"
-                    >
-                      LIQUIDAR
-                    </button>
-                  </div>
-                </div>
-              </form>
-
-              {/* Transactions list */}
-              <div className="border border-white/10 rounded-2xl bg-[#090b0e] p-3 text-left">
-                <span className="text-[7.5px] text-gray-500 font-bold uppercase tracking-widest block mb-2">RECORDE DE LIQUIDACIONES LEDGER (EN VIVO)</span>
-                <div className="space-y-2 max-h-[140px] overflow-y-auto pr-1">
-                  {transactions.map((tx) => (
-                    <div key={tx.id} className="flex justify-between items-center text-[9px] bg-white/[0.02] border border-white/5 p-2 rounded-lg font-mono">
-                      <div className="flex flex-col">
-                        <span className="font-bold text-white">{tx.from} ➔ {tx.to}</span>
-                        <span className="text-[7.5px] text-gray-500">{tx.commodity} // ID: {tx.id}</span>
-                      </div>
-                      <div className="text-right">
-                        <span className="font-black text-[#c5a059] block">${tx.amount}</span>
-                        <span className="text-[7px] text-emerald-400 font-bold uppercase tracking-widest">{tx.status}</span>
-                      </div>
-                    </div>
-                  ))}
+                    key={selectedPair}
+                    initial={{ width: 0 }}
+                    animate={{ width: `${geopoliticalBriefings[selectedPair].alignment}%` }}
+                    className={`absolute top-0 left-0 h-full bg-gradient-to-r ${geopoliticalBriefings[selectedPair].color}`}
+                    transition={{ duration: 0.6 }}
+                  />
                 </div>
               </div>
 
-            </div>
-          </div>
-
-          {/* RIGHT PANEL (3 cols): Geopolitical Exhibits Dossier */}
-          <div className="lg:col-span-3 flex flex-col bg-black/60 border border-[#c5a059]/15 rounded-3xl p-6 shadow-2xl justify-between">
-            <div>
-              <div className="flex items-center gap-2 mb-6 border-b border-[#c5a059]/10 pb-3">
-                <FileText className="w-4 h-4 text-[#c5a059]" />
-                <h3 className="text-xs font-bold uppercase tracking-widest text-white">EXHIBITS GEOPOLÍTICOS</h3>
-              </div>
-
-              <p className="text-[9.5px] leading-relaxed text-gray-500 mb-4 text-left">
-                Documentos gráficos analizados en las sesiones multilaterales de soberanía:
+              <p className="text-xs leading-relaxed text-gray-400">
+                {geopoliticalBriefings[selectedPair].content}
               </p>
 
-              {/* Exhibits Grid */}
-              <div className="space-y-4">
-                {[
-                  { name: "Exhibit b1: Alianza", img: "/b1.jpg", desc: "Cumbre de Integración Multilateral de Nuevos Miembros" },
-                  { name: "Exhibit b2: Soberanía", img: "/b2.jpg", desc: "Monitoreo de Infraestructuras Industriales del Sur Global" },
-                  { name: "Exhibit b3: Finanzas", img: "/b3.jpg", desc: "Sistemas de Arbitraje y Compensaciones BRICS Pay" }
-                ].map((ex, i) => (
-                  <div key={i} className="group relative rounded-xl border border-white/10 bg-[#0c0e12]/60 overflow-hidden hover:border-[#c5a059]/40 transition-all duration-300">
-                    <div className="h-24 w-full overflow-hidden relative">
-                      <img src={ex.img} alt={ex.name} className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
-                      <span className="absolute bottom-2 left-2 text-[8px] font-bold text-[#c5a059] tracking-wider uppercase">{ex.name.split(': ')[0]}</span>
-                    </div>
-                    <div className="p-2 text-left">
-                      <p className="text-[8px] text-gray-400 leading-tight leading-snug">{ex.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
             </div>
+
           </div>
 
+        </div>
+
+        {/* -------------------- GEOPOLITICAL PICTURE DOSSIER (Full Width) -------------------- */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          {[
+            { name: "Exhibit b1: Alianza", img: "/b1.jpg", desc: "Cumbre de Integración y Expansión Multilateral de Nuevos Miembros" },
+            { name: "Exhibit b2: Soberanía", img: "/b2.jpg", desc: "Monitoreo de Infraestructuras y Reservas de Soberanía Alimentaria" },
+            { name: "Exhibit b3: Finanzas", img: "/b3.jpg", desc: "Sistemas de Compensaciones de Reservas BRICS Pay y Liquidaciones" }
+          ].map((ex, i) => (
+            <div key={i} className="group relative rounded-2xl border border-[#c5a059]/20 bg-[#0b0a09]/80 overflow-hidden hover:border-[#c5a059]/50 transition-all duration-500 shadow-2xl flex flex-col justify-between">
+              <div className="h-44 w-full overflow-hidden relative">
+                <img src={ex.img} alt={ex.name} className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
+                <span className="absolute bottom-3 left-3 text-[10px] font-bold text-[#c5a059] tracking-widest uppercase">{ex.name.split(': ')[0]}</span>
+              </div>
+              <div className="p-4 text-left">
+                <p className="text-[10px] text-gray-400 leading-relaxed font-light">{ex.desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Bottom Official Navigation & Documentation Board */}
-        <div className="max-w-5xl mx-auto p-8 rounded-[2rem] bg-[#070b10]/95 border border-[#c5a059]/20 backdrop-blur-xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl mt-8">
+        <div className="max-w-5xl mx-auto p-8 rounded-[2rem] bg-[#0b0a09]/95 border border-[#c5a059]/20 backdrop-blur-xl flex flex-col md:flex-row justify-between items-center gap-6 shadow-2xl mt-8">
           <div className="text-center md:text-left">
-            <span className="font-mono text-[8px] text-gray-500 tracking-[0.3em] uppercase block mb-1">MESA DIRECTIVA Y REGLAMENTOS DE CUMBRE</span>
-            <h4 className="text-lg font-bold text-white uppercase tracking-wider">CREDENCIALES Y MARCO REGULATORIO</h4>
+            <span className="font-mono text-[8px] text-gray-500 tracking-[0.3em] uppercase block mb-1">MESA DIRECTIVA Y MARCO REGULATORIO</span>
+            <h4 className="text-lg font-bold text-white uppercase tracking-wider">CREDENCIALES Y MARCO REGULATORIO DE FORTALEZA</h4>
           </div>
 
           <div className="flex flex-wrap gap-4 justify-center">
@@ -568,7 +579,7 @@ export default function Brics() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="relative w-full max-w-sm rounded-[2rem] bg-[#070b10] border border-[#c5a059]/30 p-8 text-[#ece2d0] z-10 shadow-2xl text-center font-mono overflow-hidden"
+              className="relative w-full max-w-sm rounded-[2rem] bg-[#0d0c0b] border border-[#c5a059]/30 p-8 text-[#ece2d0] z-10 shadow-2xl text-center font-mono overflow-hidden"
             >
               {/* Scanline overlay for modal */}
               <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.012)_1px,transparent_1px)] bg-[size:100%_4px] pointer-events-none" />
@@ -590,14 +601,14 @@ export default function Brics() {
 
               {/* Holographic ID pass card items */}
               <div className="space-y-6 text-center text-[#c2eff7] leading-relaxed">
-                <div className="p-4 bg-[#0d131a]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#c5a059]/30 transition-all duration-300">
+                <div className="p-4 bg-[#141210]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#c5a059]/30 transition-all duration-300">
                   <div className="absolute top-0 right-0 p-1 text-[7px] text-[#c5a059] font-bold">SEC_01</div>
                   <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">Presidente</span>
                   <h4 className="text-lg font-bold text-white tracking-wide">Carlos Mendes</h4>
                   <p className="text-[9px] text-[#c5a059] mt-0.5 uppercase tracking-widest">Diplomacia y Coordinación del Bloque</p>
                 </div>
 
-                <div className="p-4 bg-[#0d131a]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#c5a059]/30 transition-all duration-300">
+                <div className="p-4 bg-[#141210]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#c5a059]/30 transition-all duration-300">
                   <div className="absolute top-0 right-0 p-1 text-[7px] text-[#c5a059] font-bold">SEC_02</div>
                   <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">Vicepresidente</span>
                   <h4 className="text-lg font-bold text-white tracking-wide">Arushi Sharma</h4>
