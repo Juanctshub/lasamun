@@ -57,9 +57,11 @@ export default function Navigation() {
               className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-sm" 
               onClick={() => {
                 if (menuOpen) toggleMenu();
-                window.location.hash = '#home';
-                window.dispatchEvent(new HashChangeEvent('hashchange'));
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (window.location.hash !== '#home' && window.location.hash !== '') {
+                  window.location.hash = '#home';
+                } else {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
               }}
             />
             <div className="w-[1px] h-8 bg-gray-200 rounded-full"></div>
@@ -69,9 +71,11 @@ export default function Navigation() {
               className="h-10 sm:h-12 w-auto object-contain transition-transform duration-300 hover:scale-105 cursor-pointer filter brightness-100 drop-shadow-sm" 
               onClick={() => {
                 if (menuOpen) toggleMenu();
-                window.location.hash = '#home';
-                window.dispatchEvent(new HashChangeEvent('hashchange'));
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                if (window.location.hash !== '#home' && window.location.hash !== '') {
+                  window.location.hash = '#home';
+                } else {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
               }}
             />
           </motion.div>
@@ -203,8 +207,15 @@ export default function Navigation() {
                         onClick={(e) => {
                           e.preventDefault();
                           if (menuOpen) toggleMenu();
-                          window.location.hash = item.href;
-                          window.dispatchEvent(new HashChangeEvent('hashchange'));
+                          if (item.href === '#home') {
+                            if (window.location.hash !== '#home' && window.location.hash !== '') {
+                              window.location.hash = '#home';
+                            } else {
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }
+                          } else {
+                            window.location.hash = item.href;
+                          }
                         }}
                         className={`font-maison text-2xl sm:text-3xl md:text-3xl lg:text-3xl xl:text-[2.2rem] leading-[1.1] font-bold uppercase block w-full text-center md:text-left transition-all duration-500 text-white/30 group-hover:text-white group-hover:translate-x-3 drop-shadow-none ${item.hoverClass}`}
                       >
