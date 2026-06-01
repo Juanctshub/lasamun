@@ -328,6 +328,8 @@ export default function Comites() {
                     window.location.hash = '#corte';
                   } else if (comite.name === 'NASA') {
                     window.location.hash = '#nasa';
+                  } else if (comite.name === 'ICFJ') {
+                    window.location.hash = '#icfj';
                   } else if (comite.name === 'Investigación (1925)') {
                     window.location.hash = '#voynich';
                   } else if (comite.name === 'ICA (1935)') {

@@ -20,6 +20,8 @@ import Voynich from './components/Voynich';
 import VoynichLoader from './components/VoynichLoader';
 import Ica from './components/Ica';
 import IcaLoader from './components/IcaLoader';
+import Icfj from './components/Icfj';
+import IcfjLoader from './components/IcfjLoader';
 
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
@@ -37,6 +39,7 @@ function App() {
     if (window.location.hash === '#nasa') return 'nasa';
     if (window.location.hash === '#voynich') return 'voynich';
     if (window.location.hash === '#ica') return 'ica';
+    if (window.location.hash === '#icfj') return 'icfj';
     return 'landing';
 
   };
@@ -48,6 +51,7 @@ function App() {
   const [nasaLoading, setNasaLoading] = useState(false);
   const [voynichLoading, setVoynichLoading] = useState(false);
   const [icaLoading, setIcaLoading] = useState(false);
+  const [icfjLoading, setIcfjLoading] = useState(false);
 
 
   // Handle entering the landing page and starting audio
@@ -79,6 +83,9 @@ function App() {
     } else if (window.location.hash === '#ica') {
       setIcaLoading(true);
       setTimeout(() => audioSystem.switchToIca(), 500);
+    } else if (window.location.hash === '#icfj') {
+      setIcfjLoading(true);
+      setTimeout(() => audioSystem.switchToIcfj(), 500);
     }
   };
 
@@ -93,6 +100,7 @@ function App() {
       const isNasa = window.location.hash === '#nasa';
       const isVoynich = window.location.hash === '#voynich';
       const isIca = window.location.hash === '#ica';
+      const isIcfj = window.location.hash === '#icfj';
 
       
       if (isStaff) {
@@ -123,6 +131,10 @@ function App() {
         setCurrentPage('ica');
         setIcaLoading(true);
         audioSystem.switchToIca();
+      } else if (isIcfj) {
+        setCurrentPage('icfj');
+        setIcfjLoading(true);
+        audioSystem.switchToIcfj();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
@@ -148,7 +160,7 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich' || currentPage === 'ica') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich' || currentPage === 'ica' || currentPage === 'icfj') {
       window.scrollTo({ top: 0 });
     }
 
@@ -355,6 +367,25 @@ function App() {
                       transition={{ duration: 0.5 }}
                     >
                       <Ica />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : currentPage === 'icfj' ? (
+              <React.Fragment key="icfj-view">
+                <AnimatePresence mode="wait">
+                  {icfjLoading ? (
+                    <IcfjLoader key="icfj-loader" onComplete={() => setIcfjLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="icfj-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Icfj />
                       <Footer />
                     </motion.div>
                   )}
