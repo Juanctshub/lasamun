@@ -119,7 +119,7 @@ class AudioSystem {
     [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter, this.tobyFilter, this.wisinFilter].forEach(f => {
       f.type = 'lowpass';
       f.Q.value = 1.0;
-      f.frequency.setValueAtTime(300, this.ctx.currentTime); // start blurry
+      f.frequency.setValueAtTime(1200, this.ctx.currentTime); // start slightly clearer (1200Hz instead of 300Hz)
     });
 
 
@@ -205,7 +205,7 @@ class AudioSystem {
 
     filterNode.frequency.cancelScheduledValues(now);
     filterNode.frequency.setValueAtTime(filterNode.frequency.value, now);
-    filterNode.frequency.setTargetAtTime(300, now, 0.3);
+    filterNode.frequency.setTargetAtTime(1200, now, 0.3);
   }
 
   _openAndFadeUp(gainNode, filterNode, now) {
@@ -358,15 +358,10 @@ class AudioSystem {
 
   switchToIcfj() {
     if (!this.initialized) return;
-    if (this.activeTrack === 'wisin') {
-      if (this.wisin.paused) {
-        this.wisin.play().catch(e => console.log("Play error Wisin on resume", e));
-      }
-      return;
-    }
     this.activeTrack = 'wisin';
     
-    // Play with pumping energy! Jump past slow intros if needed or play from start.
+    // Play with pumping energy! Reset to 0 so the intro plays from the start
+    this.wisin.currentTime = 0;
     this.wisin.play().catch(e => console.log("Play error Wisin on switch", e));
     this._muffleAllExcept(this.wisinGain);
   }
