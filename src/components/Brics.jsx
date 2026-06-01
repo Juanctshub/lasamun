@@ -604,14 +604,14 @@ export default function Brics() {
                 <div className="p-4 bg-[#141210]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#c5a059]/30 transition-all duration-300">
                   <div className="absolute top-0 right-0 p-1 text-[7px] text-[#c5a059] font-bold">SEC_01</div>
                   <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">Presidente</span>
-                  <h4 className="text-lg font-bold text-white tracking-wide">Carlos Mendes</h4>
+                  <h4 className="text-lg font-bold text-white tracking-wide">Christian La Cruz</h4>
                   <p className="text-[9px] text-[#c5a059] mt-0.5 uppercase tracking-widest">Diplomacia y Coordinación del Bloque</p>
                 </div>
 
                 <div className="p-4 bg-[#141210]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#c5a059]/30 transition-all duration-300">
                   <div className="absolute top-0 right-0 p-1 text-[7px] text-[#c5a059] font-bold">SEC_02</div>
                   <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">Vicepresidente</span>
-                  <h4 className="text-lg font-bold text-white tracking-wide">Arushi Sharma</h4>
+                  <h4 className="text-lg font-bold text-white tracking-wide">Joel Rodriguez</h4>
                   <p className="text-[9px] text-[#c5a059] mt-0.5 uppercase tracking-widest">Logística Monetaria y BRICS Pay</p>
                 </div>
               </div>

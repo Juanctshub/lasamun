@@ -563,18 +563,19 @@ export default function Icfj() {
               <div className="space-y-6 text-center text-[#c2eff7] leading-relaxed">
                 <div className="p-4 bg-[#0d131a]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#00f0ff]/30 transition-all duration-300">
                   <div className="absolute top-0 right-0 p-1 text-[7px] text-gray-600 font-bold">SEC_01</div>
-                  <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">DIRECTOR GENERAL DE PRENSA</span>
-                  <h4 className="text-lg font-bold text-white tracking-wide">Gabriel García</h4>
+                  <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">DIRECTOR GENERAL DE PRENSA (PRESIDENTE)</span>
+                  <h4 className="text-lg font-bold text-white tracking-wide">Luis Fernando Sigala</h4>
                   <p className="text-[9px] text-[#00f0ff] mt-0.5 uppercase tracking-widest">Coordinador General y Control de Telex</p>
                 </div>
 
                 <div className="p-4 bg-[#0d131a]/60 rounded-2xl border border-white/5 relative overflow-hidden group hover:border-[#00f0ff]/30 transition-all duration-300">
                   <div className="absolute top-0 right-0 p-1 text-[7px] text-gray-600 font-bold">SEC_02</div>
-                  <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">DIRECTORA ASOCIADA DE BROADCAST</span>
-                  <h4 className="text-lg font-bold text-white tracking-wide">Elena Fuentes</h4>
+                  <span className="text-[8px] text-gray-500 uppercase tracking-widest block mb-1">DIRECTORA ASOCIADA DE BROADCAST (VICEPRESIDENTE)</span>
+                  <h4 className="text-lg font-bold text-white tracking-wide">Edith Mosquera</h4>
                   <p className="text-[9px] text-[#00f0ff] mt-0.5 uppercase tracking-widest">Supervisión Editorial y Fact Checking</p>
                 </div>
               </div>
+
 
               <div className="mt-8 pt-4 border-t border-white/10 text-[8px] text-gray-500">
                 ICFJ INTERNATIONAL MODEL SECURITY AGENT // VERIFIED PRESS PASS
