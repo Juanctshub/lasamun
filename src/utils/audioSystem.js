@@ -212,11 +212,11 @@ class AudioSystem {
     if (this.ctx.state === 'suspended') this.ctx.resume();
     gainNode.gain.cancelScheduledValues(now);
     gainNode.gain.setValueAtTime(gainNode.gain.value, now);
-    gainNode.gain.setTargetAtTime(1.0, now, 0.3);
+    gainNode.gain.setTargetAtTime(1.0, now, 0.6); // Slower, premium volume fade-in
 
     filterNode.frequency.cancelScheduledValues(now);
     filterNode.frequency.setValueAtTime(filterNode.frequency.value, now);
-    filterNode.frequency.setTargetAtTime(20000, now, 0.3);
+    filterNode.frequency.setTargetAtTime(20000, now, 2.0); // Slower, highly dramatic muffle sweep!
   }
 
   _muffleAllExcept(activeGain) {
