@@ -18,6 +18,17 @@ const CommitteeLogo = ({ name }) => {
     );
   }
 
+  if (name === 'BRICS' && !imgError) {
+    return (
+      <img 
+        src="/brics_logo.png"
+        alt="BRICS+ Logo"
+        className="w-full h-full object-contain filter drop-shadow-md rounded-lg p-0.5"
+        onError={() => setImgError(true)}
+      />
+    );
+  }
+
   if (name === 'Investigación (1925)' && !imgError) {
     return (
       <img 
@@ -334,6 +345,8 @@ export default function Comites() {
                     window.location.hash = '#voynich';
                   } else if (comite.name === 'ICA (1935)') {
                     window.location.hash = '#ica';
+                  } else if (comite.name === 'BRICS') {
+                    window.location.hash = '#brics';
                   }
                 }}
                 className="group border-b border-white/10 py-6 px-4 md:px-6 flex flex-col md:flex-row items-start md:items-center justify-between cursor-pointer relative overflow-hidden transition-all duration-500 hover:pl-10"

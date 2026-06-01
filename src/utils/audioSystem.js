@@ -9,6 +9,7 @@ class AudioSystem {
     this.love = null; // New Voynich audio
     this.toby = null; // New ICA audio
     this.wisin = null; // New ICFJ audio
+    this.brics = null; // New BRICS audio
 
 
     this.frutigerNode = null;
@@ -20,6 +21,7 @@ class AudioSystem {
     this.loveNode = null;
     this.tobyNode = null;
     this.wisinNode = null;
+    this.bricsNode = null;
 
 
     this.frutigerFilter = null;
@@ -31,6 +33,7 @@ class AudioSystem {
     this.loveFilter = null;
     this.tobyFilter = null;
     this.wisinFilter = null;
+    this.bricsFilter = null;
 
 
     this.frutigerGain = null;
@@ -42,6 +45,7 @@ class AudioSystem {
     this.loveGain = null;
     this.tobyGain = null;
     this.wisinGain = null;
+    this.bricsGain = null;
 
 
     this.activeTrack = null; 
@@ -91,6 +95,10 @@ class AudioSystem {
     this.wisin.loop = true;
     this.wisin.crossOrigin = 'anonymous';
 
+    this.brics = new Audio('/brics.mp3');
+    this.brics.loop = true;
+    this.brics.crossOrigin = 'anonymous';
+
 
     // Route elements through Web Audio API
     this.frutigerNode = this.ctx.createMediaElementSource(this.frutiger);
@@ -102,6 +110,7 @@ class AudioSystem {
     this.loveNode = this.ctx.createMediaElementSource(this.love);
     this.tobyNode = this.ctx.createMediaElementSource(this.toby);
     this.wisinNode = this.ctx.createMediaElementSource(this.wisin);
+    this.bricsNode = this.ctx.createMediaElementSource(this.brics);
 
 
     // Create lowpass filters for the "desenfoque" muffling effect
@@ -114,9 +123,10 @@ class AudioSystem {
     this.loveFilter = this.ctx.createBiquadFilter();
     this.tobyFilter = this.ctx.createBiquadFilter();
     this.wisinFilter = this.ctx.createBiquadFilter();
+    this.bricsFilter = this.ctx.createBiquadFilter();
 
 
-    [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter, this.tobyFilter, this.wisinFilter].forEach(f => {
+    [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter, this.tobyFilter, this.wisinFilter, this.bricsFilter].forEach(f => {
       f.type = 'lowpass';
       f.Q.value = 1.0;
       f.frequency.setValueAtTime(1200, this.ctx.currentTime); // start slightly clearer (1200Hz instead of 300Hz)
@@ -133,9 +143,10 @@ class AudioSystem {
     this.loveGain = this.ctx.createGain();
     this.tobyGain = this.ctx.createGain();
     this.wisinGain = this.ctx.createGain();
+    this.bricsGain = this.ctx.createGain();
 
 
-    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain, this.tobyGain, this.wisinGain].forEach(g => {
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain, this.tobyGain, this.wisinGain, this.bricsGain].forEach(g => {
       g.gain.setValueAtTime(0, this.ctx.currentTime); // start silent
     });
 
@@ -150,6 +161,7 @@ class AudioSystem {
     this._setupChain(this.loveNode, this.loveFilter, this.loveGain);
     this._setupChain(this.tobyNode, this.tobyFilter, this.tobyGain);
     this._setupChain(this.wisinNode, this.wisinFilter, this.wisinGain);
+    this._setupChain(this.bricsNode, this.bricsFilter, this.bricsGain);
 
 
     this.initialized = true;
@@ -179,6 +191,7 @@ class AudioSystem {
     this.love.play().catch(e => console.log("Playback error Love", e));
     this.toby.play().catch(e => console.log("Playback error Toby", e));
     this.wisin.play().catch(e => console.log("Playback error Wisin", e));
+    this.brics.play().catch(e => console.log("Playback error Brics", e));
 
 
     this.activeTrack = 'frutiger';
@@ -230,7 +243,8 @@ class AudioSystem {
       {g: this.nasaGain, f: this.nasaFilter},
       {g: this.loveGain, f: this.loveFilter},
       {g: this.tobyGain, f: this.tobyFilter},
-      {g: this.wisinGain, f: this.wisinFilter}
+      {g: this.wisinGain, f: this.wisinFilter},
+      {g: this.bricsGain, f: this.bricsFilter}
     ];
 
 
@@ -366,10 +380,22 @@ class AudioSystem {
     }
     this.activeTrack = 'wisin';
     
-    // Play with pumping energy! Reset to 0 so the intro plays from the start
     this.wisin.currentTime = 0;
     this.wisin.play().catch(e => console.log("Play error Wisin on switch", e));
     this._muffleAllExcept(this.wisinGain);
+  }
+
+  switchToBrics() {
+    if (!this.initialized) return;
+    if (this.activeTrack === 'brics') {
+      if (this.brics.paused) {
+        this.brics.play().catch(e => console.log("Play error Brics on resume", e));
+      }
+      return;
+    }
+    this.activeTrack = 'brics';
+    this.brics.play().catch(e => console.log("Play error Brics on switch", e));
+    this._muffleAllExcept(this.bricsGain);
   }
 
 
@@ -378,8 +404,8 @@ class AudioSystem {
     this.activeTrack = null;
     const now = this.ctx.currentTime;
     
-    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain, this.tobyGain, this.wisinGain].forEach((g, i) => {
-      const f = [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter, this.tobyFilter, this.wisinFilter][i];
+    [this.frutigerGain, this.lmfaoGain, this.gagaGain, this.miiGain, this.jeffreyGain, this.nasaGain, this.loveGain, this.tobyGain, this.wisinGain, this.bricsGain].forEach((g, i) => {
+      const f = [this.frutigerFilter, this.lmfaoFilter, this.gagaFilter, this.miiFilter, this.jeffreyFilter, this.nasaFilter, this.loveFilter, this.tobyFilter, this.wisinFilter, this.bricsFilter][i];
       this._muffleAndFadeDown(g, f, now);
     });
 

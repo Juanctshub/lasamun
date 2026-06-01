@@ -22,6 +22,8 @@ import Ica from './components/Ica';
 import IcaLoader from './components/IcaLoader';
 import Icfj from './components/Icfj';
 import IcfjLoader from './components/IcfjLoader';
+import Brics from './components/Brics';
+import BricsLoader from './components/BricsLoader';
 
 import TopFotos from './components/TopFotos';
 import Starvibe from './components/Starvibe';
@@ -40,6 +42,7 @@ function App() {
     if (window.location.hash === '#voynich') return 'voynich';
     if (window.location.hash === '#ica') return 'ica';
     if (window.location.hash === '#icfj') return 'icfj';
+    if (window.location.hash === '#brics') return 'brics';
     return 'landing';
 
   };
@@ -52,6 +55,7 @@ function App() {
   const [voynichLoading, setVoynichLoading] = useState(false);
   const [icaLoading, setIcaLoading] = useState(false);
   const [icfjLoading, setIcfjLoading] = useState(false);
+  const [bricsLoading, setBricsLoading] = useState(false);
 
 
   // Handle entering the landing page and starting audio
@@ -86,6 +90,9 @@ function App() {
     } else if (window.location.hash === '#icfj') {
       setIcfjLoading(true);
       setTimeout(() => audioSystem.switchToIcfj(), 500);
+    } else if (window.location.hash === '#brics') {
+      setBricsLoading(true);
+      setTimeout(() => audioSystem.switchToBrics(), 500);
     }
   };
 
@@ -135,6 +142,10 @@ function App() {
         setCurrentPage('icfj');
         setIcfjLoading(true);
         audioSystem.switchToIcfj();
+      } else if (isBrics) {
+        setCurrentPage('brics');
+        setBricsLoading(true);
+        audioSystem.switchToBrics();
       } else {
         setCurrentPage('landing');
         audioSystem.switchToMain();
@@ -160,7 +171,7 @@ function App() {
           }
         }, 150);
       }
-    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich' || currentPage === 'ica' || currentPage === 'icfj') {
+    } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich' || currentPage === 'ica' || currentPage === 'icfj' || currentPage === 'brics') {
       window.scrollTo({ top: 0 });
     }
 
@@ -386,6 +397,25 @@ function App() {
                       transition={{ duration: 0.5 }}
                     >
                       <Icfj />
+                      <Footer />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </React.Fragment>
+            ) : currentPage === 'brics' ? (
+              <React.Fragment key="brics-view">
+                <AnimatePresence mode="wait">
+                  {bricsLoading ? (
+                    <BricsLoader key="brics-loader" onComplete={() => setBricsLoading(false)} />
+                  ) : (
+                    <motion.div 
+                      key="brics-content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <Brics />
                       <Footer />
                     </motion.div>
                   )}
