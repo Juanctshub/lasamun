@@ -82,17 +82,13 @@ export default function Brics() {
             className="flex flex-col items-center text-center"
           >
             <div 
-              className="w-full max-w-xl md:max-w-2xl h-32 md:h-40 mb-6 cursor-pointer group relative flex items-center justify-center"
+              className="w-full max-w-2xl md:max-w-4xl h-40 md:h-64 mb-8 cursor-pointer group relative flex items-center justify-center"
               onClick={() => setShowPasscode(true)}
               title="Soberanía Económica"
             >
               <div className="absolute inset-0 bg-[#c5a059]/10 rounded-full blur-3xl group-hover:bg-[#c5a059]/20 transition-all duration-500"></div>
-              <img src="/brics_logo.png" alt="BRICS+ Logo" className="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform duration-500 filter drop-shadow-[0_0_15px_rgba(197,160,89,0.8)]" />
+              <img src="/brics_logo.png" alt="BRICS+ Logo" className="w-full h-full object-contain relative z-10 group-hover:scale-105 transition-transform duration-500 filter drop-shadow-[0_0_20px_rgba(197,160,89,0.8)]" />
             </div>
-
-            <h1 className="font-maison text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter uppercase mb-6 text-transparent bg-clip-text bg-gradient-to-b from-white to-[#c5a059]/70 drop-shadow-lg">
-              BRICS+
-            </h1>
             <p className="font-mono text-[#c5a059] tracking-[0.4em] uppercase text-sm md:text-base border-b border-[#c5a059]/30 pb-4 mb-8 text-center px-4">
               Alianza Estratégica Multilateral
             </p>
