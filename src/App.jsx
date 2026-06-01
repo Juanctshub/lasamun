@@ -163,13 +163,29 @@ function App() {
     if (currentPage === 'landing') {
       const hash = window.location.hash;
       if (hash) {
-        setTimeout(() => {
-          const id = hash.substring(1);
+        const id = hash.substring(1);
+        
+        // Polling retry mechanism to ensure element is found after exit animation completes
+        let attempts = 0;
+        const tryScroll = () => {
           const element = document.getElementById(id);
           if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
+          } else if (attempts < 10) {
+            attempts++;
+            setTimeout(tryScroll, 100);
+          } else {
+            // Fallback: scroll to top if #home or not found
+            if (id === 'home') {
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
           }
-        }, 150);
+        };
+        
+        // Start scrolling attempts
+        setTimeout(tryScroll, 150);
+      } else {
+        window.scrollTo({ top: 0 });
       }
     } else if (currentPage === 'staff' || currentPage === 'crisis' || currentPage === 'reglamentos' || currentPage === 'corte' || currentPage === 'nasa' || currentPage === 'voynich' || currentPage === 'ica' || currentPage === 'icfj' || currentPage === 'brics') {
       window.scrollTo({ top: 0 });
@@ -198,8 +214,7 @@ function App() {
 
       const handleIntersection = (entries) => {
         entries.forEach((entry) => {
-          if (window.location.hash !== '' && window.location.hash !== '#') return;
-          
+          // Allow all hashes on landing page since observation is already restricted to currentPage === 'landing'
           if (entry.isIntersecting) {
             // Muffle & fade down frutiger, open up LMFAO
             audioSystem.switchToStarvibe();
