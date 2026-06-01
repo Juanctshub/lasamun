@@ -343,8 +343,8 @@ export default function Icfj() {
             <div className="mt-8 pt-4 border-t border-white/5 text-[8.5px] text-gray-500 text-left">
               REGISTRY NETWORK DIRECTORY SYSTEM CORRESPONDENT
             </div>
-            </div>
           </div>
+
 
           {/* MIDDLE PANEL (5 cols): Real Newspaper Editing Suite */}
           <div className="lg:col-span-5 flex flex-col bg-black/60 border border-white/10 rounded-3xl p-6 shadow-2xl justify-between">
