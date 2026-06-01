@@ -180,6 +180,19 @@ export default function Corte() {
               {/* Botones de Mesa Directiva y Guia Academica */}
               <div className="grid grid-cols-1 gap-4 mt-8">
                 <button 
+                  onClick={() => window.open('https://drive.google.com/file/d/1AqpDlD6h4U6uD52DIszj5GWway-MqvB9/view?usp=sharing', '_blank')}
+                  className="group flex items-center gap-4 bg-white/5 hover:bg-[#D4AF37]/10 border border-white/10 hover:border-[#D4AF37]/50 p-4 rounded-xl transition-all duration-300"
+                >
+                  <div className="p-3 bg-black/50 border border-white/5 rounded-lg group-hover:border-[#D4AF37]/30 transition-colors">
+                    <FileText className="w-5 h-5 text-[#D4AF37] group-hover:scale-110 transition-transform" />
+                  </div>
+                  <div className="text-left">
+                    <span className="block font-bold text-white uppercase group-hover:text-[#D4AF37] transition-colors">Guía Académica</span>
+                    <span className="block font-mono text-[10px] text-gray-400 uppercase tracking-widest mt-1">Ver Guía Oficial de Corte</span>
+                  </div>
+                </button>
+
+                <button 
                   onClick={() => window.open('https://drive.google.com/file/d/1Z_Mpvpel6JhaR_0-7vezBC4j5JpK4SEn/view?usp=sharing', '_blank')}
                   className="group flex items-center gap-4 bg-white/5 hover:bg-[#D4AF37]/10 border border-white/10 hover:border-[#D4AF37]/50 p-4 rounded-xl transition-all duration-300"
                 >
@@ -258,6 +271,12 @@ export default function Corte() {
               className="flex-1 sm:flex-none px-6 py-3 bg-[#D4AF37] text-black font-mono text-xs uppercase tracking-widest font-black rounded-xl hover:bg-white hover:text-black transition-all duration-300 shadow-lg shadow-[#D4AF37]/10"
             >
               Conoce a tu mesa
+            </button>
+            <button 
+              onClick={() => window.open('https://drive.google.com/file/d/1AqpDlD6h4U6uD52DIszj5GWway-MqvB9/view?usp=sharing', '_blank')}
+              className="flex-1 sm:flex-none px-6 py-3 bg-white/5 hover:bg-white text-white hover:text-black border border-white/10 hover:border-white font-mono text-xs uppercase tracking-widest font-bold rounded-xl transition-all duration-300"
+            >
+              Guía Académica
             </button>
             <button 
               onClick={() => window.open('https://drive.google.com/file/d/1Z_Mpvpel6JhaR_0-7vezBC4j5JpK4SEn/view?usp=sharing', '_blank')}
