@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, Shield, Landmark } from 'lucide-react';
 
-export default function BricsLoader({ onLoadingComplete }) {
+export default function BricsLoader({ onComplete }) {
   const [progress, setProgress] = useState(0);
   const [loadingText, setLoadingText] = useState('INICIANDO CONEXIÓN SEGURA');
   const [showLogo, setShowLogo] = useState(false);
@@ -25,11 +25,11 @@ export default function BricsLoader({ onLoadingComplete }) {
     });
 
     const finishTimeout = setTimeout(() => {
-      onLoadingComplete();
+      if (onComplete) onComplete();
     }, 4500);
 
     return () => clearTimeout(finishTimeout);
-  }, [onLoadingComplete]);
+  }, [onComplete]);
 
   return (
     <div className="fixed inset-0 bg-[#060504] z-[100] flex flex-col items-center justify-center overflow-hidden font-mono text-[#c5a059]">
