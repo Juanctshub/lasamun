@@ -108,7 +108,7 @@ function App() {
       const isVoynich = window.location.hash === '#voynich';
       const isIca = window.location.hash === '#ica';
       const isIcfj = window.location.hash === '#icfj';
-
+      const isBrics = window.location.hash === '#brics';
       
       if (isStaff) {
         setCurrentPage('staff');
